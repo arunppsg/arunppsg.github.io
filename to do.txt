@@ -1,0 +1,16 @@
+Add prev and next in post.
+In about page, only contact should be there. And may be fan of thalaivar.
+Add copyright arun palaniappan 2020 at the bottom - footer.
+Add a glossary and notations page.
+Add navigation bar to top of blog posts.
+Divide note class into two columns - one for a note symbol and another one for note in a box.
+When clicked on an option as bandit, it should present all posts related to bandits.	
+
+This blog has a nice template - http://colah.github.io/about.html, https://arogozhnikov.github.io/
+Also at andrej karpathy's blog.
+https://ruder.io/
+https://openai.com/blog/ <- Look at the blog and index page.
+
+
+
+Change about page.

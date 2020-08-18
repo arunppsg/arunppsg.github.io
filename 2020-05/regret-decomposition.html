@@ -1,0 +1,60 @@
+<html>
+
+<head>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-168258233-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-168258233-1');
+	</script>
+	<title>Regret Decomposition</title>
+	<link rel = "stylesheet" type = "text/css" href = "../post.css" />
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"> </script>
+</head>
+
+<body>
+<section>
+	<div class="post">
+		<h1><center>Regret Decomposition</center></h1>
+		We saw in the last <a href="stochastic-bandits.html">post</a> a basic definition of regret. The objective of a policy is to minimize the regret, thereby maximizing the expected cumulative sum of rewards. In this post, we present the basic regret decomposition lemma which forms the basis for many proofs.
+		
+		<h2>Sub-Optimality Gap</h2>
+		The sub-optimality gap is a measure of gap between the mean reward of an arm and the mean reward of the optimal arm. For a bandit problem \( v = ( P_a : a \in A ) \), we define suboptimality gap as $$ \Delta_a = \mu^{*}(v) - \mu_a(v) $$ where \( \mu^{*}(v) = max_{a \in A}\mu_a \). Sub-Optimality gap says how far an action is from the optimal action. Let \(T_a(t) \) denote the number of times arm \(a\) is pulles upto time \(t\). Then, $$ T_a(t) = \sum_{t=1}^{t} \mathbb{I}\{A_s = a\} $$ where \( \mathbb{I}\{.\} \) is the indicator function which takes the value of 1 when the condition \( A_s = a \) is satisfied, otherwise 0.
+		
+		<h2>Regret-Decomposition Lemma</h2>
+		For any policy \( \pi \) and stochastic bandit environment \( v \) with \( A \) finite ( number of actions is finite ) and horizon \( n \in \mathbb{N} \), the regret \( R_n \) of policy \( \pi \) in \( v \) satisfies $$  R_n = \sum_{a \in A} \Delta_a \mathbb{E}[T_a(n)] $$.
+		
+		<h4>Proof</h4>
+		We start from the definition of regret in the previous post, $$ R(n) = n. \mu^{*} - \mathbb{E}[S_n] $$.
+
+		Since \( S_n = \sum_{t=1}^{n} X_t \), $$ R(n) = n. \mu^{*} - \mathbb{E}[\sum_{t=1}^{n} X_t] $$
+		<span id="eq1">Eqn: 1</span> $$ &nbsp; = \sum_{a \in \mathbb{A}} \sum_{t=1}^{n} \mathbb{E}[(\mu^{*} - X_t) \mathbb{I}\{A_t = a\}] $$ 
+		
+		The expected reward in round \( t \) conditioned on \( A_t \) is \( \mu_{A_t} \).
+		
+		$$ \mathbb{E}[(\mu^{*} - X_t) \mathbb{I}\{A_t = a\} | A_t] = \mathbb{I}\{A_t = a\}\mathbb{E}[(\mu^{*} - X_t) | A_t] $$ 
+		$$ = \mathbb{I}\{A_t = a\}\mathbb{E}[(\mu^{*} - \mu_{A_t}] $$ 
+		$$ = \mathbb{I}\{A_t = a\}\mathbb{E}[(\mu^{*} - \mu_a] $$ $$ = \mathbb{I}\{A_t = a\}\Delta_a $$
+		
+		Plugging this in <a href="#eq1">1</a> and using the fact that \( T_a(n) = = \sum_{t=1}^{n} \mathbb{I}\{A_t = a\} \), we get the following expression: 
+		
+		$$ R(n) = \sum_{a \in \mathbb{A}} \sum_{t=1}^{n} \mathbb{I}\{A_t = a\}\Delta_a $$
+		$$ R(n) = \sum_{a \in A} \Delta_a \mathbb{E}[T_a(n)] $$.
+		
+		<div class="note">
+			<b>Note:</b>
+			\( S_n \) is the cumulative reward collected in one round. The game is played over many round and  \( \mathbb{E}[S_n] \) is the expected cumulative reward collected over \( n \) rewards. Similarly, \( T_a(n) \) is the number of times arm \( a \) is pulled in one round. \( \mathbb{E}[T_a(n)] \) is the expected number of times arm \( a \) is pulled over many rounds.
+		</div>
+		
+		This completes the proof.
+		
+		<h2>Bibliographical remarks and further directions</h2>
+		Regret decomposition froms a basis for many proofs in the bandit algorithms literature. This <a href="https://banditalgs.com/2016/09/04/stochastic-bandits-warm-up/#lem_regretdecomposition">blog</a> has regret decomposition in more detail.
+	</div>
+	
+	
+</section>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<html>
+
+<head>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-168258233-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-168258233-1');
+	</script>
+	<title>Multi Armed Bandits</title>
+	<link rel = "stylesheet" type = "text/css" href = "../post.css" />
+</head>
+
+<body>
+<section>
+	<div class="post">
+		<h1><center> Multi Armed Bandits Datasets</center></h1>
+		Here is a list of datasets which can be used with different bandit instances.
+		<ul>
+			<li><a href="https://grouplens.org/datasets/movielens/">Movie lens dataset</a> - The Movie lens dataset is a collection of movie ratings and tags. This dataset can be used for learning in contextual bandit for movie recommendation. The data is available user wise and hence personalized movie recommendation's can be given.</li><br>
+			<li><a href="https://webscope.sandbox.yahoo.com/">Yahoo Webscope</a> - The yahoo webscope is a collection of interesting and scientifically useful datasets. Of particular interest is the <a href="https://webscope.sandbox.yahoo.com/catalog.php?datatype=r">ratings and classification data</a>. Here, one can find a musical user ratings data, movie user ratings data, music internet radio playlist dataset. These datasets can be used for learning to rank, training a multi-arm bandit for making a recommendation system.</li><br>
+			<li>Here is the <a href="https://www.microsoft.com/en-us/research/project/mslr/">Microsoft Learning to Rank<a> dataset. The dataset consists of query-url pairs along with the relevant judgement labels. The queries and labels are collected from Microsoft Bing search engine and the dataset can be used for learning to rank in a linear bandit scenario.</li><br>
+			<li><a href="http://www.ee.columbia.edu/~dpwe/pubs/McFeeBEL12-MSDC.pdf">The Million Song Dataset Challenge</a> is a large scale personalized music recommendation challenge where the goal is to predict the songs that a user will listen to, given both the users listening history and full information for all songs. The dataset will be very useful for designing recommendation system algorithms. The dataset can be accessed <a href="http://millionsongdataset.com/">here</a>.</li><br>
+			<li>The <a href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki">Vowpal Wabbit</a> is an interactive machine learning 	library and reinforcement learning framework for services like microsoft personalizer.The Vowpal Wabbit learning system can be used for simulating contextual bandit scenarios. The tutorials are available <a href="https://vowpalwabbit.org/tutorials/contextual_bandits.html">here</a>.</li><br>
+			<li>The <a href="https://archive.ics.uci.edu/ml/datasets/Mushroom">Mushroom Dataset</a> contains 22 attribiuted per mushroom and two classes: poisonous and safe. The dataset can be used to train a contextual bandit. The featured of the mushrooms are the context for the bandit and the agent can choose to eat or not eat the mushroom. Regret is the difference between reward achieved by an oracle ( the oracles knows which mushrooms are poisonous and safe ) and the agent.</li><br>
+			<li>The <a href="https://archive.ics.uci.edu/ml/datasets/Statlog+(Shuttle)">Shuttle Statlog Dataset</a> can be used for contextual bandits. The dataset provides the value for 9 indicators (features) and there are 7 possible states (actions). If the agent selects the right state, a reward of 1 is obtained otherwise no reward.</li><br>
+			<li>The <a href= "https://archive.ics.uci.edu/ml/datasets/covertype">Covertype Dataset</a> classifies the cover type of northern Colorado forest areas in 7 classes and 54 features. The agent obtains reward 1 if the correct class is selected and 0 otherwise.</li><br>
+		</ul>
+	<p>
+		Apart from these, <a href="http://snap.stanford.edu/data/">Stanford Large Network Dataset Collection</a> is a collection of lot of large datasets which can be used for practising bandit algorithms.</p>
+	<p>Financial data can be synthesis based on past stock prices which can be used to train a bandit model. Will share more about this in upcoming posts.</p>
+
+	<div class="space">
+		
+	</div>
+</section>
+</body>
+</html>

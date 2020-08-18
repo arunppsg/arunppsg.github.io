@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+/* font-family: Helvetica, Arial */
+
+/*.header {
+	color: yellow;
+	background-color: #111111;	
+}*/
+
+
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.header {
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 54px;
+    letter-spacing: -1px;
+    margin-bottom: 0;
+    float: left;
+}
+
+.content {
+  background-color: #F0FFFF;
+  flex: 5;
+}
+.sidebar {
+  background-color: #FFF5EE;
+  flex: 2;
+}
+
+.footer {
+  width: 100%;
+  background-color: #FFE4E1;
+}
+
+.about {
+	background-color: #FAEBD7;
+}
+
+.post-list {	
+	list-style: none;
+    list-style-position: outside;
+    list-style-image: none;
+    list-style-type: none;
+}
+
+.post-link {
+    display: block;
+    font-size: 24px;
+	color: #2a7ae2;
+	text-decoration: none;
+}
+
+.post-date {
+    font-size: 14px;
+    color: #828282;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+}
