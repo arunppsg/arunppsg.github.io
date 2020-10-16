@@ -10,7 +10,8 @@ This blog has a nice template - http://colah.github.io/about.html, https://arogo
 Also at andrej karpathy's blog.
 https://ruder.io/
 https://openai.com/blog/ <- Look at the blog and index page.
-
+https://aaronsnoswell.github.io/
+https://jonbarron.info/
 
 
 Change about page.

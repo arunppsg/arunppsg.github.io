@@ -2,12 +2,6 @@
 
 /* font-family: Helvetica, Arial */
 
-/*.header {
-	color: yellow;
-	background-color: #111111;	
-}*/
-
-
 .container {
   width: 100%;
   display: flex;
@@ -26,6 +20,7 @@
   background-color: #F0FFFF;
   flex: 5;
 }
+
 .sidebar {
   background-color: #FFF5EE;
   flex: 2;
@@ -40,18 +35,34 @@
 	background-color: #FAEBD7;
 }
 
-.post-list {	
+.paper-link {
+    display: block;
+    font-size: 24px;
+	color: #2a7ae2;
+	text-decoration: none;
+	margin-top:5px;
+	margin-bottom:20px;
+}
+
+.paper-list {
 	list-style: none;
-    list-style-position: outside;
     list-style-image: none;
     list-style-type: none;
 }
+.post-list {	
+	list-style: none;
+    list-style-image: none;
+    list-style-type: none;
+}
+
 
 .post-link {
     display: block;
     font-size: 24px;
 	color: #2a7ae2;
 	text-decoration: none;
+	margin-top:5px;
+	margin-bottom:20px;
 }
 
 .post-date {

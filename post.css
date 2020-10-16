@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 .post{
-  float: left;
+  float: center;
   width: 60%;
   font-family: Open Sans;
   /*
@@ -10,7 +10,6 @@ Use font size of 1em for Open Sans, 1.2 em for Helvetica. No import needed for H
   font-size: 1em;
   padding: 40px;
   margin: 20px;
-  background: #f1f1f1;
   /*border: 40px solid white;
   border-right: 500px solid white;  Instead of border-right, use two columns - left column and right column. Do good engineering. */
 }

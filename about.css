@@ -5,6 +5,7 @@
   overflow: hidden;
 }
 
+
 /* Style the links inside the navigation bar */
 .topnav a {
   float: right;
@@ -30,4 +31,12 @@
 .contents{
 	font-family: Open Sans;
 	text-align: center;
+}
+
+p {
+	max-width: 750px;
+	margin: auto;
+	text-align: justify;
+	position: relative;
+	
 }
