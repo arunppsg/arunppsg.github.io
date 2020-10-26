@@ -6,12 +6,12 @@ Add navigation bar to top of blog posts.
 Divide note class into two columns - one for a note symbol and another one for note in a box.
 When clicked on an option as bandit, it should present all posts related to bandits.	
 
-This blog has a nice template - http://colah.github.io/about.html, https://arogozhnikov.github.io/
+These blog has nice templates - http://colah.github.io/about.html, https://arogozhnikov.github.io/
 Also at andrej karpathy's blog.
 https://ruder.io/
 https://openai.com/blog/ <- Look at the blog and index page.
 https://aaronsnoswell.github.io/
 https://jonbarron.info/
-
+https://martiansideofthemoon.github.io/about/
 
 Change about page.
