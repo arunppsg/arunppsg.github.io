@@ -1,10 +1,20 @@
+Update Hindu blog in page.
+Divide content into three sections - Active Works, Papers, essays (add Hindu essay), study notes.
+
+Active Works:
+	COVID-19 Mental stress
+	Networks, Crowds and Markets
+News:
+	Organizing ML Reading Grp. at PSG College of Technology.
+Add thirukkural.
+
 Add prev and next in post.
-In about page, only contact should be there. And may be fan of thalaivar.
-Add copyright arun palaniappan 2020 at the bottom - footer.
+
 Add a glossary and notations page.
 Add navigation bar to top of blog posts.
 Divide note class into two columns - one for a note symbol and another one for note in a box.
 When clicked on an option as bandit, it should present all posts related to bandits.	
+
 
 These blog has nice templates - http://colah.github.io/about.html, https://arogozhnikov.github.io/
 Also at andrej karpathy's blog.

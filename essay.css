@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.essay {
+  font: 18px/1.4 Helvetica, Arial, sans-serif;
+  max-width: 800px;
+  text-align: justify;
+  margin: 0 auto;
+  /*border: 40px solid white;
+  border-right: 500px solid white;  Instead of border-right, use two columns - left column and right column. Do good engineering. */
+}
+
+
+@media screen and (max-width: 800px) {
+  .essay {
+    width: 100%;
+    padding: 0;
+  }
+}

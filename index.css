@@ -35,13 +35,26 @@
 	background-color: #FAEBD7;
 }
 
+.active-works-list {
+	list-style: none;
+    list-style-image: none;
+    list-style-type: none;
+}
+
+.active-works-link {
+	display: block;
+    font-size: 24px;
+	color: #2a7ae2;
+	text-decoration: none;
+	margin-top:5px;
+}
+
 .paper-link {
     display: block;
     font-size: 24px;
 	color: #2a7ae2;
 	text-decoration: none;
 	margin-top:5px;
-	margin-bottom:20px;
 }
 
 .paper-list {
@@ -49,6 +62,7 @@
     list-style-image: none;
     list-style-type: none;
 }
+
 .post-list {	
 	list-style: none;
     list-style-image: none;
@@ -61,13 +75,28 @@
     font-size: 24px;
 	color: #2a7ae2;
 	text-decoration: none;
-	margin-top:5px;
-	margin-bottom:20px;
+	//margin-top:2px;
+	margin-bottom:15px;
 }
 
 .post-date {
     font-size: 14px;
     color: #828282;
+}
+
+.essay-link {
+	display: block;
+    font-size: 24px;
+	color: #2a7ae2;
+	text-decoration: none;
+	//margin-top:2px;
+	margin-bottom:15px;
+}
+
+.essay-list {	
+	list-style: none;
+    list-style-image: none;
+    list-style-type: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
