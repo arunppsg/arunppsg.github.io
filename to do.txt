@@ -1,9 +1,3 @@
-Update Hindu blog in page.
-Divide content into three sections - Active Works, Papers, essays (add Hindu essay), study notes.
-
-Active Works:
-	COVID-19 Mental stress
-	Networks, Crowds and Markets
 News:
 	Organizing ML Reading Grp. at PSG College of Technology.
 Add thirukkural.
@@ -18,10 +12,8 @@ When clicked on an option as bandit, it should present all posts related to band
 
 These blog has nice templates - http://colah.github.io/about.html, https://arogozhnikov.github.io/
 Also at andrej karpathy's blog.
-https://ruder.io/
-https://openai.com/blog/ <- Look at the blog and index page.
 https://aaronsnoswell.github.io/
-https://jonbarron.info/
 https://martiansideofthemoon.github.io/about/
-
+https://alsweigart.com/ Look here for some ideas.
+https://paulgp.github.io/
 Change about page.
