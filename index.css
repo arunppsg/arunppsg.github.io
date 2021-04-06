@@ -69,6 +69,11 @@
     list-style-type: none;
 }
 
+.post-meta {
+    display: block;
+    margin-bottom: 15px;
+    margin-top:15px;
+}
 
 .post-link {
     display: block;
@@ -89,8 +94,6 @@
     font-size: 24px;
 	color: #2a7ae2;
 	text-decoration: none;
-	//margin-top:2px;
-	margin-bottom:15px;
 }
 
 .essay-list {	

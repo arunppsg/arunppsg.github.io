@@ -1,5 +1,7 @@
-News:
-	Organizing ML Reading Grp. at PSG College of Technology.
+Add Google Analytics tag
+Add tags to posts, related posts session
+Scripts for generating template of page, adding G-tag to all pages and adding post to main page.
+
 Add thirukkural.
 
 Add prev and next in post.
@@ -7,13 +9,10 @@ Add prev and next in post.
 Add a glossary and notations page.
 Add navigation bar to top of blog posts.
 Divide note class into two columns - one for a note symbol and another one for note in a box.
-When clicked on an option as bandit, it should present all posts related to bandits.	
-
-
 These blog has nice templates - http://colah.github.io/about.html, https://arogozhnikov.github.io/
-Also at andrej karpathy's blog.
+Also andrej karpathy's blog.
 https://aaronsnoswell.github.io/
 https://martiansideofthemoon.github.io/about/
 https://alsweigart.com/ Look here for some ideas.
 https://paulgp.github.io/
-Change about page.
+
