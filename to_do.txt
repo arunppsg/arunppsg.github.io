@@ -2,6 +2,7 @@ Add Google Analytics tag
 Add tags to posts, related posts session
 Scripts for generating template of page, adding G-tag to all pages and adding post to main page.
 
+Ohter projects: Quora insincere question classification, tic-tac-toe using RL (@TCS)
 Add thirukkural.
 
 Add prev and next in post.
