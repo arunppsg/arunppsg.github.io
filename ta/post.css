@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.post{
+  float: center;
+  width: 60%;
+  font-family: Open Sans;
+  /*
+Use font size of 1em for Open Sans, 1.2 em for Helvetica. No import needed for Helvetica.
+*/
+  font-size: 1em;
+  padding: 40px;
+  margin: 20px;
+  /*border: 40px solid white;
+  border-right: 500px solid white;  Instead of border-right, use two columns - left column and right column. Do good engineering. */
+}
+
+
+.algorithm {
+  background: white;
+  width: 90%;
+  padding: 20px;   /*Used for adjusting space between the inner boundary of the box and inner content */
+  margin: 25px;    /*Used for adjusting space between the outer boundary of box and the outer content */
+  border: 1px solid black;
+}
+
+.note {
+  background: white;
+  width: 90%;
+  padding: 20px;
+  margin: 25px; 
+  border: 1px solid black;
+}
+
+.space{
+	float: left;
+	width: 40%;
+}
+@media screen and (max-width: 800px) {
+  .post, .space {
+    width: 100%;
+    padding: 0;
+  }
+
+
