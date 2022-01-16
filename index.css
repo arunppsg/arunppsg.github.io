@@ -17,7 +17,6 @@
 }
 
 .content {
-//  background-color: #F0FFFF;
   flex: 5;
 }
 
@@ -27,8 +26,6 @@
 }
 
 .footer {
-  width: 100%;
-  background-color: #FFE4E1;
 }
 
 .about {
@@ -49,58 +46,6 @@
 	margin-top:5px;
 }
 
-.paper-link {
-    display: block;
-    font-size: 24px;
-	color: #2a7ae2;
-	text-decoration: none;
-	margin-top:5px;
-}
-
-.paper-list {
-	list-style: none;
-    list-style-image: none;
-    list-style-type: none;
-}
-
-.post-list {	
-	list-style: none;
-    list-style-image: none;
-    list-style-type: none;
-}
-
-.post-meta {
-    display: block;
-    margin-bottom: 15px;
-    margin-top:15px;
-}
-
-.post-link {
-    display: block;
-    font-size: 24px;
-	color: #2a7ae2;
-	text-decoration: none;
-	//margin-top:2px;
-	margin-bottom:15px;
-}
-
-.post-date {
-    font-size: 14px;
-    color: #828282;
-}
-
-.essay-link {
-	display: block;
-    font-size: 24px;
-	color: #2a7ae2;
-	text-decoration: none;
-}
-
-.essay-list {	
-	list-style: none;
-    list-style-image: none;
-    list-style-type: none;
-}
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
