@@ -1,13 +1,11 @@
 # The URL the site will be built for
-base_url = "https://arunppsg.in"
+base_url = "https://arunppsg.github.io"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
-
-theme = "minimal"
 
 [markdown]
 # Whether to do syntax highlighting
@@ -16,10 +14,3 @@ highlight_code = true
 
 [extra]
 # Put all your custom variables here
-menu_links = [
-    { url = "$BASE_URL/", name = "Home" },
-    { url = "$BASE_URL/posts/", name = "Blog" },
-    { url = "$BASE_URL/projects/", name = "Projects" },
-    { url = "$BASE_URL/ideology/", name = "Ideology" },
-    { url = "$BASE_URL/now/", name = "Now" },
-]
