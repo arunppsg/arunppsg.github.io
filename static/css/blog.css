@@ -1,0 +1,36 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    max-width: 50em;
+    margin: 0 auto;
+}
+
+.posts-list {
+    list-style: none;
+    list-style-position: outside;
+    display: flex;
+    flex-direction: column;
+    margin-left: -40px;
+}
+
+.post {
+    padding: 0em;
+    margin-bottom: 1em;
+}
+
+.post .post-header .date {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.post .post-header .post-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}

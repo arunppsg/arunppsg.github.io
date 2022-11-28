@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ section.title }}</h1>
+
+{% for year, posts in section.pages | group_by(attribute="year") %}
+<ul class="posts-list">
+    {% for post in posts %}
+    <li class="post">
+        <div class="post-header">
+            <span class="date">{{ post.date }}</span>
+            <h4 class="post-title">
+                <a href="{{ post.permalink }}">{{ post.title }}</a>
+            </h4>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock content %}
