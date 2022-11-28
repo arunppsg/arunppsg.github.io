@@ -17,6 +17,7 @@ One thing which I don't like about Indian school system is the first language is
 Often, when the student finishes high school or college, they end up without being proficient in any of the language which they learn in school.
 Without good language skills, there exists a first level barrier to frame thoughts and communicate them.
 One solution is to develop scientific knowledge via translations of text books will help in reducing the barrier.
+To this end, I allocate some of my spare time in translation documentation of [FastAPI](https://fastapi.tiangolo.com/) to tamil. (We need reviewers, translators for this project. If you are interested, checkout tamil translation of fastapi docs [here](https://github.com/tiangolo/fastapi/issues/5434))
 
 ## Things/Practices which I don't believe in
 Some parts of this might be controversial.

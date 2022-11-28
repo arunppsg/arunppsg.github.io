@@ -2,6 +2,10 @@
 title = "Now"
 +++
 
-This is a [now](https://nownownow.com/about) page.
+### 28-Nov-2022
+- Living in Thiruvarur, India
+- Developing backend at Deep Forest.
+- Learning Haskell, functional programming. 
+- Made this website live.
 
-Last updated on November 27th, 2022. 
+This is a [now](https://nownownow.com/about) page.
