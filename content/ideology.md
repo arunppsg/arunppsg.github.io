@@ -19,11 +19,11 @@ Without good language skills, there exists a first level barrier to frame though
 One solution is to develop scientific knowledge via translations of text books will help in reducing the barrier.
 To this end, I allocate some of my spare time in translation documentation of [FastAPI](https://fastapi.tiangolo.com/) to tamil. (We need reviewers, translators for this project. If you are interested, checkout tamil translation of fastapi docs [here](https://github.com/tiangolo/fastapi/issues/5434))
 
-## Things/Practices which I don't believe in
-Some parts of this might be controversial.
-### Healthcare
-We already have a huge population. We need more quality at the top over quantity.
-I see too much investment in healthcare rather than education as money not well spent. 
+## Ramblings
+
+### Financial Incentives
+Government gives financial incentives to people like self-help groups, farmers, etc.
+The policy is good, it helps people but it's not sustainable and it makes people lazy when government perpetually gives them financial incentives. Money spent on perpetual financial incentives can be put on education, infrastructure, etc which can help people in the longer run.
 
 ### Democracy
 People claim democracy is great but I have some questions over it. Politicians in
@@ -34,4 +34,3 @@ concerns for me.
 
 ### Eating Rice
 Rice forms a primary diet in South India. A kilo of rice takes about [4500 liters](https://www.downtoearth.org.in/coverage/rice-does-not-need-water-10108) of waters. Agriculture creates a stress on water table. Will not moving away from eating rice make it better? South India has a couple of traditional grains and millets like Kambu, Keppai which consume less water and more nutritious.
-
