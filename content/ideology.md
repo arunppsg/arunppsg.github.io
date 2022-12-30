@@ -19,7 +19,9 @@ Without good language skills, there exists a first level barrier to frame though
 One solution is to develop scientific knowledge via translations of text books will help in reducing the barrier.
 To this end, I allocate some of my spare time in translation documentation of [FastAPI](https://fastapi.tiangolo.com/) to tamil. (We need reviewers, translators for this project. If you are interested, checkout tamil translation of fastapi docs [here](https://github.com/tiangolo/fastapi/issues/5434))
 
-## Ramblings
+## Unknowns 
+
+These are somethings I don't understand.
 
 ### Financial Incentives
 Government gives financial incentives to people like self-help groups, farmers, etc.
