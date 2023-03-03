@@ -1,6 +1,10 @@
 +++
 title = "Now"
 +++
+### 28-Feb-2023
+- Writing javascript tests. I took the course [testing javascript](https://testingjavascript.com/) and found it to be helpful.
+- Taking Deep Generative Models course from Centre for Continuning Education, Indian Institute of Science, Bangalore.
+- Met [Derek Sivers](https://sive.rs) on his visit to Chennai. 
 
 ### 30-Dec-2022
 - Experimenting with mini projects in web development - nextjs, react, css
