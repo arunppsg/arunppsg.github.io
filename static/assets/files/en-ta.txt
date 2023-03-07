@@ -1,0 +1,17 @@
+type,வகை
+framework,வரைச்சட்டம்
+form,படிவம்
+automatic,
+server
+client,பயனாளி
+பணையம்
+interactive,ஊடாடும்
+interface,இடைபரிமாற்ற
+authentication,அங்கீகார
+load,ஏற்று
+நிறுவுமல்
+License,உரிமம்
+ (features),பண்புகூறுகள்
+  (parameter) அளவுருவின்
+,பாகுபடுத்துதல் 
+template,படிம அச்சு
