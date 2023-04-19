@@ -9,8 +9,8 @@ Everything in Python has a type (even the type `type`!) because everything is an
 Objects are abstraction of data in Python.
 All data in a Python program is stored as a object.
 
-An object allows instances of it to be created.
-The created instances, which are also objects are destroyed by garbage collection.
+Instances can be created from objects, which themselves are another kind of object.
+Objects created can be destroyed by garbage collection.
 
 An object has three properties - identity, value, type.
 The `id` of an object never changes once an object is created.
@@ -123,7 +123,7 @@ Hence, the token `1` is an object of class int.
 All objects have ids.
 The id of token 1 can be seen by `print(id(1))` and it can be inferred that it is same as `id(a_int)`.
 
-In the assignment `a_int = 1`, `a` becomes a reference to the token `1`.
+In the assignment `a_int = 1`, `a_int` becomes a reference to the token `1`.
 Python makes a reference here because `1` is an object of immutable type in python.
 
 But in case 2, the values are copied because `[]` is a mutable type.
@@ -140,4 +140,4 @@ The keywords `staticmethod` and `classmethod` are objects themselves.
 
 ## Acknowledgment
 
-A special thanks to [Rahul Sai Poruri](https://rahulporuri.github.io/) for discussions and feedbacks on earlier versions of the draft.
+A special thanks to [Rahul Sai Poruri](https://rahulporuri.github.io/) and [Tony Davis](https://tonyd.co/) for discussions and feedbacks on earlier versions of the draft.

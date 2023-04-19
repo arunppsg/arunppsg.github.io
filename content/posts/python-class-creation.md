@@ -114,4 +114,4 @@ For more details, I refer the reader to [python documentation](https://docs.pyth
 
 ## Acknowledgemnets
 
-A special thanks to [Rahul Sai Poruri](https://rahulporuri.github.io/) for discussions and feedbacks on earlier versions of the draft.
+A special thanks to [Rahul Sai Poruri](https://rahulporuri.github.io/) and [Tony Davis](https://tonyd.co/) for discussions and feedbacks on earlier versions of the draft.
