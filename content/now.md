@@ -1,6 +1,9 @@
 +++
 title = "Now"
 +++
+### 1-July-2023
+- Moved to Bengaluru.
+
 ### 28-Feb-2023
 - Writing javascript tests. I took the course [testing javascript](https://testingjavascript.com/) and found it to be helpful.
 - Taking Deep Generative Models course from Centre for Continuning Education, Indian Institute of Science, Bangalore.
