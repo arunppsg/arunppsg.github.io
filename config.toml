@@ -18,8 +18,9 @@ highlight_code = true
 # Put all your custom variables here
 menu_links = [
     { url = "$BASE_URL/", name = "Home" },
-    { url = "$BASE_URL/posts/", name = "Blog" },
+    { url = "$BASE_URL/posts/", name = "Posts" },
     { url = "$BASE_URL/projects/", name = "Projects" },
-    { url = "$BASE_URL/ideology/", name = "Ideology" },
     { url = "$BASE_URL/now/", name = "Now" },
+    { url = "$BASE_URL/musings/", name = "Musings" },
+    { url = "$BASE_URL/book-notes//", name = "Book Notes" },
 ]

@@ -1,6 +1,12 @@
 +++
 title = "Now"
 +++
+### 1-Sept-2023
+- Learning about distributed systems, training ML models on multiGPU.
+
+### 15-Aug-2023
+- Back to fundamentals - working on C++ and it's super cool.
+
 ### 1-July-2023
 - Moved to Bengaluru.
 

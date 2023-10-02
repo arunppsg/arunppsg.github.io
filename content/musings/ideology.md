@@ -1,5 +1,6 @@
 +++
-title = "Ideology"
+title = "Random thoughts and opinions"
+date = 2022-11-15
 +++
 
 This page outlines my idelogy, my personal views on some of the topics, which forms a basis of decision or choices which I make. 
