@@ -1,6 +1,6 @@
 +++
-title = "Book Notes"
+title = "Musings"
 sort_by = "date"
-template = "book-notes.html"
+template = "musings.html"
 page_template = "blog-page.html"
 +++

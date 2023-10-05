@@ -1,6 +1,7 @@
 +++
 title = "How To Solve It"
 date = 2023-04-27
+[extra]
 author = "George Polya"
 +++
 

@@ -1,6 +1,7 @@
 +++
 title = "Ego is The Enemy"
 date = 2023-04-01
+[extra]
 author = "Ryan Holiday"
 +++
 

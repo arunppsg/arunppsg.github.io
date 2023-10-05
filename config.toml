@@ -22,5 +22,5 @@ menu_links = [
     { url = "$BASE_URL/projects/", name = "Projects" },
     { url = "$BASE_URL/now/", name = "Now" },
     { url = "$BASE_URL/musings/", name = "Musings" },
-    { url = "$BASE_URL/book-notes//", name = "Book Notes" },
+    { url = "$BASE_URL/book-notes/", name = "Book Notes" },
 ]

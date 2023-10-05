@@ -11,9 +11,19 @@
             <h4 class="post-title">
                 <a href="{{ post.permalink }}">{{ post.title }}</a>
             </h4>
+            <span class="author">Author: {{ post.extra.author }}</span>
         </div>
     </li>
     {% endfor %}
+    <li class="post">
+        <div class="post-header">
+            <span class="date">2021-08-07</span>
+            <h4 class="post-title">
+                <a href="https://arunppsg.medium.com/book-notes-mindwandering-by-moshe-bar-36547c9ef59f">Mind Wandering</a>
+            </h4>
+            <span class="author">Author: Moshe Bar</span>
+        </div>
+    </li>
 </ul>
 {% endfor %}
 {% endblock content %}
