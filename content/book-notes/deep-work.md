@@ -14,6 +14,9 @@ Deep work helps achieve both.
 high quality work produced = (time spent) x (intensity of focus)
 
 Distractions from social media, e-mails hinders out ability to do deep work.
+During deep work hours, don't use internet.
+The brain which has been constantly in connection with internet needs to be rewired.
+Hence, outside of deep work hours, reduce the use of internet to only bare minimum.
 Being busy is not being productive.
 
 The mind achieves a state of flow during work - a state where it concentrates, does good work and we lost ourself in the work.
