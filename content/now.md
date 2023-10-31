@@ -1,6 +1,9 @@
 +++
 title = "Now"
 +++
+### 31-Oct-2023
+- Attended [IndiaFoss 3.0](https://indiafoss.net/) in Bangalore.
+
 ### 1-Sept-2023
 - Learning about distributed systems, training ML models on multiGPU.
 

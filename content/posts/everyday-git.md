@@ -13,8 +13,8 @@ Ex: `git checkout -b test upstream/test`
 
 - Git checkout a pull request from github: `git fetch upstream pull/$ID/head:$branchname` 
 
-- Git show files changed in commit: `git diff HEAD~4..HEAD --name-only`
-
+- Git show files changed in commit: `git show commit-id --name-only`
+- Git show files changed between commits: `git show commit-id1..commit-id2 --name-only`
 - Get permalink from github cli: Ex: `gh browse README.md:3-5 --no-browser --commit=$(git rev-parse HEAD)`
 
 - Git reset local to upstream: `git fetch upstream; git reset --hard upstream/main`
@@ -25,4 +25,4 @@ Ex: `git checkout -b test upstream/test`
 
 - Delete a remote branch: `git push -d origin <branch-name>`
 
-- Git rebase interactive `git rebase -i HEAD~5`
+- Git rebase interactive example: `git rebase -i HEAD~5`

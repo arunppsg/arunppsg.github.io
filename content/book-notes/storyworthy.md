@@ -26,11 +26,11 @@ Begin close to the end.
 
 Always tell a real story.
 This way, you don't need to memorize the story word to word.
-Memorize the first few sentences to begin strong
+Memorize the first few sentences to begin strong.
 Memorize the last few sentences to end strong.
 Memorize the scenes.
 
-Don't lie in your story. Though you can lie to compress time, making assumptions etc spatial compression.
+Don't lie in your story. Though you can lie to compress time or to make omissions (to avoid details irrelavant to the five second moment of the story) or to make assumptions for giving the audience a clear picture (ex: saying `the bird was perched on oak tree` instead of saying a `a bird was perched on the tree`)
 
 Stakes keep a story moving forward.
 It keeps the audience at the edge of the seat.
@@ -44,6 +44,10 @@ There are five ways to add stakes in a story:
 Give every thing a location - a place.
 This will help the audience visualize rather than thinking abstractly.
 For example, when you say `my grandma is an old woman` and `i can see my grandma bending over the garden with her age reflecting on her`, the latter one with location helps the audience visualize better.
+
+Stories need not always have humor and if a story has only humor, then it is not a story - it is a stand-up comedy.
+Humor keeps the audience engaged, can increase the engagement of the audience and can be used to make a critical point.
+Humor comes from surprises. A surprise can be made by making a setup and a punchline or making two things which don't go together to go together.
 
 Don't practice in front of mirrors.
 Because when you are speaking at the stage, you will not be seeing you.
