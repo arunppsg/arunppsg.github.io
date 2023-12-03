@@ -25,4 +25,4 @@ Some of the challenges which I faced were:
 I realised that I will not able to allocate the required bandwidth for translating the docs due to other commitments and I moved the project to my todo list. Meanwhile, if you are interested in translation, here are some helpers:
 - Some of the translation words for which I made a digitical copy are available [here](../../assets/files/en-ta.txt).
 - Checkout the discussion [here](https://github.com/tiangolo/fastapi/discussions/9198) in fastapi forums.
-- A pull request of docs translation requires two reviewers. If you make a contribution, feel free to tag me and I could review it. My github handle is [gusty1g](https://github.com/gusty1g).
+- A pull request of docs translation requires two reviewers. If you make a contribution, feel free to tag me and I could review it. My github handle is [arunppsg](https://github.com/arunppsg).
