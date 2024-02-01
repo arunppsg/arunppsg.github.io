@@ -1,6 +1,6 @@
 +++
 title = "The rise of Theodore Roosevelt"
-date = 2024-01-31
+date = 2024-01-08
 [extra]
 author = "Edmund Morris"
 tags = ["biography"]
@@ -70,4 +70,4 @@ During the summers when various cousins comes to stay at Sagamore Hill (his hous
 
 Theodore was a man who did not get tried of presidency. He enjoyed being the president of United States, delighting in every aspect of his job - plowing through mountains of documents, leaving his desk bare by lunchtime, matching with swith scholars etc. He left a photographic impression upon the people he met.
 
-Theodore was more than satisfied that he is an America, free born and free bred and acknowledged that no man is superioir except for his own worth or as inferior, except for his own demerit. He said "No man has had a happier life than I have led; a happier life in every way."
+Theodore was more than satisfied that he is an American, free born and free bred and acknowledged that no man is superioir except for his own worth or as inferior, except for his own demerit. He said "No man has had a happier life than I have led; a happier life in every way."
