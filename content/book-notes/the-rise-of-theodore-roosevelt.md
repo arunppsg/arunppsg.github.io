@@ -1,5 +1,5 @@
 +++
-title = "The rise of Theodore Roosevelt"
+title = "The Rise of Theodore Roosevelt"
 date = 2024-01-08
 [extra]
 author = "Edmund Morris"

@@ -7,7 +7,7 @@ author = "Cal Newport"
 
 Passion hypothesis: figure out what you are passionate about, find a job that matches the passion and pursue it for occupational happiness.
 
-Passion hypothesis came up in 1970's. In 1987, a survery said 61 percent are happy with thier jobs. The number went down to 45 percent by 2010. But these were the years of booming passing hypothesis.
+Passion hypothesis came up in 1970's. In 1987, a survery said 61 percent are happy with their jobs. The number went down to 45 percent by 2010. But these were the years of booming passing hypothesis.
 
 The author Steven Pink finds that a job will be fulfilling if it gives you autonomy, creativity and connection to the work place. 
 Note that passion does not come here.
