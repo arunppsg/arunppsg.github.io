@@ -49,7 +49,7 @@ In python, all classes are themselves instances of other classes.
 A class also allows to makes instances of it's type.
 
 
-```python3
+```py
 class Foo:
     pass
 
@@ -63,7 +63,7 @@ It combines a class, a class instance and any callable user-defined function.
 
 Example:
 
-```python3
+```py
 class Foo():
     def print_self(self):
          print ('type ': self, 'id ': id(self))
@@ -75,7 +75,7 @@ f.print_self()  # output: type <class '__main__.Foo'> id 4408722096
 
 The above example shows that both the instance `f` and `self` are the same and that `f` is passed as an argument to the method object in the class.
 
-```python3
+```py
 class Foo():
     
     def __init__(self):
