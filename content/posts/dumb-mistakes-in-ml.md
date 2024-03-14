@@ -39,3 +39,8 @@ The issue here was I had only passed the parameters of the teacher model to the 
 4. Subnet configuration in multi-node training
 
 Multi-node training - I was debugging multi-node training and for some reason the training did not start. I could see no checkpoints nor anything in training logs except that data is getting loaded. The issue was in configuring of AWS Subnet - there was a misconfiguration in the subnet that made the nodes not to communicate with each other.
+
+A list of mistakes which I have posted in forums:
+- [https://github.com/ray-project/ray/issues/43753](https://github.com/Open-Catalyst-Project/ocp/issues/332)
+- [https://github.com/Open-Catalyst-Project/ocp/issues/332](https://github.com/Open-Catalyst-Project/ocp/issues/332)
+- [https://discuss.pytorch.org/t/using-autograd-function-to-compute-gradient-for-a-function/178979](https://discuss.pytorch.org/t/using-autograd-function-to-compute-gradient-for-a-function/178979)
