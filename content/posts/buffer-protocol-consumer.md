@@ -123,10 +123,10 @@ static PyTypeObject PyConsumerArrayType = {
     .tp_basicsize = sizeof(PyConsumerArray),
     .tp_flags = Py_TPFLAGS_DEFAULT,
     .tp_new = PyType_GenericNew,
-		.tp_dealloc = (destructor) PyConsumerArray_dealloc,
-		.tp_repr = (reprfunc) PyConsumerArray_str,
-		.tp_str = (reprfunc) PyConsumerArray_str,
-		.tp_init = (initproc) PyConsumerArray_init,
+    .tp_dealloc = (destructor) PyConsumerArray_dealloc,
+	.tp_repr = (reprfunc) PyConsumerArray_str,
+	.tp_str = (reprfunc) PyConsumerArray_str,
+	.tp_init = (initproc) PyConsumerArray_init,
 };
 
 // consume method for consuming the array object
