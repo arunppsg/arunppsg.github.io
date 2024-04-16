@@ -117,13 +117,13 @@ PyConsumerArray_str(PyConsumerArray *self) {
 }
 
 static PyTypeObject PyConsumerArrayType = {
-    .ob_base = PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "consumer.PyConsumerArray",
-    .tp_doc = PyDoc_STR("Consumer Array objects"),
-    .tp_basicsize = sizeof(PyConsumerArray),
-    .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = PyType_GenericNew,
-    .tp_dealloc = (destructor) PyConsumerArray_dealloc,
+	.ob_base = PyVarObject_HEAD_INIT(NULL, 0)
+	.tp_name = "consumer.PyConsumerArray",
+	.tp_doc = PyDoc_STR("Consumer Array objects"),
+	.tp_basicsize = sizeof(PyConsumerArray),
+	.tp_flags = Py_TPFLAGS_DEFAULT,
+	.tp_new = PyType_GenericNew,
+	.tp_dealloc = (destructor) PyConsumerArray_dealloc,
 	.tp_repr = (reprfunc) PyConsumerArray_str,
 	.tp_str = (reprfunc) PyConsumerArray_str,
 	.tp_init = (initproc) PyConsumerArray_init,
