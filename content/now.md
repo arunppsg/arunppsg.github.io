@@ -1,34 +1,20 @@
 +++
 title = "Now"
 +++
-### 31-Oct-2023
-- Attended [IndiaFoss 3.0](https://indiafoss.net/) in Bangalore.
 
-### 1-Sept-2023
-- Learning about distributed systems, training ML models on multiGPU.
+Last updated from May 22th, 2024 from my home in Bangalore.
 
-### 15-Aug-2023
-- Back to fundamentals - working on C++ and it's super cool.
+### Job Search
+Looking for a new job - reach out if you have a requirement in the space of AI/ML or share with someone who has a requirement. My resume can be found [here](https://raw.githubusercontent.com/arunppsg/resume/master/pdf/resume.pdf), open source work in my Github [profile](https://github.com/arunppsg). My work can be described as a cross between the works of a [Andrej Karpathy](https://karpathy.ai/), [Guido van Rossum](https://gvanrossum.github.io/), and [Sebastián Ramírez](https://tiangolo.com/) as I work on building AI applications in Python.
 
-### 1-July-2023
-- Moved to Bengaluru.
+### PyCon India
+Working on a talk proposal for PyCon India - if you have some interesting ideas or a topic which you would like to hear about, do share it my way.
 
-### 28-Feb-2023
-- Writing javascript tests. I took the course [testing javascript](https://testingjavascript.com/) and found it to be helpful.
-- Taking Deep Generative Models course from Centre for Continuning Education, Indian Institute of Science, Bangalore.
-- Met [Derek Sivers](https://sive.rs) on his visit to Chennai. 
+### Readings
+- Learned about `torch.scatter`, `np.put_along_axis` functions from numpy and pytorch
+- Reading the books Obstacle is the Way by Ryan Holiday, Think Again by Adam Grant
 
-### 30-Dec-2022
-- Experimenting with mini projects in web development - nextjs, react, css
-- Experimenting with jax, autodiff trying out examples 
+### Open Source
+- Working on [this](https://github.com/pytorch/pytorch/pull/125601) pull request in PyTorch on adding support for `torch.put_along_dim`
 
-### 17-Dec-2022
-- Visited Bangalore and gave a talk on DeepChem project in FOSSUnited Bangalore [meetup](https://forum.fossunited.org/t/bangalore-foss-meetup-dec-2022/1397/6).
-
-### 28-Nov-2022
-- Living in Thiruvarur, India
-- Developing backend at Deep Forest.
-- Learning Haskell, functional programming. 
-- Made this website live.
-
-This is a [now](https://nownownow.com/about) page.
+(This is a [now](https://nownownow.com/about) page and you should make one too.)

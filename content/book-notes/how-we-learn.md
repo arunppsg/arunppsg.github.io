@@ -76,10 +76,9 @@ Unfinished jobs or goals linger in memory longer than finished ones.
 Having a goal or an unfinished task tunes our perception to fulfilling it.
 Start working on large projects as soon as possible and stop when you get stuck, allowing for percolation of ideas to happen and then resume the work.
 
-In a study on badminton players on learning to serve, three groups were made to practice three different kind of serves. The first group, group A, did blocked practice where the group rehearsed only one kind of serve in a session, then moved on to the next type of serve. In group B, the participants practiced three kind of serves in loops. Group C practices serves by trying any serve they wanted but no more than two of the same ones in a row.
-Group C, which practiced by making random serves performed better than other group.
+In a study on badminton players, three groups were made to practice three different kind of serves. Group A did blocked practice where the group rehearsed only one kind of serve in a session, then moved on to the next type of serve. In group B, the participants practiced three different kind of serves in loops. Group C practiced serves by trying any serve they wanted but no more than two of the same ones in a row. Group C, which practiced by making random serves performed better than other group. Similary, a study on mathematics students found that students who practiced different in a mixed setting (a problem in algebra followed by a problem in a geometry) performed better than students who practiced only one kind of problem in a practice session.
+
 Varying the practice - by taking different approaches, instead of focusing on one particular kind of approach help us to internalize and generalize the information better.
-The mixed of items, skills or concepts during practice help us to see the distinctions between each item clearly as well as help us to achieve a clearer grasp of each item.
-A study on mathematics students found that students who practiced different in a mixed setting (a problem in algebra followed by a problem in a geometry) performed better than students who practiced only one kind of problem in a practice session.
+The mixing of items, skills or concepts during practice help us to see the distinctions between each item clearly as well as help us to achieve a clearer grasp of each item.
 
 Sleep. Sleep helps in consolidation of learning.

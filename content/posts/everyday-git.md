@@ -6,6 +6,8 @@ tags = ["git"]
 
 My git handbook covering some of the commands which I use every other day.
 
+- Ignore files only for you without using .gitignore - add the patterns to exclude in `.git/info/exclude` file
+- Get summary of stashes: `git stash list --stat`
 - Checkout a branch from remote: `git pull <remote> <remote-branch-name>; git checkout -b <local-name> <remote>/<remote-branch-name>`.
 Ex: `git checkout -b test upstream/test`
 
