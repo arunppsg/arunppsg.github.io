@@ -1,5 +1,5 @@
 +++
-title = "On writing well"
+title = "On Writing Well"
 date = 2023-04-18
 [extra]
 author = "William Zinsser"
