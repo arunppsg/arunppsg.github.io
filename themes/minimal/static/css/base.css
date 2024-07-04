@@ -37,3 +37,11 @@ a:hover {
 article p {
     text-decoration: dotted;
 }
+
+.nav-links {
+	margin-top: 10px;
+}
+
+.menu-links {
+	margin-right: 5px;
+}
