@@ -1,0 +1,47 @@
+@import "blog.css";
+
+body {
+    margin: 0 auto;
+    max-width: 45em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.about-me {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    flex-direction: column;
+}
+
+p {
+    color:black;
+    text-align: justify;
+    line-height: 1.4;
+}
+
+.about-me img {
+    width: 200px;
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    text-decoration: dotted;
+}
+
+article p {
+    text-decoration: dotted;
+}
+
+.nav-links {
+	margin-top: 10px;
+}
+
+.menu-links {
+	margin-right: 5px;
+}
