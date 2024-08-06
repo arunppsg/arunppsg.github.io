@@ -15,3 +15,6 @@ title = "Projects"
 - [DeepChem](https://github.com/deepchem/deepchem) - Contributed machine learning model architectures to the open-source scientific machine learning library DeepChem and enhanced its testing infrastructure by contributing to the CI/CD pipeline and expanding test coverage.
 - Contributed patches to PyTorch and PyTorch-Geometric.
 - Implemented a PyTorch version of the paper [Time Series Anomaly Detection using Generative Adversarial Networks](https://arxiv.org/abs/2009.07769) for performing anomaly detection in time series data ([code](https://github.com/arunppsg/TadGAN)).
+
+## Patent
+- [Techniques for a cloud scientific machine learning programming environment](https://patents.google.com/patent/US20240241701A1/en).
