@@ -2,19 +2,19 @@
 title = "Now"
 +++
 
-Last updated on Aug 6th, 2024.
+Last updated on Aug 26th, 2024.
 
 <!--
 ### Software Engineering
 - Practicing SQL queries, learnt Apache Airflow and worked out a few examples on it. 
 - Learning more about databases.
-
-### Writings
-- Published book notes on Think Again by Adam Grant. Check it out [here](https://www.arunppsg.in/book-notes/think-again/).
 -->
 
+### Writings
+- Published book notes on Sapiens by Yuval Noah Harari. Check it out [here](https://www.arunppsg.in/book-notes/sapiens/).
+
 ### Readings
-- Reading the book Titan: The Life of John D. Rockefeller Sr by Ron Chernow, Sapiens by Yuval Noah Harrari.
+- Reading the book Titan: The Life of John D. Rockefeller Sr by Ron Chernow.
 - Reading Thirukkural end to end from the start, loading nice kurals into Anki flash cards for memorizing them.
 
 <!--
