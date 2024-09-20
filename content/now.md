@@ -2,20 +2,25 @@
 title = "Now"
 +++
 
-Last updated on Aug 26th, 2024.
+Last updated on Sept 20th, 2024.
 
 <!--
-### Software Engineering
 - Practicing SQL queries, learnt Apache Airflow and worked out a few examples on it. 
 - Learning more about databases.
--->
 
 ### Writings
-- Published book notes on Sapiens by Yuval Noah Harari. Check it out [here](https://www.arunppsg.in/book-notes/sapiens/).
 
 ### Readings
-- Reading the book Titan: The Life of John D. Rockefeller Sr by Ron Chernow.
-- Reading Thirukkural end to end from the start, loading nice kurals into Anki flash cards for memorizing them.
+-->
+# Software Engineering
+- Learning more about pandas - useful for various data operations.
+
+# Thirukkural
+- Learning (memorizing) Thirukkurals via Anki flash-cards. 
+
+# Learning Kannada
+It has been almost an year now since I moved to Bengaluru last July and I managed to learn only a few words in Kannada. 
+I bought the book [Fluent Forever](https://fluent-forever.com/book/), reading it currently and planning to gain a basic fluency by end of this year.
 
 <!--
 ### Open Source
