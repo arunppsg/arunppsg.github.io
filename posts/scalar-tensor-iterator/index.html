@@ -1,0 +1,118 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  PyTorch Internals: Scalar and TensorIterator
+</h1>
+<p class="subtitle"><strong>2023-08-17</strong></p>
+<p>This blog touches briefly upon <code>Scalar</code> and <code>TensorIterator</code>.</p>
+<h2 id="scalar">Scalar</h2>
+<p>Scalar is a data type in pytorch internal implementation.
+It is used to represent a scalar value, for example tensors which are 0-dimensional.
+A 0-dimensional tensor can represent an integer, a float, a double or any other value.
+The type of the scalar is denoted by the attribute <code>ScalarType</code>.
+<code>ScalarType</code> contains mapping to C++ types.
+ScalarType stores the type while Scalar stores the value.
+Internally, Scalar stores a primitive C++ value.
+Both Scalar and ScalarType are implemented as a C++ classes <a href="https://github.com/pytorch/pytorch/blob/384e0d104fd077d31efafc564129660e9b7a0f25/c10/core/Scalar.h#L33">here</a> and <a href="https://github.com/pytorch/pytorch/blob/384e0d104fd077d31efafc564129660e9b7a0f25/c10/core/ScalarType.h#L95">here</a> respectively.
+Scalars also have a couple of useful operations associated with them <code>log</code>, <code>negation</code> and then be converted to their primitive C++ type using the <code>to</code> operator.</p>
+<p>Sample code on using a <code>Scalar</code>:</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>  c10::Scalar a = </span><span style="color:#d08770;">5.5</span><span>;
+</span><span>  std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">a=</span><span>&quot; &lt;&lt; a &lt;&lt; std::endl;
+</span><span>  std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">element size = </span><span>&quot; &lt;&lt; c10::</span><span style="color:#bf616a;">elementSize</span><span>(a.</span><span style="color:#bf616a;">type</span><span>()) &lt;&lt; std::endl;
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// Converting scalar to primitive c++ type
+</span><span>  </span><span style="color:#b48ead;">auto</span><span> b = a.</span><span style="color:#bf616a;">to</span><span>&lt;</span><span style="color:#b48ead;">float</span><span>&gt;();
+</span><span>  </span><span style="color:#b48ead;">auto</span><span> c = a.</span><span style="color:#bf616a;">toDouble</span><span>();
+</span></code></pre>
+<h2 id="tensoriterator">TensorIterator</h2>
+<p>Given an input tensor and output tensor, TensorIterator can be used for iterating over the tensors to perform pointwise operations on them. The TensorIterator also provides additional functionalities like shape broadcasting, type promotion which saves a lot of trouble by automatically handling edge cases.</p>
+<p>In the below example, I would like to show an example of TensorIterator.
+Though this is not the best way to use it, it helps for pedagogical purpose.</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>  torch::Tensor x = torch::</span><span style="color:#bf616a;">ones</span><span>({</span><span style="color:#d08770;">2</span><span>, </span><span style="color:#d08770;">3</span><span>});
+</span><span>  </span><span style="color:#65737e;">// TensorIterator automatically handles broadcasting
+</span><span>  </span><span style="color:#b48ead;">auto</span><span> y = torch::</span><span style="color:#bf616a;">randn</span><span>({</span><span style="color:#d08770;">3</span><span>});
+</span><span>  </span><span style="color:#b48ead;">auto</span><span> output = torch::</span><span style="color:#bf616a;">empty_like</span><span>(x);
+</span><span>  </span><span style="color:#65737e;">// A TensorIteratorConfig is used to create a TensorIterator.
+</span><span>  </span><span style="color:#b48ead;">auto</span><span> iter = torch::</span><span style="color:#bf616a;">TensorIteratorConfig</span><span>()
+</span><span>                    .</span><span style="color:#bf616a;">add_output</span><span>(output)
+</span><span>                    .</span><span style="color:#bf616a;">add_input</span><span>(x)
+</span><span>                    .</span><span style="color:#bf616a;">add_input</span><span>(y)
+</span><span>                    .</span><span style="color:#bf616a;">build</span><span>();
+</span><span>
+</span><span>  iter.</span><span style="color:#bf616a;">for_each</span><span>([&amp;](</span><span style="color:#b48ead;">char</span><span>** data, </span><span style="color:#b48ead;">const </span><span>int64_t* strides, int64_t n) {
+</span><span>    </span><span style="color:#b48ead;">for</span><span>(</span><span style="color:#b48ead;">int</span><span> i=</span><span style="color:#d08770;">0</span><span>; i&lt;n; i++) {
+</span><span>      </span><span style="color:#b48ead;">float</span><span>* out_data = reinterpret_cast&lt;</span><span style="color:#b48ead;">float</span><span>*&gt;(data[</span><span style="color:#d08770;">0</span><span>] + strides[</span><span style="color:#d08770;">0</span><span>] * i);
+</span><span>      </span><span style="color:#b48ead;">float</span><span>* in_data_x = reinterpret_cast&lt;</span><span style="color:#b48ead;">float</span><span>*&gt;(data[</span><span style="color:#d08770;">1</span><span>] + strides[</span><span style="color:#d08770;">1</span><span>] * i);
+</span><span>      </span><span style="color:#b48ead;">float</span><span>* in_data_y = reinterpret_cast&lt;</span><span style="color:#b48ead;">float</span><span>*&gt;(data[</span><span style="color:#d08770;">2</span><span>] + strides[</span><span style="color:#d08770;">2</span><span>] * i);
+</span><span>      *out_data = *in_data_x + *in_data_y;
+</span><span>    }
+</span><span>  });
+</span></code></pre>
+<p>To build a <code>TensorIterator</code>, we use <code>TensorIteratorConfig</code> to specify the input and output tensors along with other additional configurations and then call <code>TensorIteratorConfig::build</code> to create the TensorIterator.
+<code>TensorIterator</code> provides the <code>for_each</code> function which can be used to iterate over the tensors in the iterator.</p>
+<p>The <code>for_each</code> method accepts a loop with a signature of <code>(char** data, const int64_t* strides, int64_t n)</code>.
+The first argument <code>char** data</code> contains a <code>char*</code> pointer for each of the tensor in tensor iterator.
+Having it as <code>char*</code> allows us to represent the underlying data as an array of bytes which can be reinterpreted to any other data type.
+In this case, we are reinterpreting the underlying bytes as <code>float</code>.
+The next argument, <code>strides</code> specify, for each of the tensor in tensor iterator, how much bytes should we move to access the next element.
+Though tensors are multidimensional, they are represented in memory as a contiguous 1-D array.
+The stride of a tensor says how many bytes we have to move to reach the next element along that axis.
+Lastly, the argument <code>n</code> specifies the number of elements in the tensor.</p>
+<p>The for-loop iterates over the memory location of the output and two input tensors stored in <code>data[0]</code>, <code>data[1]</code>, <code>data[2]</code> with a step size of <code>strides[0]</code>, <code>strides[1]</code>, <code>strides[2]</code> respectively.
+At each location, it reinterprets the bytes as a <code>float</code> and performs the pointwise operation of addition here.</p>
+<p>A working example of the above can be found <a href="https://github.com/arunppsg/examples/blob/9dddbf809408a047e9d42ed016c888f27348a23f/cpp/others/scalar-tensor-iterator/main.cpp">here</a>.</p>
+<p>For more details about TensorIterator, I refer the readers to <a href="https://labs.quansight.org/blog/2021/04/pytorch-tensoriterator-internals-update">this</a> blog post and to <a href="https://labs.quansight.org/blog/2021/04/pytorch-tensoriterator-internals-update">this</a> pytorch-dev podcast by ezyang. The TensorIteratorConfig class is defined in <a href="https://github.com/pytorch/pytorch/blob/384e0d104fd077d31efafc564129660e9b7a0f25/aten/src/ATen/TensorIterator.h#L753">TensorIterator.h</a> and the <code>struct TensorIterator</code> is defined <a href="https://github.com/pytorch/pytorch/blob/384e0d104fd077d31efafc564129660e9b7a0f25/aten/src/ATen/TensorIterator.h#L232">here</a>.</p>
+<p>In case you have any comments, questions, I would be glad to hear them. Feel free to reach out to me at arunppsg AT gmail DOT com.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

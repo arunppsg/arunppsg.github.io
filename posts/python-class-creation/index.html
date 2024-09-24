@@ -1,0 +1,146 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Class Creation in Python
+</h1>
+<p class="subtitle"><strong>2023-03-07</strong></p>
+<p>In python, all classes are an instance of an other class.
+An user-defined class is an instance of <code>type</code> class.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Foo</span><span style="color:#eff1f5;">:
+</span><span>    
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">a</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.a = a 
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">get_a</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">self</span><span>.a
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">set_a</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">a</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.a = a
+</span></code></pre>
+<p>For the above class <code>Foo</code>, <code>print (type(Foo))</code> shows <code>&lt;class 'type'&gt;</code>.
+The <code>class</code> keyword creates an instance of <code>type</code> object which can be identified using <code>Foo</code>.
+A class object also allows to makes instances of it's type by using its identifier (<code>Foo</code>).</p>
+<p>Here is an another way to create a class object by directly creating an instance of type class.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>
+</span><span>def get_a(arg1):
+</span><span>    return arg1.a
+</span><span>
+</span><span>def set_a(arg1, i):
+</span><span>    arg1.a = i
+</span><span>
+</span><span>def __init__(arg1, a):
+</span><span>    arg1.a = a
+</span><span>
+</span><span>Foo = type(&#39;Foo&#39;, (), dict(get_a=get_a, set_a=set_a, 
+</span><span>          __init__=__init__))
+</span></code></pre>
+<p>Here, we directly invoke <code>type()</code> constructor to create the class object.
+The <code>type()</code> constructor has the signature <code>type(name, bases, namespace)</code>.
+<code>name</code> is a string giving the name of the class to be constructed, <code>bases</code> is a tuple which identifies the parent classes of the class to be constructed and <code>namespace</code> is a dictionary of attributes and methods of the class to be constructed.</p>
+<h2 id="customising-class-creation">Customising class creation</h2>
+<h3 id="using-new-method">Using <code>__new__</code> method</h3>
+<p><code>__new__</code> can be used to control creation of object.
+For example, to implement a singleton object, we can use <code>__new__</code>.
+Here is another example of using <code>__new__</code> object:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>class Number(tuple):
+</span><span>
+</span><span>    def __new__(cls, *args):
+</span><span>        if not isinstance(args[0], int):
+</span><span>            raise ValueError(&#39;argument should be an integer&#39;)
+</span><span>
+</span><span>        if (args[0] % 2 == 0):
+</span><span>            return tuple.__new__(tuple, (args[0], &#39;even&#39;))
+</span><span>        elif (args[0] % 2 == 1):
+</span><span>            return tuple.__new__(tuple, (args[0], &#39;odd&#39;))
+</span><span>
+</span><span>a = Number(1)  # `a` stores (1, &#39;odd&#39;)
+</span><span>b = Number(2)  # `b` stores (2, &#39;even&#39;)
+</span></code></pre>
+<p>In the above example, we customise the creation of a tuple.
+The <code>__new__</code> method is used to customise the creation of <code>tuple</code> since once a tuple is created, it cannot be modified.</p>
+<p><code>__new__</code> creates a new instance of the class.
+The <code>__new__</code> method is the different from <code>__init__</code>.
+It creates the actual class object while the <code>__init__</code> method customizes the created object.</p>
+<h3 id="customising-via-metaclass">Customising via metaclass</h3>
+<p>The class of a class is knows as metaclass.
+Most classes have <code>type</code> as their metaclass as <code>type</code> is the class which is used to create the <em>class</em>.</p>
+<p>We can customise class creation by using the <code>metaclass</code> keyword in class definition or by inheriting from an existing class that included such argument.</p>
+<p>A metaclass can customise preparation of class namespace and resolving of method resolution order.</p>
+<p>Example</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>class Meta(type):
+</span><span>    pass
+</span><span>
+</span><span>class Foo(metaclass=Meta):
+</span><span>
+</span><span>    def __init__(self):
+</span><span>        pass
+</span><span>
+</span><span>if __name__ == &quot;__main__&quot;:
+</span><span>    print (&#39;type of Foo is &#39;, type(Foo))  # shows `&lt;class &#39;__main__.Meta&#39;&gt;`
+</span><span>    print (&#39;type of Meta is &#39;, type(Meta))  # shows `&lt;class &#39;type&#39;&gt;`.
+</span></code></pre>
+<p>The above snippet shows <code>&lt;class '__main__.Meta'&gt;</code> and <code>&lt;class 'type'&gt;</code>.
+I leave it to a future post for covering customisation of class creation via metaclasses.</p>
+<h3 id="init-subclass-hook"><code>__init_subclass__</code> hook</h3>
+<p>The <code>__init_subclass__</code> hook when defined in the parent class of a class can modify attributes in the subclass, thus changing the subclass's behavior.
+For more details, I refer the reader to <a href="https://docs.python.org/3/reference/datamodel.html#object.__init_subclass__">python documentation</a></p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://mail.python.org/pipermail/tutor/2008-April/061426.html"><code>__new__</code> vs <code>__init__</code> from python mailing list</a></li>
+<li><a href="https://docs.python.org/3/reference/datamodel.html">Data Model</a></li>
+</ul>
+<h2 id="acknowledgemnets">Acknowledgemnets</h2>
+<p>A special thanks to <a href="https://rahulporuri.github.io/">Rahul Sai Poruri</a> and <a href="https://tonyd.co/">Tony Davis</a> for discussions and feedbacks on earlier versions of the draft.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

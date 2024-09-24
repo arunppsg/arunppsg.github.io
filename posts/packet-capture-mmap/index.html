@@ -1,0 +1,140 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  High Speed Packet Capture Using Packet MMAP technique
+</h1>
+<p class="subtitle"><strong>2021-06-04</strong></p>
+<p>Traditional packet capture approaches uses <code>libpcap</code> - the packet capture 
+library. The capture process using <code>libpcap</code> for high speed network traffic is very 
+inefficient because of the following reasons:</p>
+<ul>
+<li>
+<p>During packet capture, if the packets are delivered as soon as they arrive, the application
+capturing packets will be woken up for each packet and might have to make one or more calls to
+the operating system to fetch each packet. If instead packets are not delivered as soon as they
+arrive but are accumulated in a buffer and delivered after a short delay, the CPU overhead could be 
+reduced since each system call delivers multiple packet. Packets that arrive are stored in a buffer and
+only on some platforms the buffer size could be set. If the buffer size is too small and too many packets 
+are being captured, pcakets could be dropped if the buffer fills up before the application 
+read the packets. PACKET_MMAP (the packet memory map technique) allows user to set 
+their own buffer size resulting in more efficient capture.</p>
+</li>
+<li>
+<p>The second reason is that packets are received in kernel space and process runs in 
+user space. All the user analysis are done in the user space. Once the kernel receives a 
+packet from the network interface, it then looks for process which are requiring the packet and
+delivers the packet to that process. This approach is highly inefficient to capture high speed traffic 
+because too much CPU time will be consumed in the heavy I/O operations. By using a shared buffer
+between the kernel and user space (memory mapped region), one can minimize copying of 
+packets from kernel space to user space. Reading process just needs to wait for the 
+packets to be written in the shared ring buffers.</p>
+</li>
+</ul>
+<h2 id="the-ring-buffer-structure">The Ring Buffer Structure</h2>
+<p>A ring buffer contains many blocks onto which the packets are written. Each block is a 
+continuous region of physical memory. A block contains many frames. Block sizes are always 
+multiple of frame sizes. A frame is the smallest unit. A frame contains two parts - tpacket_hdr, 
+data buffer. The tpacket_hdr is a struct which contains details 
+about the packet and the status of this frame. It contains meta information about the 
+packet like timestamp, snaplen of capture and most importantly, the offset to next packet header. 
+It is defined in the header file linux/if_packet.h
+The data buffer is what which actually contains the packet that is sent over the network interface. </p>
+<h2 id="memory-mapping-and-using-circular-ring-buffer">Memory Mapping and using circular ring buffer</h2>
+<p>Mapping is done by calling the conventional <code>mmap</code> function. The socket is configured
+to write the packets in a memory mapped ring buffer. Once the set up
+is ready, the user reads packets from the memory mapped buffer. This helps in 
+avoiding packet copies and reducing the number of system calls for accessing the packets.
+The user reads the packets block wise. Once the packet starts
+arriving into the ring, the user can either continously keep checking for new packets
+or leave the work to operating system by using <code>poll()</code> utility. </p>
+<h2 id="tpacket-v3">TPACKET_V3</h2>
+<p>Ring buffer associated with the socket can have three configurations using the <code>setsockopt()</code> function.
+A socket can have be of any of the three TPACKET versions. Version 1 is the default ring buffer version. 
+A few advantages of using TPACKET_V3 is that polling works on a per block basis instead of per ring basis as in the earlier
+version. It is said that TPACKET_V3 utilizes 15 - 20% less CPU usage and has a higher packet capture rate.</p>
+<p>For more details about other versions, one can read about them <a href="https://www.kernel.org/doc/Documentation/networking/packet_mmap.txt">here</a></p>
+<h2 id="setting-up-packet-capture-interface">Setting up Packet Capture Interface</h2>
+<p>These are the main steps in setting up the capture process:
+- Create a socket 
+- Allocate circular ring buffer
+- Memory map the allocatd ring buffer to user process
+- Wait for incoming packets and capture them
+- Process the packets as your requirements
+- Close the capture socket and deallocate all resources</p>
+<p>Sockets are created using the <code>socket()</code> utility. We create an AF_PACKET socket.
+Once a socket it created, we set the TPACKET version as 3. The ring buffer is set using
+a call to <code>setsockopt()</code> function with the option PACKET_RX_RING and ring properties.
+Once the socket and the ring buffer is setup, we create a memory mapped region
+with the socket file descriptor and ring size as input arguments. The ring size is the
+number of blocks in the ring multiplied by size of block. These values are configurable. 
+The socket is then binded to an interface and in case we are using multiple sockets for
+capture, we can use PACKET_FANOUT option to distributed packets across sockets.</p>
+<p>The kernel initializes all blocks to TP_STATUS_KERNEL. It keeps a pointer
+to one of the blocks in the ring buffer (Starting at 0) and when the kernel
+receives a packet it puts it in the buffer and updates the status with
+at least the TP_STATUS_USER flag. Then the user can read the packet and
+once the packet is read the user must reset the status fields to 
+TP_STATUS_KERNEL, so the kernel can again use that frame buffer. The kernel fills a block, 
+and it increments (modulo the number of block) the block pointer.</p>
+<p>To check for new packets, the user can use the <code>poll()</code> function which takes in the
+socket file descriptor (everything is a file in UNIX) and returns true when there are new
+packets. Otherwise, the user could also use their own implementation to check for new
+packets in the socket. 
+An implementation of the packet capture technique can be found <a href="https://github.com/arunppsg/packet-sniffer">here</a></p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/networking/packet_mmap.txt">Kernel Doc on Packet MMAP</a></li>
+</ul>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

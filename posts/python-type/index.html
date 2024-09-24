@@ -1,0 +1,157 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Objects in Python
+</h1>
+<p class="subtitle"><strong>2023-04-03</strong></p>
+<p>Everything in Python has a type (even the type <code>type</code>!) because everything is an object.</p>
+<p>Objects are abstraction of data in Python.
+All data in a Python program is stored as a object.</p>
+<p>Instances can be created from objects, which themselves are another kind of object.
+Objects created can be destroyed by garbage collection.</p>
+<p>An object has three properties - identity, value, type.
+The <code>id</code> of an object never changes once an object is created.
+<code>id(x)</code> returns an unique identity to the object <code>x</code>. </p>
+<p>When the value of object is changeable, the object is said to be mutable and when the value is not changeable, the object is said to be immutable.</p>
+<h2 id="type-object"><code>type</code> object</h2>
+<p><code>type</code> is an object which can be used to create other objects.
+For example, the <code>type</code> object is used internally to create <code>class</code> objects.
+An user-defined class is an object of type <code>type</code>.
+It is a new kind of type (instance) of the type class.</p>
+<p>The type of <code>type</code> object is <code>type</code>.
+For <code>type</code> object, the type is an identity.
+Example: <code>print (type(type))</code> prints <code>&lt;class 'type'&gt;</code></p>
+<h2 id="function-object"><code>function</code> object</h2>
+<p>A function is also another instance of <code>type</code> object.
+When we define a function, the defined function is an instance of the function object.</p>
+<p>Example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>def foo():
+</span><span>    return
+</span><span>
+</span><span>print (type(foo))  # &lt;class &#39;function&#39;&gt;
+</span><span>print (type(type(foo)))  # &lt;class &#39;type&#39;&gt;
+</span></code></pre>
+<h2 id="class-object"><code>class</code> object</h2>
+<p>In python, all classes are themselves instances of other classes.
+<code>class</code> objects are instances of <code>type</code> class.
+A class also allows to makes instances of it's type.</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Foo</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#b48ead;">pass
+</span><span>
+</span><span style="color:#96b5b4;">print </span><span>(</span><span style="color:#96b5b4;">type</span><span>(Foo)) </span><span style="color:#65737e;"># &lt;class &#39;type&#39;&gt;
+</span></code></pre>
+<h3 id="instance-method-object">Instance method object</h3>
+<p>A instance method object is same as a function object but it accepts a class instance as a first argument.
+It combines a class, a class instance and any callable user-defined function.</p>
+<p>Example:</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Foo</span><span style="color:#eff1f5;">():
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">print_self</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>         </span><span style="color:#96b5b4;">print </span><span>(&#39;</span><span style="color:#a3be8c;">type </span><span>&#39;: </span><span style="color:#bf616a;">self</span><span>, &#39;</span><span style="color:#a3be8c;">id </span><span>&#39;: </span><span style="color:#96b5b4;">id</span><span>(</span><span style="color:#bf616a;">self</span><span>))
+</span><span>
+</span><span>f = </span><span style="color:#bf616a;">Foo</span><span>()
+</span><span style="color:#96b5b4;">print </span><span>(</span><span style="color:#96b5b4;">type</span><span>(f))  </span><span style="color:#65737e;"># output: type &lt;class &#39;__main__.Foo&#39;&gt; id 4408722096
+</span><span>f.</span><span style="color:#bf616a;">print_self</span><span>()  </span><span style="color:#65737e;"># output: type &lt;class &#39;__main__.Foo&#39;&gt; id 4408722096
+</span></code></pre>
+<p>The above example shows that both the instance <code>f</code> and <code>self</code> are the same and that <code>f</code> is passed as an argument to the method object in the class.</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Foo</span><span style="color:#eff1f5;">():
+</span><span>    
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.b = </span><span style="color:#d08770;">5
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">bar</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print </span><span>(&#39;</span><span style="color:#a3be8c;">in bar</span><span>&#39;)
+</span><span>
+</span><span>f = </span><span style="color:#bf616a;">Foo</span><span>()
+</span><span>
+</span><span style="color:#96b5b4;">print </span><span>(</span><span style="color:#96b5b4;">id</span><span>(Foo.bar), </span><span style="color:#96b5b4;">id</span><span>(f.bar))  </span><span style="color:#65737e;"># (4573538336, 4573593280)
+</span></code></pre>
+<p>Note that <code>Foo.bar</code> has a different id from <code>f.bar</code>.
+When an instance of the class is created, the instance method objects are also recreated in the instance.</p>
+<h2 id="list-object"><code>list</code> object</h2>
+<p>A list is also an object of type class.
+<code>type(list)</code> , prints <code>&lt;class 'type'&gt;</code>.
+Instances of list class can be created using the shorthand of square brackets.
+Example: <code>a = [1, 2]</code> creates a <code>list</code> object identified by <code>a</code>.</p>
+<h2 id="int-class"><code>int</code> class</h2>
+<p>A question and an answer.</p>
+<p>Why does id(a) and id(b) are same in below example but different in the following example?</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># case 1: same identity
+</span><span>&gt;&gt;&gt; a_int, b_int = 1, 1
+</span><span>&gt;&gt;&gt; id(a_int), id(b_int)
+</span><span>(4298998000, 4298998000)
+</span><span>
+</span><span># case 2: different identity
+</span><span>&gt;&gt;&gt; a_list, b_list = [], []
+</span><span>&gt;&gt;&gt; id(a_list), id(b_list)
+</span><span>(4303367872, 4303371648)
+</span></code></pre>
+<p>In case 1, the token <code>1</code> is an object of class int.
+<code>print (type(1))</code> returns <code>&lt;class 'int'&gt;</code>.
+<code>print (type(type(1))</code> and it returns <code>&lt;class 'type'&gt;</code>.
+Hence, the token <code>1</code> is an object of class int.
+All objects have ids.
+The id of token 1 can be seen by <code>print(id(1))</code> and it can be inferred that it is same as <code>id(a_int)</code>.</p>
+<p>In the assignment <code>a_int = 1</code>, <code>a_int</code> becomes a reference to the token <code>1</code>.
+Python makes a reference here because <code>1</code> is an object of immutable type in python.</p>
+<p>But in case 2, the values are copied because <code>[]</code> is a mutable type.
+Hence, in case 2, <code>a_list</code> and <code>b_list</code> have different ids.</p>
+<h2 id="other-notes">Other notes</h2>
+<p><code>id</code> is itself an object of class <code>builtin_function_or_method</code>.
+Since it is an object, it also has an <code>id</code> which can be viewed as <code>id(id)</code>.</p>
+<p><code>lambda</code> expressions are object of type <code>function</code>.</p>
+<p>The keywords <code>staticmethod</code> and <code>classmethod</code> are objects themselves.</p>
+<h2 id="acknowledgment">Acknowledgment</h2>
+<p>A special thanks to <a href="https://rahulporuri.github.io/">Rahul Sai Poruri</a> and <a href="https://tonyd.co/">Tony Davis</a> for discussions and feedbacks on earlier versions of the draft.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>
