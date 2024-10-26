@@ -2,25 +2,23 @@
 title = "Now"
 +++
 
-Last updated on Sept 20th, 2024.
+Last updated on Oct 26th, 2024.
 
 <!--
 - Practicing SQL queries, learnt Apache Airflow and worked out a few examples on it. 
 - Learning more about databases.
 
-### Writings
-
 ### Readings
 -->
-# Software Engineering
-- Learning more about pandas - useful for various data operations.
+### Writings
+Posted the blog post [Winning by Not Playing](../musings/win-by-not-playing).
 
 # Thirukkural
-- Learning (memorizing) Thirukkurals via Anki flash-cards. 
+Learning (memorizing) Thirukkurals via Anki flash-cards. 
 
 # Learning Kannada
 It has been almost an year now since I moved to Bengaluru last July and I managed to learn only a few words in Kannada. 
-I bought the book [Fluent Forever](https://fluent-forever.com/book/), reading it currently and planning to gain a basic fluency by end of this year.
+I bought the book [Fluent Forever](https://fluent-forever.com/book/), read it, loaded kannada alphabets to Anki and memorizing them.
 
 <!--
 ### Open Source
