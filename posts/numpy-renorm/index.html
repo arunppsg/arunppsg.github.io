@@ -1,0 +1,78 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  torch.renorm operation in numpy
+</h1>
+<p class="subtitle"><strong>2023-07-24</strong></p>
+<p>I have made a numpy implementation of <a href="https://pytorch.org/docs/stable/generated/torch.renorm.html"><code>torch.renorm</code></a> operation.</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">import </span><span>numpy </span><span style="color:#b48ead;">as </span><span>np
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">renorm</span><span>(</span><span style="color:#bf616a;">x</span><span>, </span><span style="color:#bf616a;">p</span><span>, </span><span style="color:#bf616a;">dim</span><span>, </span><span style="color:#bf616a;">maxnorm</span><span>):
+</span><span>    x_view = np.</span><span style="color:#bf616a;">rollaxis</span><span>(x, dim, </span><span style="color:#d08770;">0</span><span>)
+</span><span>    n = x.shape[dim]
+</span><span>    norms = []
+</span><span>    </span><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span style="color:#96b5b4;">range</span><span>(n):
+</span><span>        norms.</span><span style="color:#bf616a;">append</span><span>(np.linalg.</span><span style="color:#bf616a;">norm</span><span>(x_view[i,:], </span><span style="color:#bf616a;">ord</span><span>=</span><span style="color:#d08770;">2</span><span>))
+</span><span>
+</span><span>    factors = []
+</span><span>    </span><span style="color:#b48ead;">for </span><span>norm </span><span style="color:#b48ead;">in </span><span>norms:
+</span><span>        </span><span style="color:#b48ead;">if </span><span>norm &gt; maxnorm:
+</span><span>            factors.</span><span style="color:#bf616a;">append</span><span>(maxnorm/norm)
+</span><span>        </span><span style="color:#b48ead;">else</span><span>:
+</span><span>            factors.</span><span style="color:#bf616a;">append</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>    factors = np.</span><span style="color:#bf616a;">array</span><span>(factors)
+</span><span>    </span><span style="color:#b48ead;">return </span><span>x * factors.</span><span style="color:#bf616a;">reshape</span><span>(-</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>), factors
+</span></code></pre>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

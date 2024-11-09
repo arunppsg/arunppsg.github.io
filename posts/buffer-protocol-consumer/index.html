@@ -1,0 +1,251 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Consuming Buffer Exposed by the Python Buffer Protocol
+</h1>
+<p class="subtitle"><strong>2024-02-25</strong></p>
+<p>Sometime back, I read a wonderful blog post on <a href="http://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/">Introduction to the Python Buffer Protocol</a> which shared about exposing a python object's underlying memory (buffer) using the <a href="https://docs.python.org/3/c-api/buffer.html">python buffer protocol</a>.
+The buffer protocol helps in accessing the underlying memory of an array without creating an intermediate copy of array.
+This is useful to manipulate large arrays of data where copying of the entire data can be expensive.
+As a follow-up, I decided to figure out how to consume the buffer exposed by the buffer protocol.</p>
+<p>The goal of the next section is to develop a module <code>consumer</code> which can consume the buffer exposed by <code>array.array</code> type via the method <code>consume</code>. In other words, we are going to make this below code snippet work:</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">import </span><span>array
+</span><span style="color:#b48ead;">import </span><span>consumer </span><span style="color:#b48ead;">as </span><span>C
+</span><span>
+</span><span>arr = array.</span><span style="color:#bf616a;">array</span><span>(&#39;</span><span style="color:#a3be8c;">i</span><span>&#39;, [</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">2</span><span>, </span><span style="color:#d08770;">3</span><span>, </span><span style="color:#d08770;">4</span><span>, </span><span style="color:#d08770;">5</span><span>])
+</span><span>array_consumed = C.</span><span style="color:#bf616a;">consume</span><span>(arr)
+</span><span style="color:#96b5b4;">print </span><span>(array_consumed)
+</span><span style="color:#65737e;"># prints [ 1 2 3 4 5 ]
+</span></code></pre>
+<h1 id="step-1">Step 1</h1>
+<p>Create a C-library <code>consumer_lib.c</code> which defines the <code>ConsumerArray</code> and contains utilities for allocating, deallocating and printing the array. This is same as the <code>mylib.c</code> from the <a href="http://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/">Introduction to the Python Buffer Protocol</a> blog post. The <code>ConsumerArray</code> is the data-structure which maps to the buffer exposed by <code>array.array</code>.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdlib.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">typedef struct </span><span>{
+</span><span>	</span><span style="color:#b48ead;">int </span><span>*arr;
+</span><span>	</span><span style="color:#b48ead;">long</span><span> length;
+</span><span>} ConsumerArray;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">initialize_ConsumerArray</span><span>(ConsumerArray *</span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">long </span><span style="color:#bf616a;">length</span><span>) {
+</span><span>	a-&gt;length = length;
+</span><span>	a-&gt;arr = (</span><span style="color:#b48ead;">int</span><span>*)</span><span style="color:#96b5b4;">malloc</span><span>(sizeof(</span><span style="color:#b48ead;">int</span><span>) * length);
+</span><span>	</span><span style="color:#b48ead;">int</span><span> i;
+</span><span>	</span><span style="color:#b48ead;">for</span><span>(i = </span><span style="color:#d08770;">0</span><span>; i &lt; length; i++) {
+</span><span>		a-&gt;arr[i] = i;
+</span><span>	}
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#8fa1b3;">stringify_ConsumerArray</span><span>(ConsumerArray *</span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">nmax</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">char </span><span>*s = (</span><span style="color:#b48ead;">char</span><span>*)</span><span style="color:#96b5b4;">malloc</span><span>(nmax * </span><span style="color:#d08770;">20</span><span>);
+</span><span>	</span><span style="color:#b48ead;">int</span><span> pos = </span><span style="color:#96b5b4;">sprintf</span><span>(&amp;s[</span><span style="color:#d08770;">0</span><span>], &quot;</span><span style="color:#a3be8c;">[ </span><span>&quot;);
+</span><span>	</span><span style="color:#b48ead;">int</span><span> i;
+</span><span>	</span><span style="color:#b48ead;">for</span><span>(i = </span><span style="color:#d08770;">0</span><span>; i &lt; a-&gt;length &amp;&amp; i &lt; nmax; i++){
+</span><span>		pos += </span><span style="color:#96b5b4;">sprintf</span><span>(&amp;s[pos], &quot;</span><span style="color:#d08770;">%d </span><span>&quot;, a-&gt;arr[i]);
+</span><span>	}
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(i &lt; a-&gt;length)
+</span><span>		pos += </span><span style="color:#96b5b4;">sprintf</span><span>(&amp;s[pos], &quot;</span><span style="color:#a3be8c;">... </span><span>&quot;);
+</span><span>	</span><span style="color:#96b5b4;">sprintf</span><span>(&amp;s[pos], &quot;</span><span style="color:#a3be8c;">]</span><span>&quot;);
+</span><span>	</span><span style="color:#b48ead;">return</span><span> s;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">print_ConsumerArray</span><span>(ConsumerArray *</span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">nmax</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">char </span><span>*string = </span><span style="color:#bf616a;">stringify_ConsumerArray</span><span>(a, nmax);
+</span><span>	</span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#d08770;">%s</span><span>&quot;, string);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">deallocate_ConsumerArray</span><span>(ConsumerArray *</span><span style="color:#bf616a;">a</span><span>) {
+</span><span>	</span><span style="color:#96b5b4;">free</span><span>(a-&gt;arr);
+</span><span>	a-&gt;arr = </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>}
+</span></code></pre>
+<h2 id="step-2">Step 2</h2>
+<p>Create the <code>consumer</code> python module with a method <code>consume</code> and the type <code>PyConsumerArray</code>.
+The <code>consume</code> method is used for accessing the buffer and mapping it to the <code>PyConsumerArray</code> type.</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">Python.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">consumer_lib.c</span><span>&quot;
+</span><span>
+</span><span style="color:#65737e;">// Defining the PyConsumerArray type
+</span><span style="color:#b48ead;">typedef struct </span><span>{
+</span><span>	PyObject_HEAD
+</span><span>	ConsumerArray arr;
+</span><span>	</span><span style="color:#b48ead;">int</span><span> from_buffer;
+</span><span>} PyConsumerArray;
+</span><span>
+</span><span style="color:#b48ead;">static void
+</span><span style="color:#8fa1b3;">PyConsumerArray_dealloc</span><span>(PyConsumerArray* </span><span style="color:#bf616a;">self</span><span>) {
+</span><span>	</span><span style="color:#65737e;">// If obtained view buffer, only decrement the reference count.
+</span><span>	</span><span style="color:#65737e;">// Else, if the object was created using malloc, deallocate it using free.
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(self-&gt;from_buffer) {
+</span><span>		</span><span style="color:#bf616a;">Py_XDECREF</span><span>(&amp;self-&gt;arr);
+</span><span>	} </span><span style="color:#b48ead;">else </span><span>{
+</span><span>		</span><span style="color:#bf616a;">deallocate_ConsumerArray</span><span>(&amp;self-&gt;arr);
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">Py_TYPE</span><span>(self)-&gt;</span><span style="color:#bf616a;">tp_free</span><span>((PyObject*)self);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static int
+</span><span style="color:#8fa1b3;">PyConsumerArray_init</span><span>(PyConsumerArray *</span><span style="color:#bf616a;">self</span><span>, PyObject *</span><span style="color:#bf616a;">args</span><span>, PyObject *</span><span style="color:#bf616a;">kwds</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">int</span><span> length = </span><span style="color:#d08770;">0</span><span>;
+</span><span>	</span><span style="color:#b48ead;">static char </span><span>*kwlist[] = {&quot;</span><span style="color:#a3be8c;">length</span><span>&quot;, </span><span style="color:#d08770;">NULL</span><span>};
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(!</span><span style="color:#bf616a;">PyArg_ParseTupleAndKeywords</span><span>(args, kwds, &quot;</span><span style="color:#a3be8c;">|i</span><span>&quot;, kwlist, &amp;length)) {
+</span><span>		</span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(length &lt; </span><span style="color:#d08770;">0</span><span>)
+</span><span>		length = </span><span style="color:#d08770;">0</span><span>;
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">initialize_ConsumerArray</span><span>(&amp;self-&gt;arr, length);
+</span><span>	self-&gt;from_buffer = </span><span style="color:#d08770;">0</span><span>;
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static</span><span> PyObject *
+</span><span style="color:#8fa1b3;">PyConsumerArray_str</span><span>(PyConsumerArray *</span><span style="color:#bf616a;">self</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">char </span><span>*str = </span><span style="color:#bf616a;">stringify_ConsumerArray</span><span>(&amp;self-&gt;arr, </span><span style="color:#d08770;">10</span><span>);
+</span><span>	PyObject *ret = </span><span style="color:#bf616a;">PyUnicode_FromString</span><span>(str);
+</span><span>	</span><span style="color:#96b5b4;">free</span><span>(str);
+</span><span>	</span><span style="color:#b48ead;">return</span><span> ret;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static</span><span> PyTypeObject PyConsumerArrayType = {
+</span><span>	.</span><span style="color:#bf616a;">ob_base </span><span>= </span><span style="color:#bf616a;">PyVarObject_HEAD_INIT</span><span>(</span><span style="color:#d08770;">NULL</span><span>, </span><span style="color:#d08770;">0</span><span>)
+</span><span>	.</span><span style="color:#bf616a;">tp_name </span><span>= &quot;</span><span style="color:#a3be8c;">consumer.PyConsumerArray</span><span>&quot;,
+</span><span>	.</span><span style="color:#bf616a;">tp_doc </span><span>= </span><span style="color:#bf616a;">PyDoc_STR</span><span>(&quot;</span><span style="color:#a3be8c;">Consumer Array objects</span><span>&quot;),
+</span><span>	.</span><span style="color:#bf616a;">tp_basicsize </span><span>= sizeof(PyConsumerArray),
+</span><span>	.</span><span style="color:#bf616a;">tp_flags </span><span>= Py_TPFLAGS_DEFAULT,
+</span><span>	.</span><span style="color:#bf616a;">tp_new </span><span>= PyType_GenericNew,
+</span><span>	.</span><span style="color:#bf616a;">tp_dealloc </span><span>= (destructor) PyConsumerArray_dealloc,
+</span><span>	.</span><span style="color:#bf616a;">tp_repr </span><span>= (reprfunc) PyConsumerArray_str,
+</span><span>	.</span><span style="color:#bf616a;">tp_str </span><span>= (reprfunc) PyConsumerArray_str,
+</span><span>	.</span><span style="color:#bf616a;">tp_init </span><span>= (initproc) PyConsumerArray_init,
+</span><span>};
+</span><span>
+</span><span style="color:#65737e;">// consume method for consuming the array object
+</span><span style="color:#b48ead;">static</span><span> PyObject *
+</span><span style="color:#8fa1b3;">consumer_consume</span><span>(PyObject *</span><span style="color:#bf616a;">obj</span><span>, PyObject *</span><span style="color:#bf616a;">args</span><span>) {
+</span><span>	PyObject *buffer_obj;
+</span><span>	Py_buffer view;
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">PyArg_ParseTuple</span><span>(args, &quot;</span><span style="color:#a3be8c;">O</span><span>&quot;, &amp;buffer_obj)) {
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(!</span><span style="color:#bf616a;">PyObject_CheckBuffer</span><span>(buffer_obj)) {
+</span><span>		</span><span style="color:#bf616a;">PyErr_SetString</span><span>(PyExc_ValueError, &quot;</span><span style="color:#a3be8c;">The object does not support buffer protocol.</span><span>&quot;);
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">PyObject_GetBuffer</span><span>(buffer_obj, &amp;view, PyBUF_SIMPLE) &lt; </span><span style="color:#d08770;">0</span><span>) {
+</span><span>	 	</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span> 	PyConsumerArray *ca = (PyConsumerArray *)</span><span style="color:#bf616a;">PyType_GenericAlloc</span><span>(&amp;PyConsumerArrayType, </span><span style="color:#d08770;">0</span><span>);
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(ca == </span><span style="color:#d08770;">NULL</span><span>) {
+</span><span>		</span><span style="color:#bf616a;">PyBuffer_Release</span><span>(&amp;view);
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	ca-&gt;arr.</span><span style="color:#bf616a;">arr </span><span>= view.</span><span style="color:#bf616a;">buf</span><span>;
+</span><span>	ca-&gt;arr.</span><span style="color:#bf616a;">length </span><span>= (</span><span style="color:#b48ead;">long</span><span>)view.</span><span style="color:#bf616a;">len </span><span>/ view.</span><span style="color:#bf616a;">itemsize</span><span>;
+</span><span>	ca-&gt;from_buffer = </span><span style="color:#d08770;">1</span><span>;
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">PyBuffer_Release</span><span>(&amp;view);
+</span><span>	</span><span style="color:#b48ead;">return </span><span>(PyObject *)ca;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static</span><span> PyMethodDef ConsumerMethods[] = {
+</span><span>	{&quot;</span><span style="color:#a3be8c;">consume</span><span>&quot;, consumer_consume, METH_VARARGS, &quot;</span><span style="color:#a3be8c;">consumer method</span><span>&quot;},
+</span><span>	{</span><span style="color:#d08770;">NULL</span><span>, </span><span style="color:#d08770;">NULL</span><span>, </span><span style="color:#d08770;">0</span><span>, </span><span style="color:#d08770;">NULL</span><span>}
+</span><span>};
+</span><span>
+</span><span style="color:#b48ead;">static struct</span><span> PyModuleDef consumer_module = {
+</span><span>	PyModuleDef_HEAD_INIT,
+</span><span>	.</span><span style="color:#bf616a;">m_name </span><span>= &quot;</span><span style="color:#a3be8c;">consumer</span><span>&quot;,
+</span><span>	.</span><span style="color:#bf616a;">m_doc </span><span>= &quot;</span><span style="color:#a3be8c;">consumer module</span><span>&quot;,
+</span><span>	.</span><span style="color:#bf616a;">m_size </span><span>= -</span><span style="color:#d08770;">1</span><span>,
+</span><span>	.</span><span style="color:#bf616a;">m_methods </span><span>= ConsumerMethods,
+</span><span>};
+</span><span>
+</span><span>PyMODINIT_FUNC
+</span><span style="color:#8fa1b3;">PyInit_consumer</span><span>(</span><span style="color:#b48ead;">void</span><span>) {
+</span><span>	PyObject *m;
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(</span><span style="color:#bf616a;">PyType_Ready</span><span>(&amp;PyConsumerArrayType) &lt; </span><span style="color:#d08770;">0</span><span>){
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	m = </span><span style="color:#bf616a;">PyModule_Create</span><span>(&amp;consumer_module);
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(m == </span><span style="color:#d08770;">NULL</span><span>)
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">Py_INCREF</span><span>(&amp;PyConsumerArrayType);
+</span><span>	</span><span style="color:#b48ead;">if</span><span>(</span><span style="color:#bf616a;">PyModule_AddObject</span><span>(m, &quot;</span><span style="color:#a3be8c;">PyConsumerArray</span><span>&quot;, (PyObject*)&amp;PyConsumerArrayType) &lt; </span><span style="color:#d08770;">0</span><span>) {
+</span><span>		</span><span style="color:#bf616a;">Py_DECREF</span><span>(&amp;PyConsumerArrayType);
+</span><span>		</span><span style="color:#bf616a;">Py_DECREF</span><span>(&amp;m);
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">return</span><span> m;
+</span><span>}
+</span></code></pre>
+<p>We will save the above in a file named <code>consumer.c</code>.</p>
+<h2 id="step-3-build-it">Step 3 - build it</h2>
+<p>Build the python module as <code>python3 setup.py build_ext --inplace</code> using the <code>setup.py</code> script containing:</p>
+<pre data-lang="py" style="background-color:#2b303b;color:#c0c5ce;" class="language-py "><code class="language-py" data-lang="py"><span style="color:#b48ead;">from </span><span>distutils.core </span><span style="color:#b48ead;">import </span><span>setup, Extension
+</span><span>
+</span><span style="color:#bf616a;">setup</span><span>(</span><span style="color:#bf616a;">name</span><span>=&quot;</span><span style="color:#a3be8c;">consumer</span><span>&quot;, </span><span style="color:#bf616a;">ext_modules</span><span>=[</span><span style="color:#bf616a;">Extension</span><span>(&quot;</span><span style="color:#a3be8c;">consumer</span><span>&quot;, [&quot;</span><span style="color:#a3be8c;">consumer.c</span><span>&quot;])])
+</span></code></pre>
+<p>Now, using the <code>consumer.consume</code> method, we can read arrays which support buffer protocol without making a copy of the data.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

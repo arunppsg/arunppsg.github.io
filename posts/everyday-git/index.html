@@ -1,0 +1,102 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Thiagarajan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/ ">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/ ">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/ ">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/ ">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/ ">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/ ">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  My Git Handbook
+</h1>
+<p class="subtitle"><strong>2023-09-01</strong></p>
+<p>My git handbook covering some of the commands which I use every other day.</p>
+<ul>
+<li>
+<p>Ignore files only for you without using .gitignore - add the patterns to exclude in <code>.git/info/exclude</code> file</p>
+</li>
+<li>
+<p>Get summary of stashes: <code>git stash list --stat</code></p>
+</li>
+<li>
+<p>Checkout a branch from remote: <code>git pull &lt;remote&gt; &lt;remote-branch-name&gt;; git checkout -b &lt;local-name&gt; &lt;remote&gt;/&lt;remote-branch-name&gt;</code>.
+Ex: <code>git checkout -b test upstream/test</code></p>
+</li>
+<li>
+<p>Pull and rebase: <code>git pull upstream main --rebase</code></p>
+</li>
+<li>
+<p>Git checkout a pull request from github: <code>git fetch upstream pull/$ID/head:$branchname</code> </p>
+</li>
+<li>
+<p>Git show files changed in commit: <code>git show commit-id --name-only</code></p>
+</li>
+<li>
+<p>Git show files changed between commits: <code>git show commit-id1..commit-id2 --name-only</code></p>
+</li>
+<li>
+<p>Get permalink from github cli: Ex: <code>gh browse README.md:3-5 --no-browser --commit=$(git rev-parse HEAD)</code></p>
+</li>
+<li>
+<p>Git reset local to upstream: <code>git fetch upstream; git reset --hard upstream/main</code></p>
+</li>
+<li>
+<p>Git view a file history: <code>git log --follow &lt;filename&gt;</code></p>
+</li>
+<li>
+<p>Checkout changes from a file from a different branch: <code>git checkout myotherbranch &lt;filename&gt;</code></p>
+</li>
+<li>
+<p>Delete a remote branch: <code>git push -d origin &lt;branch-name&gt;</code></p>
+</li>
+<li>
+<p>Git rebase interactive example: <code>git rebase -i HEAD~5</code></p>
+</li>
+</ul>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>
