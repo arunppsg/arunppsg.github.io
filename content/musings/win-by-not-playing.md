@@ -25,6 +25,8 @@ You can have them all but it may ruin you financially.
 Better to choose simple standard clothes.
 It's bad for the shop-keeper but it is good for you.
 
+Or the simple action of mindless scrolling looking for good content.
+
 There are no issues with experiencing the experience.
 But the search for better experiences will be a never ending search.
 Inherently the games cannot be won.
