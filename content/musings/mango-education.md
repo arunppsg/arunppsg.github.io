@@ -3,7 +3,7 @@ title = "Mango Education"
 date = 2023-12-17
 +++
 
-In the summer of 2018, I served as a tutor at Mango Education, an off-school education company for children aged 10-15. I developed and tutored a summer course on statistics, introducing kids to essential statistical methods like data collection, summary statistics and spreadsheet skills.
+In the summer of 2018, I served as a tutor at [Mango Education](https://themango.co/), an off-school education company for children aged 10-15. I developed and tutored a summer course on statistics, introducing kids to essential statistical methods like data collection, summary statistics and spreadsheet skills.
 
 Education at Mango was activity based learning. For each course objective, a handout outlining an activity that led to achieving the objective was prepared. The children worked on the activities, and the classes revolved around discussing these activities and their connection to the learning objectives. These sessions served as a platform for the children to refine their ideas and knowledge through interactive discussions, comparing their work with others', rethinking concepts, and polishing their understanding. Most activities centered around statistics related to sports or cartoons, as we believed these topics resonated more effectively with the children and engaged them more than other subjects.
 
