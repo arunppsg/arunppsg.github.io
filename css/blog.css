@@ -1,0 +1,97 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    max-width: 40em;
+    margin: 0 auto;
+}
+
+.posts-list {
+    list-style: none;
+    list-style-position: outside;
+    display: flex;
+    flex-direction: column;
+    margin-left: -40px;
+}
+
+.post {
+    padding: 0em;
+    margin-bottom: 1em;
+}
+
+.post .post-header .date {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.post .post-header .post-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+li + li {
+	margin-top: 5px;
+}
+
+li {
+	line-height: 22px; 
+}
+
+// Shameless copy from https://www.getzola.org/documentation/content/syntax-highlighting/ 
+pre {
+  padding: 1rem;
+  overflow: auto;
+}
+// The line numbers already provide some kind of left/right padding
+pre[data-linenos] {
+  padding: 1rem 0;
+}
+pre table td {
+  padding: 0;
+}
+// The line number cells
+pre table td:nth-of-type(1) {
+  text-align: center;
+  user-select: none;
+}
+pre mark {
+  // If you want your highlights to take the full width.
+  display: block;
+  // The default background colour of a mark is bright yellow
+  background-color: rgba(254, 252, 232, 0.9);
+}
+pre table {
+  width: 100%;
+  border-collapse: collapse;
+}pre {
+  padding: 1rem;
+  overflow: auto;
+}
+// The line numbers already provide some kind of left/right padding
+pre[data-linenos] {
+  padding: 1rem 0;
+}
+pre table td {
+  padding: 0;
+}
+// The line number cells
+pre table td:nth-of-type(1) {
+  text-align: center;
+  user-select: none;
+}
+pre mark {
+  // If you want your highlights to take the full width.
+  display: block;
+  // The default background colour of a mark is bright yellow
+  background-color: rgba(254, 252, 232, 0.9);
+}
+pre table {
+  width: 100%;
+  border-collapse: collapse;
+}
