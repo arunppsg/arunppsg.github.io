@@ -21,8 +21,10 @@ But Kurals has endured the test of time.
 And what has endured 2000 years can be expected to endure another 2000 years.
 
 The timelessness, ubiquity and deep value in the concise 7 word of the 1330 couplets attracted me to it.
-The school of philosophy by Kurals is kind, gentle, loving of humankind, practical
+I find the school of philosophy by Kurals to be kind, gentle, loving of humankind,
 and more attentive to common good of humanity by advocating self-virtue.
+Moreover, it does not ask one to adorn saffron robe or to renounce worldly life and
+live the life of an ascetic to attain inner peace or salvation.
 
 I tried memorizing Kurals multiple times - during school, the COVID-19 pandemic etc.
 But each time I failed spectacularly.
@@ -31,7 +33,7 @@ The world is chaotic, with too much noise and distractions, creating a false sen
 fear, desire, anger, hatred and other psychological triggers.
 There also comes everyday questions - what's the right mindset?
 To do or not to do? How to handle problems and situations?
-I needed a guiding light to live. And for me, that was Kurals.
+I needed a guiding light. And for me, that was Kurals.
 But to live by them, I need to have them embedded inside me.
 And memorization does that - as I go through every situation, every day, the embedded Kurals in me
 provides me a set of rules and guidelines to lead a good life.
