@@ -2,12 +2,14 @@
 title = "Now"
 +++
 
-Last updated on Aug 3, 2025.
+Last updated on Oct 9, 2025.
 
-# Learning Kannada
+# Time Value of Money
 
-It has been almost an year now since I moved to Bengaluru last July and I managed to learn only a few words in Kannada.
-I bought the book [Fluent Forever](https://fluent-forever.com/book/), read it, loaded kannada alphabets to Anki and memorizing them.
+Money loses value over time. I built a calculator to calculate how much value money loses - check it out [here](https://arunppsg.in/money-value/).
+# Claude
+
+Trying out Claude code.
 
 # Memorizing Thirukkurals
 

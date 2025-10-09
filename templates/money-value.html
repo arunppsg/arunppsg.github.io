@@ -301,7 +301,7 @@
     if (debug) console.log("present value is ", presentValue)
     if (debug) console.log("absolute value is ", absoluteValue)
     presentValueText = formatCurrency(presentValue)
-    let summary = `Present Value is ${presentValueText}.\nAbsolute Value of cash flows is ${formatCurrency(absoluteValue)}.`
+    let summary = `Present Value (today's worth): ${presentValueText}\nTotal Nominal Value (sum of all future payments): ${formatCurrency(absoluteValue)}`
     document.getElementById('cash-flow-summary').innerText = summary
   }
 
