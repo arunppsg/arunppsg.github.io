@@ -5,7 +5,7 @@ base_url = "https://www.arunppsg.in"
 compile_sass = false
 
 # Whether to build a search index to be used later on by a JavaScript library
-build_search_index = true
+build_search_index = false 
 
 theme = "minimal"
 
@@ -23,4 +23,5 @@ menu_links = [
     { url = "$BASE_URL/now/", name = "Now" },
     { url = "$BASE_URL/musings/", name = "Musings" },
     { url = "$BASE_URL/book-notes/", name = "Book Notes" },
+    { url = "$BASE_URL/money-value/", name="Money Value"}
 ]

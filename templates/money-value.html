@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>Time Value of Money</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Given Future Value of Money, computes the present value of it.">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+    }
+
+    body {
+      /*
+      font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+      font-size: 18px;
+      */
+      font-family: System UI;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #333;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    #frequency {
+      padding: 1px 3px 1px 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .calculator-options {
+      display: flex;
+    }
+
+    .calculator-buttons {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin: 10px auto 10px auto;
+      display: inline-block;
+    }
+
+    #future-value-calculator {
+      display: block;
+    }
+
+    #cash-flows-fv-calculator {
+      display: none;
+    }
+
+    .container {
+      max-width: min(70ch, 100% - 4rem);
+      margin-inline: auto;
+      margin: 45px auto 30px auto;
+    }
+
+    fieldset {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .input-form {
+      clear: right;
+    }
+
+    .input-form select {
+      float: right;
+    }
+
+    .input-form fieldset {
+      font-size: 1.1rem;
+      padding: 10px;
+    }
+
+    .input-form input {
+      display: inline;
+      float: right;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+
+    button:hover {
+      background: #aaa;
+    }
+
+
+    footer {
+      margin: 30px auto;
+      color: #999;
+      font-size: 0.975rem;
+    }
+
+    select,
+    input {
+      width: 200px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="context">
+      <h2 class="title">Time Value of Money</h2>
+      <p>
+        An old joke: Americans are getting stronger. Twenty years ago, it took two
+        people to carry ten dollars worth of groceries. Today, a five year old can do it.
+      </p>
+
+      <p>
+        Money loses value over time.
+        In an inflationary environment, a rupee today has a greater purchasing power than a
+        rupee tomorrow.
+      </p>
+
+      <p>
+        The future value calculator calculates how much a rupee today is worth in the future,
+        given a rate of inflation and a time period.
+        The future value of cash flows calculator calculates the present value of a series of
+        future cash flows, given a discount rate and a time period.
+      </p>
+    </div>
+
+    <div class="calculator-options">
+      <button class="calculator-buttons" onclick="showCalculator(0)">Future Value Calculator</button>
+      <button class="calculator-buttons" onclick="showCalculator(1)">Future Value of Cash Flows</button>
+    </div>
+    <div id="future-value-calculator">
+      <form class="input-form">
+        <fieldset class="present-value">
+          <label>Present Value (Rs.)</label>
+          <input type="text" value="1,000" />
+        </fieldset>
+        <fieldset class="future-value">
+          <label>Future Value (Rs.)</label>
+          <input type="text" value="1,000" />
+        </fieldset>
+        <fieldset class="discount-factor">
+          <label>Rate of Inflation (%)</label>
+          <input type="number" value="2.7" min="0" max="20" step="0.1">
+        </fieldset>
+        <fieldset class="duration">
+          <label>Time Period in Years</label>
+          <input type="number" value="1" min="0" max="100" step="1">
+        </fieldset>
+      </form>
+      <p id="future-value-summary"></p>
+    </div>
+
+    <div id="cash-flows-fv-calculator">
+      <form class="input-form">
+        <fieldset class="cash-flow-frequency">
+          <label for="frequency">Cash Flow Frequency</label>
+          <select id="frequency" name="frequency" required>
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="semi-annually">Semi-Annually</option>
+            <option value="annually">Annually</option>
+          </select>
+        </fieldset>
+
+        <fieldset class="cash-flow-duration">
+          <label>Time Period in Years</label>
+          <input type="number" value="1" min="0" max="100" step="1">
+        </fieldset>
+
+        <fieldset class="cash-flow-per-period">
+          <label>Cash Flow (Rs)</label>
+          <input type="text" value="1,000" />
+        </fieldset>
+
+        <fieldset class="discount-factor">
+          <label>Per year discount factor<sup>*</sup> (%)</label>
+          <input type="number" value="2.7" min="0" max="20" step="0.1">
+        </fieldset>
+      </form>
+      <p id="cash-flow-summary"></p>
+    </div>
+
+    <footnote>
+      <p>
+        <small id="discount-factor-footer">
+        </small>
+      </p>
+    </footnote>
+    <div class="more-context">
+      <p>
+        I might think that at today's cost, with a crore, I will be able to retire.
+        But when I make that a crore in the future, the value of a crore will not be a crore, it
+        will be less than that. This calculator helps in finding how much less a crore will be
+        compared to today. Same with fixed income instruments like FD's. The maturity value will
+        have a lower purchasing power compared to today.
+      </p>
+
+    </div>
+
+  </div>
+</body>
+
+
+<script>
+  const debug = false;
+
+  let formatter = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 0, // Ensure no decimal places for currency
+    maximumFractionDigits: 2  // Ensure two decimal places for currency
+  });
+
+  function formatCurrency(value) {
+    value = value.toString();
+    cleanedString = value.replace(/[^0-9.]/g, '');
+    indianCurrencyStr = formatter.format(cleanedString);
+    return indianCurrencyStr;
+  }
+
+  function parseCurrency(value) {
+    // Remove rupee symbol, commas and return numeric value
+    value = value.replace(/[^0-9.]/g, '');
+    value = parseFloat(value);
+    return value;
+  }
+
+  function formatInputCurrency(e, sender = "") {
+    console.log("format input", e.target.value, sender)
+    const cursorPosition = e.target.selectionStart;
+    const originalLength = e.target.value.length;
+
+    // Format the value
+    const formattedValue = formatCurrency(e.target.value);
+    e.target.value = formattedValue;
+
+    // Restore cursor position (approximately)
+    const newLength = formattedValue.length;
+    const lengthDiff = newLength - originalLength;
+    e.target.setSelectionRange(cursorPosition + lengthDiff, cursorPosition + lengthDiff);
+  }
+
+  function setSummary(presentValue, futureValue, duration) {
+    let currentYear = new Date().getFullYear();
+    pvText = formatCurrency(pvNumber);
+    fvText = formatCurrency(fvNumber);
+    let summary = `${pvText} in ${currentYear} is equal to ${fvText} in ${currentYear + duration}`
+    document.getElementById('future-value-summary').innerText = summary
+  }
+
+  function showCalculator(value) {
+    var fvCalculator = document.getElementById("future-value-calculator")
+    var cashFlowFvCalculator = document.getElementById("cash-flows-fv-calculator")
+    var footer = document.getElementById("discount-factor-footer")
+    if (value == 0) {
+      fvCalculator.style.display = "block"
+      cashFlowFvCalculator.style.display = "none"
+      footer.innerText = ""
+    } else if (value == 1) {
+      fvCalculator.style.display = "none"
+      cashFlowFvCalculator.style.display = "block"
+      footer.innerText = "(*) The discount factor is the rate at which money loses its value - it can be inflation rate."
+    }
+  }
+
+  function calCashFlowPresentValue() {
+    if (debug) console.log("In calculator")
+
+    const discountFactor = document.querySelector(".discount-factor input")
+    const cashFlowDuration = document.querySelector(".cash-flow-duration input")
+    const cashFlowPerPeriod = document.querySelector(".cash-flow-per-period input")
+    const cashFlowFrequency = document.querySelector(".cash-flow-frequency select")
+
+    let discountRate = discountFactor.value / 100
+    let cashFlowValue = parseCurrency(cashFlowPerPeriod.value)
+    let durationInYears = cashFlowDuration.value
+    cashFlowPerYear = 1
+    if (cashFlowFrequency.value == "monthly") {
+      cashFlowPerYear = 12
+    } else if (cashFlowFrequency.value == "quarterly") {
+      cashFlowPerYear = 4
+    } else if (cashFlowFrequency.value == "semi-annually") {
+      cashFlowPerYear = 2
+    } else if (cashFlowFrequency.value == "annually") {
+      cashFlowPerYear = 1
+    }
+    let absoluteValue = cashFlowValue * durationInYears * cashFlowPerYear
+    numberOfCashFlows = durationInYears * cashFlowPerYear
+    let x = 1 + (discountRate / cashFlowPerYear)
+    presentValue = cashFlowValue * (1 - (1 / (x ** numberOfCashFlows))) * (1 / (x - 1))
+    presentValue = presentValue.toFixed(2)
+    if (debug) console.log("present value is ", presentValue)
+    if (debug) console.log("absolute value is ", absoluteValue)
+    presentValueText = formatCurrency(presentValue)
+    let summary = `Present Value is ${presentValueText}.\nAbsolute Value of cash flows is ${formatCurrency(absoluteValue)}.`
+    document.getElementById('cash-flow-summary').innerText = summary
+  }
+
+  (function () {
+    const params = [
+      {name: 'cash-flow-frequency', type: 'select'},
+      {name: 'cash-flow-per-period', type: 'input'},
+      {name: 'discount-factor', type: 'input'},
+      {name: 'cash-flow-duration', type: 'input'}
+    ]
+
+    params.forEach((p) => {
+      const el = document.querySelector(`.${p.name} ${p.type}`)
+      if (`${p.name}` == "cash-flow-per-period") {
+        el.addEventListener("input", formatInputCurrency)
+      }
+      el.addEventListener("input", calCashFlowPresentValue)
+      el.dispatchEvent(new Event(`${p.type}`))
+    })
+  })();
+
+  (function () {
+    const fv = document.querySelector(".future-value input")
+    const pv = document.querySelector(".present-value input")
+    const df = document.querySelector(".discount-factor input")
+    const duration = document.querySelector(".duration input")
+    const summary = document.querySelector(".summary")
+
+    pv.addEventListener("input", formatInputCurrency)
+    fv.addEventListener("input", formatInputCurrency)
+
+    pv.oninput = (e) => {
+      console.log("present value is ", pv.value);
+      let discountFactor = df.value / 100;
+      let multiplier = (1 + discountFactor) ** duration.value;
+      if (debug) console.log("duration is ", duration.value)
+
+      pvText = pv.value;
+      pvNumber = parseCurrency(pv.value);
+      fvNumber = Number.parseFloat(pvNumber * multiplier).toFixed(2);
+      fvText = formatCurrency(fvNumber);
+
+      fv.value = fvText;
+      if (debug) console.log("pv number is ", pvNumber, " fv number is ", fvNumber, " pvtext is ", pvText, " fv text is ", fvText)
+      setSummary(pvNumber, fvNumber, parseFloat(duration.value))
+    }
+
+    fv.oninput = (e) => {
+      let discountFactor = df.value / 100;
+      let multiplier = 1 / (1 + discountFactor) ** duration.value;
+
+      fvText = fv.value;
+      console.log("fv text is ", fvText)
+      fvNumber = parseCurrency(fv.value);
+
+      pvNumber = Number.parseFloat(fvNumber * multiplier).toFixed(2);
+      pvText = formatCurrency(pvNumber);
+      pv.value = pvText;
+
+      setSummary(pvNumber, fvNumber, parseFloat(duration.value))
+    };
+
+    df.oninput = (e) => {
+      let discountFactor = df.value / 100;
+      let multiplier = (1 + discountFactor) ** duration.value;
+
+      pvNumber = parseCurrency(pv.value);
+      fvNumber = Number.parseFloat(pvNumber * multiplier).toFixed(2);
+      fvText = formatCurrency(fvNumber);
+      fv.value = fvText;
+      setSummary(pvNumber, fvNumber, parseFloat(duration.value))
+    }
+
+    duration.oninput = (e) => {
+      let discountFactor = df.value / 100;
+      let multiplier = (1 + discountFactor) ** duration.value;
+
+      pvNumber = parseCurrency(pv.value);
+      fvNumber = Number.parseFloat(pvNumber * multiplier).toFixed(2);
+      fvText = formatCurrency(fvNumber)
+      fv.value = fvText;
+      setSummary(pvNumber, fvNumber, parseFloat(duration.value))
+    }
+
+    pv.dispatchEvent(new Event('input'))
+  })();
+
+
+</script>
+
+</html>
