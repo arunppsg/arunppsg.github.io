@@ -4,7 +4,7 @@ date = 2025-08-23
 +++
 
 I woke up feeling uneasy to breathe.
-My dad picked me up from bed, took me too doctor who gave me an injection for my wheezing to subsidize.
+My dad picked me up from bed, took me to doctor who gave me an injection for my wheezing to subsidize.
 The doctor, the one who gave me breathe, ended the appointment with a [Kural](https://en.wikipedia.org/wiki/Kural).
 
 The above was ~2006.
