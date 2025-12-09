@@ -2,7 +2,7 @@
 title = "Now"
 +++
 
-Last updated on Nov 24, 2025.
+Last updated on Dec 9, 2025.
 
 # Time Value of Money
 
@@ -15,6 +15,15 @@ Now that I am powered with Anki, I am adding kurals as Anki flashcards and readi
 # Go Lang
 
 Learning Go language.
+
+# Standardizing Insurance for Products
+
+I bought a new phone and the salesman asked me to buy accidental insurance but I ignored, despite past evidence of dropping phone.
+I also avoided putting in a temper glass or covers for the phone as it will not give good aesthetics.
+On the second week of new phone, I dropped the phone and the screen shattered. Now, the cost to repair it is ~40% of the phone.
+Two main lessons from this:
+- Anything which can break will eventually break.
+- Spend 10-20% additional cost to protect the item on top of purchase cost of the item
 
 # Recent Epiphany
 

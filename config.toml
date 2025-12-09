@@ -23,5 +23,6 @@ menu_links = [
     { url = "$BASE_URL/now/", name = "Now" },
     { url = "$BASE_URL/musings/", name = "Musings" },
     { url = "$BASE_URL/book-notes/", name = "Book Notes" },
-    { url = "$BASE_URL/money-value/", name="Money Value"}
+    { url = "$BASE_URL/money-value/", name="Money Value"},
+    { url = "$BASE_URL/dontspend-money/", name="Don't Spend Money"}
 ]
