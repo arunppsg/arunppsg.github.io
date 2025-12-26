@@ -2,6 +2,10 @@
 title = "Projects"
 +++
 
+## Money Tools
+- [Time Value of Money](https://www.arunppsg.in/money-value/) - a calculator which calculates how money loses value over time.
+- [Don't Spend Money](https://www.arunppsg.in/dontspend-money/) - a simple, opinionated tool for helping decide whether to buy that one thing or not.
+
 ## Workshop Paper
 - [Open Source Infrastructure for Differentiable Density Functional Theory](../assets/files/deep-dft.pdf), Synergy of Scientific and Machine Learning Modeling, ICML 2023 Workshop, Advika Vidhyadhiraja, Arun Pa Thiagarajan, Shang Zhu, Venkat Viswanathan, Bharath Ramsundar.
 
