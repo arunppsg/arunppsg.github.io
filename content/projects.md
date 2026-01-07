@@ -7,7 +7,8 @@ title = "Projects"
 - [Don't Spend Money](https://www.arunppsg.in/dontspend-money/) - a simple, opinionated tool for helping decide whether to buy that one thing or not.
 
 ## Workshop Paper
-- [Open Source Infrastructure for Differentiable Density Functional Theory](../assets/files/deep-dft.pdf), Synergy of Scientific and Machine Learning Modeling, ICML 2023 Workshop, Advika Vidhyadhiraja, Arun Pa Thiagarajan, Shang Zhu, Venkat Viswanathan, Bharath Ramsundar.
+- [ChemBERTa-3: An Open Source Training Framework for Chemical Foundation Models](https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/688b04ca23be8e43d6fe2c69/original/chem-ber-ta-3-an-open-source-training-framework-for-chemical-foundation-models.pdf)
+- [Open Source Infrastructure for Differentiable Density Functional Theory](https://arxiv.org/pdf/2309.15985), Synergy of Scientific and Machine Learning Modeling, ICML 2023 Workshop, Advika Vidhyadhiraja, Arun Pa Thiagarajan, Shang Zhu, Venkat Viswanathan, Bharath Ramsundar.
 
 ## Poster
 - [Potential Biases in Using Machine Learning for Healthcare Applications](../assets/files/healthcare_bias.pdf), RBC-FCAI Deployable AI, 2022, Arun Pa Thiagarajan.

@@ -15,15 +15,7 @@ I am selling a couple of items which I have not used in this year nor planning t
     - Offer lasts till Jan 17, 2026
 
 
-2. Pair of 1.25 kg Fractional plates ([pic1](https://drive.google.com/file/d/1LVmC4nzncuAFtblh0wzlvkut1Xt3dq3S/view?usp=sharing), [pic2](https://drive.google.com/file/d/17tC_UEyZCKyN6QlTfrg0uw7yHm39i3z2/view?usp=sharing))
-
-    - Many gym owners have plates of 2.5kg and upwards but not fractional plates. Fractional plates of 1.25 kg help in progressive overload as you increment 2.5kg in a workout instead of 5kg in hard exercises like squats, bench press, over head press. They are the most useful equipment for incremental workouts and strength training like [stronglifts program](https://stronglifts.com/stronglifts-5x5/).
-
-    - The product is minimally used, good condition and it lasts.
-
-    - Price: Rs. 730 (Original cost: Rs. 1500)
-
-In case you are interested in any of the above two, write to me at <a href="mailto:mcgusty1k@gmail.com">mcgusty1k@gmail.com</a>. I live in JP Nagar, Bangalore.
+In case you are interested in the above, write to me at <a href="mailto:mcgusty1k@gmail.com">mcgusty1k@gmail.com</a>. I live in JP Nagar, Bangalore.
 
 
 # Time Value of Money
