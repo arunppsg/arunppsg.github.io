@@ -78,4 +78,6 @@ In this case, since the channel is not closed, the select could not receive any 
 
 This is a nice idea because the closing of channel and a `select` statement can be used to broadcast a signal to other go routines that an event has occurred. 
 
-There is another nice blog on the same [here](https://gobyexample.com/closing-channels).
+Other references on the same:
+- [https://gobyexample.com/closing-channels](https://gobyexample.com/closing-channels)
+- [https://go.dev/blog/pipelines](https://go.dev/blog/pipelines)
