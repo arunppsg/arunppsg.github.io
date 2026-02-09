@@ -9,6 +9,11 @@ build_search_index = false
 
 theme = "minimal"
 
+
+taxonomies = [
+    { name = "tag", feed = true },
+]
+
 [markdown]
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
@@ -24,3 +29,4 @@ menu_links = [
     { url = "$BASE_URL/musings/", name = "Musings" },
     { url = "$BASE_URL/book-notes/", name = "Book Notes" },
 ]
+

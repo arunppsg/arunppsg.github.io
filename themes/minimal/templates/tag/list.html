@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ get_url(path="css/base.css", trailing_slash=false) | safe }}">
+		<title>Arun Palaniappan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                {% for menu_link in config.extra.menu_links %}
+                {% set link_url = menu_link.url | replace(from="$BASE_URL", to=config.base_url) %}
+                <a class="menu-links" {% if current_url and current_url==link_url %}class="active" {% endif %}
+                    href="{{ link_url | safe}}">{{menu_link.name}}
+                </a>
+                {% endfor %}
+            </div>
+        </nav>
+
+    </header>
+
+    <h3>Tags</h3>
+    <div class="tag">
+    <ul>
+        {% for term in terms %}
+        <li><a href="{{ term.permalink }}">{{ term.name }}</a><sup>{{ term.page_count }}</sup></li>
+        {% endfor %}
+    </ul>
+    </div>
+</body>
+</html>

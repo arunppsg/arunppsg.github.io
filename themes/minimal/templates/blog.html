@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>{{ section.title }}</h1>
+<p>Browse by <a href="/tag">tags</a>.</p>
 
 {% for year, posts in section.pages | group_by(attribute="year") %}
 <ul class="posts-list">
