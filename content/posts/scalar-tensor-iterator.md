@@ -1,7 +1,8 @@
 +++
 title = "PyTorch Internals: Scalar and TensorIterator"
 date = 2023-08-17
-tags = ['pytorch']
+[taxonomies]
+tag = ['pytorch']
 +++
 
 This blog touches briefly upon `Scalar` and `TensorIterator`.

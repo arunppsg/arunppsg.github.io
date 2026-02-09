@@ -1,7 +1,8 @@
 +++
 title = "My Git Handbook"
 date = 2023-09-01
-tags = ["git"]
+[taxonomies]
+tag = ["git"]
 +++
 
 My git handbook covering some of the commands which I use every other day.

@@ -1,7 +1,8 @@
 +++
 title = "Class Creation in Python"
 date = 2023-03-07
-tags = ["python"]
+[taxonomies]
+tag = ["python"]
 +++
 
 In python, all classes are an instance of an other class.

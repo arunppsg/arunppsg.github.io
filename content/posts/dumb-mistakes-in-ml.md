@@ -1,7 +1,8 @@
 +++
 title = "Log: My Dumb Mistakes in Machine Learning"
 date = 2024-03-04
-tags = ["python", "ml"]
+[taxonomies]
+tag = ["python", "ml"]
 +++
 
 A log of my dumb mistakes in machine learning.

@@ -1,6 +1,8 @@
 +++
 title = "Time series anomaly detection using Generative Adversarial Nets"
 date = "2021-04-21"
+[taxonomies]
+tag = ["ml"]
 +++
 
 This post describes the use of Generative Adversarial Networks for detecting anomalies in time series data and it is based on the <a href="https://arxiv.org/pdf/2009.07769.pdf">paper</a> with the same title as this blog.</p>

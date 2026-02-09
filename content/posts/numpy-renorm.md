@@ -1,7 +1,8 @@
 +++
 title = "torch.renorm operation in numpy"
 date = 2023-07-24
-tags = ['numpy', 'pytorch', 'linear-algebra']
+[taxonomies]
+tag = ['numpy', 'python', 'linear-algebra']
 +++
 
 I have made a numpy implementation of [`torch.renorm`](https://pytorch.org/docs/stable/generated/torch.renorm.html) operation.

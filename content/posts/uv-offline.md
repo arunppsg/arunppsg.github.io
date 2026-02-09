@@ -1,7 +1,8 @@
 +++
 title = "Installing Python Package When Offline"
 date = 2026-02-08
-tags = ['til', 'python']
+[taxonomies]
+tag=['til', 'python']
 +++
 
 Power went down when I was working and I wanted to install a package, which I had installed before but uninstalled recently for testing.

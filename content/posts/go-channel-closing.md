@@ -1,7 +1,8 @@
 +++
 title = "Channel Closing In Go"
 date = 2026-01-07
-tags = ['go-lang']
+[taxonomies]
+tag = ['go-lang']
 +++
 
 I had a go snippet like below:

@@ -1,7 +1,8 @@
 +++
 title = "Objects in Python"
 date = 2023-04-03
-tags = ["python"]
+[taxonomies]
+tag = ["python"]
 +++
 
 Everything in Python has a type (even the type `type`!) because everything is an object.

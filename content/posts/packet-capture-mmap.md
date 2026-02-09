@@ -1,6 +1,8 @@
 +++
 title = "High Speed Packet Capture Using Packet MMAP technique"
 date = 2021-06-04
+[taxonomies]
+tag = ["network"]
 +++	
 
 Traditional packet capture approaches uses `libpcap` - the packet capture 

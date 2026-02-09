@@ -1,7 +1,8 @@
 +++
 title = "Consuming Buffer Exposed by the Python Buffer Protocol"
 date = 2024-02-25
-tags = ["python"]
+[taxonomies]
+tag = ["python"]
 +++
 
 Sometime back, I read a wonderful blog post on [Introduction to the Python Buffer Protocol](http://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/) which shared about exposing a python object's underlying memory (buffer) using the [python buffer protocol](https://docs.python.org/3/c-api/buffer.html).
