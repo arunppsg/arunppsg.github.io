@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - git</title>
+    <link href="https://www.arunppsg.in/tag/git/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://www.arunppsg.in"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-09-01T00:00:00+00:00</updated>
+    <id>https://www.arunppsg.in/tag/git/atom.xml</id>
+    <entry xml:lang="en">
+        <title>My Git Handbook</title>
+        <published>2023-09-01T00:00:00+00:00</published>
+        <updated>2023-09-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/everyday-git/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/everyday-git/</id>
+        <content type="html">&lt;p&gt;My git handbook covering some of the commands which I use every other day.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Ignore files only for you without using .gitignore - add the patterns to exclude in &lt;code&gt;.git&#x2F;info&#x2F;exclude&lt;&#x2F;code&gt; file&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Get summary of stashes: &lt;code&gt;git stash list --stat&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Checkout a branch from remote: &lt;code&gt;git pull &amp;lt;remote&amp;gt; &amp;lt;remote-branch-name&amp;gt;; git checkout -b &amp;lt;local-name&amp;gt; &amp;lt;remote&amp;gt;&#x2F;&amp;lt;remote-branch-name&amp;gt;&lt;&#x2F;code&gt;.
+Ex: &lt;code&gt;git checkout -b test upstream&#x2F;test&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Pull and rebase: &lt;code&gt;git pull upstream main --rebase&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git checkout a pull request from github: &lt;code&gt;git fetch upstream pull&#x2F;$ID&#x2F;head:$branchname&lt;&#x2F;code&gt; &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git show files changed in commit: &lt;code&gt;git show commit-id --name-only&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git show files changed between commits: &lt;code&gt;git show commit-id1..commit-id2 --name-only&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Get permalink from github cli: Ex: &lt;code&gt;gh browse README.md:3-5 --no-browser --commit=$(git rev-parse HEAD)&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git reset local to upstream: &lt;code&gt;git fetch upstream; git reset --hard upstream&#x2F;main&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git view a file history: &lt;code&gt;git log --follow &amp;lt;filename&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Checkout changes from a file from a different branch: &lt;code&gt;git checkout myotherbranch &amp;lt;filename&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Delete a remote branch: &lt;code&gt;git push -d origin &amp;lt;branch-name&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Git rebase interactive example: &lt;code&gt;git rebase -i HEAD~5&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+    </entry>
+</feed>

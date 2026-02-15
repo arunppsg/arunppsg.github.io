@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - ml</title>
+    <link href="https://www.arunppsg.in/tag/ml/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://www.arunppsg.in"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-04T00:00:00+00:00</updated>
+    <id>https://www.arunppsg.in/tag/ml/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Log: My Dumb Mistakes in Machine Learning</title>
+        <published>2024-03-04T00:00:00+00:00</published>
+        <updated>2024-03-04T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/dumb-mistakes-in-ml/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/dumb-mistakes-in-ml/</id>
+        <content type="html">&lt;p&gt;A log of my dumb mistakes in machine learning.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;I had the below piece of code in a training loop:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span&gt;outputs = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;model&lt;&#x2F;span&gt;&lt;span&gt;(**inputs)
+&lt;&#x2F;span&gt;&lt;span&gt;loss = outputs.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;loss&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;)
+&lt;&#x2F;span&gt;&lt;span&gt;loss.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;backward&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zero_grad&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The model was not getting trained despite debugging by varying the learning rates, changing optimizers and checking other issues. But the issue was &lt;code&gt;optimizer.zero_grad()&lt;&#x2F;code&gt; cleared out the gradient accumulated by &lt;code&gt;loss.backward()&lt;&#x2F;code&gt;.
+Correct code:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zero_grad&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;outputs = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;model&lt;&#x2F;span&gt;&lt;span&gt;(**inputs)
+&lt;&#x2F;span&gt;&lt;span&gt;loss = outputs.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;loss&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;)
+&lt;&#x2F;span&gt;&lt;span&gt;loss.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;backward&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Not normalizing y-values in validation dataset.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;I was training a regression model using deep neural networks.
+The training loss decreased, training evaluation metrics were good and the training progressed well. But the RMSE in validation metrics was very high (100x the RMSE of training evaluation). It turned out that I didn&#x27;t normalize the values in validation dataset.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;Training loss not improving in a contrastive distillation based setting&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;There was the teacher model, the student model.
+The issue here was I had only passed the parameters of the teacher model to the optimizer and not the student model, and thus the students model was not learning.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;Subnet configuration in multi-node training&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Multi-node training - I was debugging multi-node training and for some reason the training did not start. I could see no checkpoints nor anything in training logs except that data is getting loaded. The issue was in configuring of AWS Subnet - there was a misconfiguration in the subnet that made the nodes not to communicate with each other.&lt;&#x2F;p&gt;
+&lt;p&gt;A list of mistakes which I have posted in forums:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;ray-project&#x2F;ray&#x2F;issues&#x2F;43753&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;discuss.pytorch.org&#x2F;t&#x2F;using-autograd-function-to-compute-gradient-for-a-function&#x2F;178979&quot;&gt;https:&#x2F;&#x2F;discuss.pytorch.org&#x2F;t&#x2F;using-autograd-function-to-compute-gradient-for-a-function&#x2F;178979&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Time series anomaly detection using Generative Adversarial Nets</title>
+        <published>2021-04-21T00:00:00+00:00</published>
+        <updated>2021-04-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/tadgan/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/tadgan/</id>
+        <content type="html">&lt;p&gt;This post describes the use of Generative Adversarial Networks for detecting anomalies in time series data and it is based on the &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2009.07769.pdf&quot;&gt;paper&lt;&#x2F;a&gt; with the same title as this blog.&lt;&#x2F;p&gt;
+Table of Contents&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Anomalies in time series data&lt;&#x2F;li&gt;
+&lt;li&gt;Data Preprocessing&lt;&#x2F;li&gt;
+&lt;li&gt;Model Architecture&lt;&#x2F;li&gt;
+&lt;li&gt;Training procedures - loss function, optimizer, gradient penalty loss&lt;&#x2F;li&gt;
+&lt;li&gt;Anomaly Detection&lt;&#x2F;li&gt;
+&lt;li&gt;References&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;anomalies-in-time-series-data&quot;&gt;Anomalies in Time Series Data&lt;&#x2F;h3&gt;
+&lt;p&gt;Many real world data have a time component with them, like the data from stock exhange, network events etc. Anomaly detection or the detection of interesting events can offer information related to critical events like breach of security. Anomalies can be broadly classified into two types: Point anomalies where the anomaly is a single point and Collective Anomaly where the anomaly is a sequence of points. There are other types like the Contextual Anomaly where a data point is supposes to be normal but unusual due to the time when the signal is observed.&lt;&#x2F;p&gt;
+&lt;p&gt;There are various ways to detect anomalies in time series data like proximity based methods (data points which are over a distant from the other non-anamlous data points), prediction based methods (predicts the expected value of a point and the point is labelled as anomalous if there is high deviation from the actual value ex: ARIMA), reconstruction-based methods (maps the data point to a latent space, reconstructs it and detect anomalies by finding reconstruction error). In this paper, the problem of anomaly detection is framed as an unsupervised learning problem and a Generative Adversarial Networks(GAN) framework is proposed to detect anomalies from the time series data.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;data-preprocessing&quot;&gt;Data Preprocessing&lt;&#x2F;h3&gt;
+&lt;p&gt;Steps in preprocessing:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Produce equally spaced time series sequence.&lt;&#x2F;li&gt;
+&lt;li&gt;Impute the missing values.&lt;&#x2F;li&gt;
+&lt;li&gt;Min-max scale the signals between -1 and +1.&lt;&#x2F;li&gt;
+&lt;li&gt;Roll the signal into windows of size 100. Hence, the dimension of input domain will be 100 X 1.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;model-architecture&quot;&gt;Model Architecture&lt;&#x2F;h3&gt;
+&lt;p&gt;There are four key components in the architecture of the model. They are an encoder, decoder, critic X, critic Z.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encoder: The role of the encoder &amp;amp;#8496 is to learn a mapping between the input domain and the latent domain. The rolled signals acts as input to the model and they are mapped into a latent space of dimension 20. The encoder learns the mapping between input space to latent space. The encoder is a 1-layer bi-directional LSTM with 100 hidden units.&lt;&#x2F;li&gt;
+&lt;li&gt;Decoder: The decoder learns the mapping between the latent space to the input domain. It learns how to reconstruct a signal given the signal in lower dimension. The decoder or the generator (it generates the signal from the random noise) is a 2-layer bidirectional LSTM with 64 hidden units.&lt;&#x2F;li&gt;
+&lt;li&gt;Critic X (Discriminator X): Critic X is trained to distinguish between the real signal and fake signal. It uses Wasserstein loss function for learning to distinguish between real and fake signals. Fake signals are signals which are samples from noise.&lt;&#x2F;li&gt;
+&lt;li&gt;Critic Z (Discriminator Z) - Critic Z is trained to distinguish between the random noise from the latent domain and encoded samples. Critic Z also uses wasserstein loss function during training. Both the critics are 1-D convolutional layers.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;training-procedure&quot;&gt;Training Procedure&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;loss-functions&quot;&gt;Loss functions&lt;&#x2F;h4&gt;
+&lt;p&gt;GANs are zero-sum games. The direction of gradient update of the generator is opposite to the direction of gradient update of the discriminator. Generator here refers to the encoder-decoder architecture and discriminator refers to critic X and critic Z. The loss function for the generator is the sum of reconstruction error loss and the wasserstein loss. The wasserstein loss aims to maximize the distance between the real samples distributions and fake sample distribution. Let&#x27;s consider the encoder. The encoder encodes the real samples from the time series. It also encodes random noise samples from the space of input domain. The role of critic X is to distinguish between the encoded real samples and noise samples. Hence, the desired learning for critic X is to produce a high score for real samples and a low score for fake samples. Critic X has to maximize the wasserstein distance between the real samples and fake samples. Hence, the critic X updates its gradient in the direction which maximizes the wasserstein distance. The role of encoder is to make a good mapping between input space and latent space i.e to reduce wasserstein loss.Hence it updates the gradients in the the direction opposite to the wasserstein distance. The decoder follows the similar procedure except it uses wasserstein loss from Critic Z. The reconstruction error for the time series data is found using the method of dynamic time warping.&lt;&#x2F;p&gt;
+&lt;p&gt;The model is trained on one specific dataset for 2000 epochs with a batch size of 64. In an epoch, the encoder-decoder are iterated through the dataset once and the critic x and critic z are iterated through the dataset n&lt;sub&gt;critic&lt;&#x2F;sub&gt; where n&lt;sub&gt;critic&lt;&#x2F;sub&gt; is chosen as 5. The training process juggles between the training of discrinimator and the generator. The discriminator tries to figure out how to distinguish real data from fake and it has to learn to recognize generator&#x27;s flaws. The learning of discriminator is more important because if the discriminator can&#x27;t tell the difference between real and fake samples, the traning of generator fails. Hence, the discriminator is iterated 5 time through the dataset for every 1 iteration of the dataset through the generator in an epoch. In the training process, gradient penalty loss is also used. In gradient penalty, we penalize the norm of the gradient of the critic with respect to the input which adds more stability to the training.&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;anomaly-detection&quot;&gt;Anomaly Detection&lt;&#x2F;h4&gt;
+&lt;p&gt;The encoder and decoder maps the signal from input space to latent space and reconstructs the signal from latent space to input space respectively. This mapping helps in anomaly detection. For an anomalous point, thepoint is first encoded into latent space and the encoded anomalous point will deviate from the distribution of encoding of non-anomalous points. Encoding of the anomalous point maps it to the noise distribution and hence when we decode the encoded anomalous point, a high reconstruction error will be observed which can be used to detect anomalies.The critic X helps in distinguishing between the real samples and fake samples. It produces a high score for real samples and low score for fake and anomalous samples. Anomalies are detected using the reconstruction error and critic score. An anomalous point will have high reconstruction error and low critic score. We consider the anomaly score to be the product of reconstruction error and inverse of critic score. Anomalous points are points which will be having high anomaly scores. These points can be detected by considering a moving window and points exceeding 3 standard deviation from the mean and standard deviation of that window.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2009.07769.pdf&quot;&gt;TadGAN&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1701.07875.pdf&quot;&gt;Wasserstein GAN&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;1704.00028.pdf&quot;&gt;Improved training of WGAN with Gradient Penalty Loss&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Dynamic_time_warping&quot;&gt;Dynamic Time Warping&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+    </entry>
+</feed>
