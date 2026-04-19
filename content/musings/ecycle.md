@@ -1,0 +1,33 @@
++++
+title = "E-Cycle - a solution to urban mobility in India"
+date = "2026-04-19"
++++
+
+Indian urban mobility largely depends on two-wheelers.
+Petrol two-wheelers offers convenience but they cause pollution.
+On the other hand, there is electric two-wheelers but they cost upwards of Rs. 1.5 lakhs + and it needs infrastructure - strong electric grids, homes with adequate power supply and charging ports.
+When more people start moving to electric vehicles, it will also inevitably cost a huge pressure on our current power-grid system, especially during the summer.
+
+The solution: electric cycle.
+They cause no pollution like conventional vehicles nor expensive for the common-man.
+These cycles use a smaller battery and consume less power, resulting in lower pressure in the electricity grid.
+And lastly, you also stay healthy by doing physical activity during your commute to work.
+
+A good chunk of the urban Indian commute is less than 5 km one-way.
+Electric cycles make a perfect use case for this.
+A normal cycle will make it tired to travel 5 km, a conventional petrol vehicle causes pollution, an electric vehicle is not very convenient.
+Use an electric cycle - the batteries provide an additional power to the pedal 
+
+An electric cycle has three modes:
+1. Full physical power where you only use your physical power and pedal to ride it.
+2. Full batter power - where you use the throttle to ride on the battery power.
+3. Pedal-assist: you pedal but the battery will assist you, making it easier to pedal as well as saving more energy.
+
+The pedal-assist mode is the sweet spot - where it is hard, the battery assists you, but you also pedal.
+
+I use [Montra Hypno Pro](https://trackandtrail.in/products/montra-hypno-pro) - I love to ride it everyday and I find it perfect for urban computes.
+
+Why Montra? Good quality products by TI Cycles (the parent company of Montra).
+When I was a kid, my very first cycle was Hercules Turbo Drive when I was 8 years old, then Montra Mach City when I started college.
+Both of these cycles lasted long, good quality and gave me good memories.
+Now, I commute to work in Montra Hypno Pro.
