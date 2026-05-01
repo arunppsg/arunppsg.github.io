@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - python</title>
+    <link href="https://www.arunppsg.in/tag/python/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://www.arunppsg.in"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-02-08T00:00:00+00:00</updated>
+    <id>https://www.arunppsg.in/tag/python/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Installing Python Package When Offline</title>
+        <published>2026-02-08T00:00:00+00:00</published>
+        <updated>2026-02-08T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/uv-offline/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/uv-offline/</id>
+        <content type="html">&lt;p&gt;Power went down when I was working and I wanted to install a package, which I had installed before but uninstalled recently for testing.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;uv&lt;&#x2F;code&gt; had a &lt;code&gt;offline&lt;&#x2F;code&gt; flag which when set, looks for package in the local instead of searching for the index.&lt;&#x2F;p&gt;
+&lt;p&gt;Example: &lt;code&gt;uv pip install --upgrade textual --offline&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Log: My Dumb Mistakes in Machine Learning</title>
+        <published>2024-03-04T00:00:00+00:00</published>
+        <updated>2024-03-04T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/dumb-mistakes-in-ml/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/dumb-mistakes-in-ml/</id>
+        <content type="html">&lt;p&gt;A log of my dumb mistakes in machine learning.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;I had the below piece of code in a training loop:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span&gt;outputs = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;model&lt;&#x2F;span&gt;&lt;span&gt;(**inputs)
+&lt;&#x2F;span&gt;&lt;span&gt;loss = outputs.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;loss&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;)
+&lt;&#x2F;span&gt;&lt;span&gt;loss.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;backward&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zero_grad&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The model was not getting trained despite debugging by varying the learning rates, changing optimizers and checking other issues. But the issue was &lt;code&gt;optimizer.zero_grad()&lt;&#x2F;code&gt; cleared out the gradient accumulated by &lt;code&gt;loss.backward()&lt;&#x2F;code&gt;.
+Correct code:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zero_grad&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;outputs = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;model&lt;&#x2F;span&gt;&lt;span&gt;(**inputs)
+&lt;&#x2F;span&gt;&lt;span&gt;loss = outputs.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;loss&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;)
+&lt;&#x2F;span&gt;&lt;span&gt;loss.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;backward&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;optimizer.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Not normalizing y-values in validation dataset.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;I was training a regression model using deep neural networks.
+The training loss decreased, training evaluation metrics were good and the training progressed well. But the RMSE in validation metrics was very high (100x the RMSE of training evaluation). It turned out that I didn&#x27;t normalize the values in validation dataset.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;Training loss not improving in a contrastive distillation based setting&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;There was the teacher model, the student model.
+The issue here was I had only passed the parameters of the teacher model to the optimizer and not the student model, and thus the students model was not learning.&lt;&#x2F;p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;Subnet configuration in multi-node training&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Multi-node training - I was debugging multi-node training and for some reason the training did not start. I could see no checkpoints nor anything in training logs except that data is getting loaded. The issue was in configuring of AWS Subnet - there was a misconfiguration in the subnet that made the nodes not to communicate with each other.&lt;&#x2F;p&gt;
+&lt;p&gt;A list of mistakes which I have posted in forums:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;ray-project&#x2F;ray&#x2F;issues&#x2F;43753&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;Open-Catalyst-Project&#x2F;ocp&#x2F;issues&#x2F;332&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;discuss.pytorch.org&#x2F;t&#x2F;using-autograd-function-to-compute-gradient-for-a-function&#x2F;178979&quot;&gt;https:&#x2F;&#x2F;discuss.pytorch.org&#x2F;t&#x2F;using-autograd-function-to-compute-gradient-for-a-function&#x2F;178979&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Consuming Buffer Exposed by the Python Buffer Protocol</title>
+        <published>2024-02-25T00:00:00+00:00</published>
+        <updated>2024-02-25T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/buffer-protocol-consumer/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/buffer-protocol-consumer/</id>
+        <content type="html">&lt;p&gt;Sometime back, I read a wonderful blog post on &lt;a href=&quot;http:&#x2F;&#x2F;jakevdp.github.io&#x2F;blog&#x2F;2014&#x2F;05&#x2F;05&#x2F;introduction-to-the-python-buffer-protocol&#x2F;&quot;&gt;Introduction to the Python Buffer Protocol&lt;&#x2F;a&gt; which shared about exposing a python object&#x27;s underlying memory (buffer) using the &lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;c-api&#x2F;buffer.html&quot;&gt;python buffer protocol&lt;&#x2F;a&gt;.
+The buffer protocol helps in accessing the underlying memory of an array without creating an intermediate copy of array.
+This is useful to manipulate large arrays of data where copying of the entire data can be expensive.
+As a follow-up, I decided to figure out how to consume the buffer exposed by the buffer protocol.&lt;&#x2F;p&gt;
+&lt;p&gt;The goal of the next section is to develop a module &lt;code&gt;consumer&lt;&#x2F;code&gt; which can consume the buffer exposed by &lt;code&gt;array.array&lt;&#x2F;code&gt; type via the method &lt;code&gt;consume&lt;&#x2F;code&gt;. In other words, we are going to make this below code snippet work:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;array
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;consumer &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;C
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;arr = array.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;array&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;i&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, [&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;4&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5&lt;&#x2F;span&gt;&lt;span&gt;])
+&lt;&#x2F;span&gt;&lt;span&gt;array_consumed = C.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;consume&lt;&#x2F;span&gt;&lt;span&gt;(arr)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(array_consumed)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# prints [ 1 2 3 4 5 ]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;step-1&quot;&gt;Step 1&lt;&#x2F;h1&gt;
+&lt;p&gt;Create a C-library &lt;code&gt;consumer_lib.c&lt;&#x2F;code&gt; which defines the &lt;code&gt;ConsumerArray&lt;&#x2F;code&gt; and contains utilities for allocating, deallocating and printing the array. This is same as the &lt;code&gt;mylib.c&lt;&#x2F;code&gt; from the &lt;a href=&quot;http:&#x2F;&#x2F;jakevdp.github.io&#x2F;blog&#x2F;2014&#x2F;05&#x2F;05&#x2F;introduction-to-the-python-buffer-protocol&#x2F;&quot;&gt;Introduction to the Python Buffer Protocol&lt;&#x2F;a&gt; blog post. The &lt;code&gt;ConsumerArray&lt;&#x2F;code&gt; is the data-structure which maps to the buffer exposed by &lt;code&gt;array.array&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;stdlib.h&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;stdio.h&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;typedef struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span&gt;*arr;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;long&lt;&#x2F;span&gt;&lt;span&gt; length;
+&lt;&#x2F;span&gt;&lt;span&gt;} ConsumerArray;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;initialize_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(ConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;long &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;length&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	a-&amp;gt;length = length;
+&lt;&#x2F;span&gt;&lt;span&gt;	a-&amp;gt;arr = (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;*)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;malloc&lt;&#x2F;span&gt;&lt;span&gt;(sizeof(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;) * length);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; i;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt;(i = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;; i &amp;lt; length; i++) {
+&lt;&#x2F;span&gt;&lt;span&gt;		a-&amp;gt;arr[i] = i;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;stringify_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(ConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nmax&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char &lt;&#x2F;span&gt;&lt;span&gt;*s = (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span&gt;*)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;malloc&lt;&#x2F;span&gt;&lt;span&gt;(nmax * &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;20&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; pos = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;sprintf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;s[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;], &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;[ &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; i;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt;(i = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;; i &amp;lt; a-&amp;gt;length &amp;amp;&amp;amp; i &amp;lt; nmax; i++){
+&lt;&#x2F;span&gt;&lt;span&gt;		pos += &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;sprintf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;s[pos], &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;%d &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, a-&amp;gt;arr[i]);
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(i &amp;lt; a-&amp;gt;length)
+&lt;&#x2F;span&gt;&lt;span&gt;		pos += &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;sprintf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;s[pos], &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;... &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;sprintf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;s[pos], &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;]&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; s;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;print_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(ConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nmax&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char &lt;&#x2F;span&gt;&lt;span&gt;*string = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;stringify_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(a, nmax);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;printf&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, string);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;deallocate_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(ConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;free&lt;&#x2F;span&gt;&lt;span&gt;(a-&amp;gt;arr);
+&lt;&#x2F;span&gt;&lt;span&gt;	a-&amp;gt;arr = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;step-2&quot;&gt;Step 2&lt;&#x2F;h2&gt;
+&lt;p&gt;Create the &lt;code&gt;consumer&lt;&#x2F;code&gt; python module with a method &lt;code&gt;consume&lt;&#x2F;code&gt; and the type &lt;code&gt;PyConsumerArray&lt;&#x2F;code&gt;.
+The &lt;code&gt;consume&lt;&#x2F;code&gt; method is used for accessing the buffer and mapping it to the &lt;code&gt;PyConsumerArray&lt;&#x2F;code&gt; type.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-c &quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Python.h&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer_lib.c&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Defining the PyConsumerArray type
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;typedef struct &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	PyObject_HEAD
+&lt;&#x2F;span&gt;&lt;span&gt;	ConsumerArray arr;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; from_buffer;
+&lt;&#x2F;span&gt;&lt;span&gt;} PyConsumerArray;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static void
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;PyConsumerArray_dealloc&lt;&#x2F;span&gt;&lt;span&gt;(PyConsumerArray* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; If obtained view buffer, only decrement the reference count.
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Else, if the object was created using malloc, deallocate it using free.
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(self-&amp;gt;from_buffer) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Py_XDECREF&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;self-&amp;gt;arr);
+&lt;&#x2F;span&gt;&lt;span&gt;	} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;deallocate_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;self-&amp;gt;arr);
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Py_TYPE&lt;&#x2F;span&gt;&lt;span&gt;(self)-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_free&lt;&#x2F;span&gt;&lt;span&gt;((PyObject*)self);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static int
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;PyConsumerArray_init&lt;&#x2F;span&gt;&lt;span&gt;(PyConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;, PyObject *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span&gt;, PyObject *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;kwds&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt; length = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static char &lt;&#x2F;span&gt;&lt;span&gt;*kwlist[] = {&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;length&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;};
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(!&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyArg_ParseTupleAndKeywords&lt;&#x2F;span&gt;&lt;span&gt;(args, kwds, &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;|i&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, kwlist, &amp;amp;length)) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(length &amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;		length = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;initialize_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;self-&amp;gt;arr, length);
+&lt;&#x2F;span&gt;&lt;span&gt;	self-&amp;gt;from_buffer = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span&gt; PyObject *
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;PyConsumerArray_str&lt;&#x2F;span&gt;&lt;span&gt;(PyConsumerArray *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char &lt;&#x2F;span&gt;&lt;span&gt;*str = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;stringify_ConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;self-&amp;gt;arr, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;	PyObject *ret = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyUnicode_FromString&lt;&#x2F;span&gt;&lt;span&gt;(str);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;free&lt;&#x2F;span&gt;&lt;span&gt;(str);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; ret;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span&gt; PyTypeObject PyConsumerArrayType = {
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ob_base &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyVarObject_HEAD_INIT&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_name &lt;&#x2F;span&gt;&lt;span&gt;= &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer.PyConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_doc &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyDoc_STR&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Consumer Array objects&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;),
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_basicsize &lt;&#x2F;span&gt;&lt;span&gt;= sizeof(PyConsumerArray),
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_flags &lt;&#x2F;span&gt;&lt;span&gt;= Py_TPFLAGS_DEFAULT,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_new &lt;&#x2F;span&gt;&lt;span&gt;= PyType_GenericNew,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_dealloc &lt;&#x2F;span&gt;&lt;span&gt;= (destructor) PyConsumerArray_dealloc,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_repr &lt;&#x2F;span&gt;&lt;span&gt;= (reprfunc) PyConsumerArray_str,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_str &lt;&#x2F;span&gt;&lt;span&gt;= (reprfunc) PyConsumerArray_str,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tp_init &lt;&#x2F;span&gt;&lt;span&gt;= (initproc) PyConsumerArray_init,
+&lt;&#x2F;span&gt;&lt;span&gt;};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; consume method for consuming the array object
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span&gt; PyObject *
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;consumer_consume&lt;&#x2F;span&gt;&lt;span&gt;(PyObject *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;obj&lt;&#x2F;span&gt;&lt;span&gt;, PyObject *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	PyObject *buffer_obj;
+&lt;&#x2F;span&gt;&lt;span&gt;	Py_buffer view;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(!&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyArg_ParseTuple&lt;&#x2F;span&gt;&lt;span&gt;(args, &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;O&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, &amp;amp;buffer_obj)) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(!&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyObject_CheckBuffer&lt;&#x2F;span&gt;&lt;span&gt;(buffer_obj)) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyErr_SetString&lt;&#x2F;span&gt;&lt;span&gt;(PyExc_ValueError, &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;The object does not support buffer protocol.&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyObject_GetBuffer&lt;&#x2F;span&gt;&lt;span&gt;(buffer_obj, &amp;amp;view, PyBUF_SIMPLE) &amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	 	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt; 	PyConsumerArray *ca = (PyConsumerArray *)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyType_GenericAlloc&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;PyConsumerArrayType, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(ca == &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyBuffer_Release&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;view);
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	ca-&amp;gt;arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;arr &lt;&#x2F;span&gt;&lt;span&gt;= view.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;buf&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	ca-&amp;gt;arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;length &lt;&#x2F;span&gt;&lt;span&gt;= (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;long&lt;&#x2F;span&gt;&lt;span&gt;)view.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;len &lt;&#x2F;span&gt;&lt;span&gt;&#x2F; view.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;itemsize&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	ca-&amp;gt;from_buffer = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyBuffer_Release&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;view);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;(PyObject *)ca;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span&gt; PyMethodDef ConsumerMethods[] = {
+&lt;&#x2F;span&gt;&lt;span&gt;	{&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consume&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, consumer_consume, METH_VARARGS, &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer method&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;},
+&lt;&#x2F;span&gt;&lt;span&gt;	{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;static struct&lt;&#x2F;span&gt;&lt;span&gt; PyModuleDef consumer_module = {
+&lt;&#x2F;span&gt;&lt;span&gt;	PyModuleDef_HEAD_INIT,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;m_name &lt;&#x2F;span&gt;&lt;span&gt;= &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;m_doc &lt;&#x2F;span&gt;&lt;span&gt;= &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer module&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;m_size &lt;&#x2F;span&gt;&lt;span&gt;= -&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;	.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;m_methods &lt;&#x2F;span&gt;&lt;span&gt;= ConsumerMethods,
+&lt;&#x2F;span&gt;&lt;span&gt;};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;PyMODINIT_FUNC
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;PyInit_consumer&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;	PyObject *m;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyType_Ready&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;PyConsumerArrayType) &amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	m = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyModule_Create&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;consumer_module);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(m == &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Py_INCREF&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;PyConsumerArrayType);
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;PyModule_AddObject&lt;&#x2F;span&gt;&lt;span&gt;(m, &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;PyConsumerArray&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, (PyObject*)&amp;amp;PyConsumerArrayType) &amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Py_DECREF&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;PyConsumerArrayType);
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Py_DECREF&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;m);
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; m;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;We will save the above in a file named &lt;code&gt;consumer.c&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;step-3-build-it&quot;&gt;Step 3 - build it&lt;&#x2F;h2&gt;
+&lt;p&gt;Build the python module as &lt;code&gt;python3 setup.py build_ext --inplace&lt;&#x2F;code&gt; using the &lt;code&gt;setup.py&lt;&#x2F;code&gt; script containing:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;from &lt;&#x2F;span&gt;&lt;span&gt;distutils.core &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;setup, Extension
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;=&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ext_modules&lt;&#x2F;span&gt;&lt;span&gt;=[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Extension&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, [&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;consumer.c&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;])])
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Now, using the &lt;code&gt;consumer.consume&lt;&#x2F;code&gt; method, we can read arrays which support buffer protocol without making a copy of the data.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>torch.renorm operation in numpy</title>
+        <published>2023-07-24T00:00:00+00:00</published>
+        <updated>2023-07-24T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/numpy-renorm/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/numpy-renorm/</id>
+        <content type="html">&lt;p&gt;I have made a numpy implementation of &lt;a href=&quot;https:&#x2F;&#x2F;pytorch.org&#x2F;docs&#x2F;stable&#x2F;generated&#x2F;torch.renorm.html&quot;&gt;&lt;code&gt;torch.renorm&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; operation.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;numpy &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;np
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;renorm&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;x&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;p&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dim&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxnorm&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;    x_view = np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;rollaxis&lt;&#x2F;span&gt;&lt;span&gt;(x, dim, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    n = x.shape[dim]
+&lt;&#x2F;span&gt;&lt;span&gt;    norms = []
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;in &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;range&lt;&#x2F;span&gt;&lt;span&gt;(n):
+&lt;&#x2F;span&gt;&lt;span&gt;        norms.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;append&lt;&#x2F;span&gt;&lt;span&gt;(np.linalg.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;norm&lt;&#x2F;span&gt;&lt;span&gt;(x_view[i,:], &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ord&lt;&#x2F;span&gt;&lt;span&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    factors = []
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;norm &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;in &lt;&#x2F;span&gt;&lt;span&gt;norms:
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;norm &amp;gt; maxnorm:
+&lt;&#x2F;span&gt;&lt;span&gt;            factors.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;append&lt;&#x2F;span&gt;&lt;span&gt;(maxnorm&#x2F;norm)
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else&lt;&#x2F;span&gt;&lt;span&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;            factors.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;append&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    factors = np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;array&lt;&#x2F;span&gt;&lt;span&gt;(factors)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;x * factors.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;reshape&lt;&#x2F;span&gt;&lt;span&gt;(-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;), factors
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Objects in Python</title>
+        <published>2023-04-03T00:00:00+00:00</published>
+        <updated>2023-04-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/python-type/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/python-type/</id>
+        <content type="html">&lt;p&gt;Everything in Python has a type (even the type &lt;code&gt;type&lt;&#x2F;code&gt;!) because everything is an object.&lt;&#x2F;p&gt;
+&lt;p&gt;Objects are abstraction of data in Python.
+All data in a Python program is stored as a object.&lt;&#x2F;p&gt;
+&lt;p&gt;Instances can be created from objects, which themselves are another kind of object.
+Objects created can be destroyed by garbage collection.&lt;&#x2F;p&gt;
+&lt;p&gt;An object has three properties - identity, value, type.
+The &lt;code&gt;id&lt;&#x2F;code&gt; of an object never changes once an object is created.
+&lt;code&gt;id(x)&lt;&#x2F;code&gt; returns an unique identity to the object &lt;code&gt;x&lt;&#x2F;code&gt;. &lt;&#x2F;p&gt;
+&lt;p&gt;When the value of object is changeable, the object is said to be mutable and when the value is not changeable, the object is said to be immutable.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;type-object&quot;&gt;&lt;code&gt;type&lt;&#x2F;code&gt; object&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;type&lt;&#x2F;code&gt; is an object which can be used to create other objects.
+For example, the &lt;code&gt;type&lt;&#x2F;code&gt; object is used internally to create &lt;code&gt;class&lt;&#x2F;code&gt; objects.
+An user-defined class is an object of type &lt;code&gt;type&lt;&#x2F;code&gt;.
+It is a new kind of type (instance) of the type class.&lt;&#x2F;p&gt;
+&lt;p&gt;The type of &lt;code&gt;type&lt;&#x2F;code&gt; object is &lt;code&gt;type&lt;&#x2F;code&gt;.
+For &lt;code&gt;type&lt;&#x2F;code&gt; object, the type is an identity.
+Example: &lt;code&gt;print (type(type))&lt;&#x2F;code&gt; prints &lt;code&gt;&amp;lt;class &#x27;type&#x27;&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;function-object&quot;&gt;&lt;code&gt;function&lt;&#x2F;code&gt; object&lt;&#x2F;h2&gt;
+&lt;p&gt;A function is also another instance of &lt;code&gt;type&lt;&#x2F;code&gt; object.
+When we define a function, the defined function is an instance of the function object.&lt;&#x2F;p&gt;
+&lt;p&gt;Example:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;def foo():
+&lt;&#x2F;span&gt;&lt;span&gt;    return
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;print (type(foo))  # &amp;lt;class &amp;#39;function&amp;#39;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;print (type(type(foo)))  # &amp;lt;class &amp;#39;type&amp;#39;&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;class-object&quot;&gt;&lt;code&gt;class&lt;&#x2F;code&gt; object&lt;&#x2F;h2&gt;
+&lt;p&gt;In python, all classes are themselves instances of other classes.
+&lt;code&gt;class&lt;&#x2F;code&gt; objects are instances of &lt;code&gt;type&lt;&#x2F;code&gt; class.
+A class also allows to makes instances of it&#x27;s type.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;pass
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;type&lt;&#x2F;span&gt;&lt;span&gt;(Foo)) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# &amp;lt;class &amp;#39;type&amp;#39;&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;instance-method-object&quot;&gt;Instance method object&lt;&#x2F;h3&gt;
+&lt;p&gt;A instance method object is same as a function object but it accepts a class instance as a first argument.
+It combines a class, a class instance and any callable user-defined function.&lt;&#x2F;p&gt;
+&lt;p&gt;Example:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;():
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;print_self&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;         &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;id &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;id&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;f = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;type&lt;&#x2F;span&gt;&lt;span&gt;(f))  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# output: type &amp;lt;class &amp;#39;__main__.Foo&amp;#39;&amp;gt; id 4408722096
+&lt;&#x2F;span&gt;&lt;span&gt;f.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;print_self&lt;&#x2F;span&gt;&lt;span&gt;()  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# output: type &amp;lt;class &amp;#39;__main__.Foo&amp;#39;&amp;gt; id 4408722096
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The above example shows that both the instance &lt;code&gt;f&lt;&#x2F;code&gt; and &lt;code&gt;self&lt;&#x2F;code&gt; are the same and that &lt;code&gt;f&lt;&#x2F;code&gt; is passed as an argument to the method object in the class.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;py&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-py &quot;&gt;&lt;code class=&quot;language-py&quot; data-lang=&quot;py&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;():
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;__init__&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.b = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;bar&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;in bar&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;f = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;id&lt;&#x2F;span&gt;&lt;span&gt;(Foo.bar), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;id&lt;&#x2F;span&gt;&lt;span&gt;(f.bar))  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# (4573538336, 4573593280)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Note that &lt;code&gt;Foo.bar&lt;&#x2F;code&gt; has a different id from &lt;code&gt;f.bar&lt;&#x2F;code&gt;.
+When an instance of the class is created, the instance method objects are also recreated in the instance.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;list-object&quot;&gt;&lt;code&gt;list&lt;&#x2F;code&gt; object&lt;&#x2F;h2&gt;
+&lt;p&gt;A list is also an object of type class.
+&lt;code&gt;type(list)&lt;&#x2F;code&gt; , prints &lt;code&gt;&amp;lt;class &#x27;type&#x27;&amp;gt;&lt;&#x2F;code&gt;.
+Instances of list class can be created using the shorthand of square brackets.
+Example: &lt;code&gt;a = [1, 2]&lt;&#x2F;code&gt; creates a &lt;code&gt;list&lt;&#x2F;code&gt; object identified by &lt;code&gt;a&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;int-class&quot;&gt;&lt;code&gt;int&lt;&#x2F;code&gt; class&lt;&#x2F;h2&gt;
+&lt;p&gt;A question and an answer.&lt;&#x2F;p&gt;
+&lt;p&gt;Why does id(a) and id(b) are same in below example but different in the following example?&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;# case 1: same identity
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; a_int, b_int = 1, 1
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; id(a_int), id(b_int)
+&lt;&#x2F;span&gt;&lt;span&gt;(4298998000, 4298998000)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;# case 2: different identity
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; a_list, b_list = [], []
+&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&amp;gt; id(a_list), id(b_list)
+&lt;&#x2F;span&gt;&lt;span&gt;(4303367872, 4303371648)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In case 1, the token &lt;code&gt;1&lt;&#x2F;code&gt; is an object of class int.
+&lt;code&gt;print (type(1))&lt;&#x2F;code&gt; returns &lt;code&gt;&amp;lt;class &#x27;int&#x27;&amp;gt;&lt;&#x2F;code&gt;.
+&lt;code&gt;print (type(type(1))&lt;&#x2F;code&gt; and it returns &lt;code&gt;&amp;lt;class &#x27;type&#x27;&amp;gt;&lt;&#x2F;code&gt;.
+Hence, the token &lt;code&gt;1&lt;&#x2F;code&gt; is an object of class int.
+All objects have ids.
+The id of token 1 can be seen by &lt;code&gt;print(id(1))&lt;&#x2F;code&gt; and it can be inferred that it is same as &lt;code&gt;id(a_int)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;In the assignment &lt;code&gt;a_int = 1&lt;&#x2F;code&gt;, &lt;code&gt;a_int&lt;&#x2F;code&gt; becomes a reference to the token &lt;code&gt;1&lt;&#x2F;code&gt;.
+Python makes a reference here because &lt;code&gt;1&lt;&#x2F;code&gt; is an object of immutable type in python.&lt;&#x2F;p&gt;
+&lt;p&gt;But in case 2, the values are copied because &lt;code&gt;[]&lt;&#x2F;code&gt; is a mutable type.
+Hence, in case 2, &lt;code&gt;a_list&lt;&#x2F;code&gt; and &lt;code&gt;b_list&lt;&#x2F;code&gt; have different ids.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;other-notes&quot;&gt;Other notes&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;id&lt;&#x2F;code&gt; is itself an object of class &lt;code&gt;builtin_function_or_method&lt;&#x2F;code&gt;.
+Since it is an object, it also has an &lt;code&gt;id&lt;&#x2F;code&gt; which can be viewed as &lt;code&gt;id(id)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;lambda&lt;&#x2F;code&gt; expressions are object of type &lt;code&gt;function&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;The keywords &lt;code&gt;staticmethod&lt;&#x2F;code&gt; and &lt;code&gt;classmethod&lt;&#x2F;code&gt; are objects themselves.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;acknowledgment&quot;&gt;Acknowledgment&lt;&#x2F;h2&gt;
+&lt;p&gt;A special thanks to &lt;a href=&quot;https:&#x2F;&#x2F;rahulporuri.github.io&#x2F;&quot;&gt;Rahul Sai Poruri&lt;&#x2F;a&gt; and &lt;a href=&quot;https:&#x2F;&#x2F;tonyd.co&#x2F;&quot;&gt;Tony Davis&lt;&#x2F;a&gt; for discussions and feedbacks on earlier versions of the draft.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Class Creation in Python</title>
+        <published>2023-03-07T00:00:00+00:00</published>
+        <updated>2023-03-07T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/python-class-creation/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/python-class-creation/</id>
+        <content type="html">&lt;p&gt;In python, all classes are an instance of an other class.
+An user-defined class is an instance of &lt;code&gt;type&lt;&#x2F;code&gt; class.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Foo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;:
+&lt;&#x2F;span&gt;&lt;span&gt;    
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;__init__&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.a = a 
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;get_a&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.a
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;def &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;set_a&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.a = a
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;For the above class &lt;code&gt;Foo&lt;&#x2F;code&gt;, &lt;code&gt;print (type(Foo))&lt;&#x2F;code&gt; shows &lt;code&gt;&amp;lt;class &#x27;type&#x27;&amp;gt;&lt;&#x2F;code&gt;.
+The &lt;code&gt;class&lt;&#x2F;code&gt; keyword creates an instance of &lt;code&gt;type&lt;&#x2F;code&gt; object which can be identified using &lt;code&gt;Foo&lt;&#x2F;code&gt;.
+A class object also allows to makes instances of it&#x27;s type by using its identifier (&lt;code&gt;Foo&lt;&#x2F;code&gt;).&lt;&#x2F;p&gt;
+&lt;p&gt;Here is an another way to create a class object by directly creating an instance of type class.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;def get_a(arg1):
+&lt;&#x2F;span&gt;&lt;span&gt;    return arg1.a
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;def set_a(arg1, i):
+&lt;&#x2F;span&gt;&lt;span&gt;    arg1.a = i
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;def __init__(arg1, a):
+&lt;&#x2F;span&gt;&lt;span&gt;    arg1.a = a
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;Foo = type(&amp;#39;Foo&amp;#39;, (), dict(get_a=get_a, set_a=set_a, 
+&lt;&#x2F;span&gt;&lt;span&gt;          __init__=__init__))
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Here, we directly invoke &lt;code&gt;type()&lt;&#x2F;code&gt; constructor to create the class object.
+The &lt;code&gt;type()&lt;&#x2F;code&gt; constructor has the signature &lt;code&gt;type(name, bases, namespace)&lt;&#x2F;code&gt;.
+&lt;code&gt;name&lt;&#x2F;code&gt; is a string giving the name of the class to be constructed, &lt;code&gt;bases&lt;&#x2F;code&gt; is a tuple which identifies the parent classes of the class to be constructed and &lt;code&gt;namespace&lt;&#x2F;code&gt; is a dictionary of attributes and methods of the class to be constructed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;customising-class-creation&quot;&gt;Customising class creation&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;using-new-method&quot;&gt;Using &lt;code&gt;__new__&lt;&#x2F;code&gt; method&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;__new__&lt;&#x2F;code&gt; can be used to control creation of object.
+For example, to implement a singleton object, we can use &lt;code&gt;__new__&lt;&#x2F;code&gt;.
+Here is another example of using &lt;code&gt;__new__&lt;&#x2F;code&gt; object:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;class Number(tuple):
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    def __new__(cls, *args):
+&lt;&#x2F;span&gt;&lt;span&gt;        if not isinstance(args[0], int):
+&lt;&#x2F;span&gt;&lt;span&gt;            raise ValueError(&amp;#39;argument should be an integer&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        if (args[0] % 2 == 0):
+&lt;&#x2F;span&gt;&lt;span&gt;            return tuple.__new__(tuple, (args[0], &amp;#39;even&amp;#39;))
+&lt;&#x2F;span&gt;&lt;span&gt;        elif (args[0] % 2 == 1):
+&lt;&#x2F;span&gt;&lt;span&gt;            return tuple.__new__(tuple, (args[0], &amp;#39;odd&amp;#39;))
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;a = Number(1)  # `a` stores (1, &amp;#39;odd&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;b = Number(2)  # `b` stores (2, &amp;#39;even&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In the above example, we customise the creation of a tuple.
+The &lt;code&gt;__new__&lt;&#x2F;code&gt; method is used to customise the creation of &lt;code&gt;tuple&lt;&#x2F;code&gt; since once a tuple is created, it cannot be modified.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;__new__&lt;&#x2F;code&gt; creates a new instance of the class.
+The &lt;code&gt;__new__&lt;&#x2F;code&gt; method is the different from &lt;code&gt;__init__&lt;&#x2F;code&gt;.
+It creates the actual class object while the &lt;code&gt;__init__&lt;&#x2F;code&gt; method customizes the created object.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;customising-via-metaclass&quot;&gt;Customising via metaclass&lt;&#x2F;h3&gt;
+&lt;p&gt;The class of a class is knows as metaclass.
+Most classes have &lt;code&gt;type&lt;&#x2F;code&gt; as their metaclass as &lt;code&gt;type&lt;&#x2F;code&gt; is the class which is used to create the &lt;em&gt;class&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;We can customise class creation by using the &lt;code&gt;metaclass&lt;&#x2F;code&gt; keyword in class definition or by inheriting from an existing class that included such argument.&lt;&#x2F;p&gt;
+&lt;p&gt;A metaclass can customise preparation of class namespace and resolving of method resolution order.&lt;&#x2F;p&gt;
+&lt;p&gt;Example&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;class Meta(type):
+&lt;&#x2F;span&gt;&lt;span&gt;    pass
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;class Foo(metaclass=Meta):
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    def __init__(self):
+&lt;&#x2F;span&gt;&lt;span&gt;        pass
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;if __name__ == &amp;quot;__main__&amp;quot;:
+&lt;&#x2F;span&gt;&lt;span&gt;    print (&amp;#39;type of Foo is &amp;#39;, type(Foo))  # shows `&amp;lt;class &amp;#39;__main__.Meta&amp;#39;&amp;gt;`
+&lt;&#x2F;span&gt;&lt;span&gt;    print (&amp;#39;type of Meta is &amp;#39;, type(Meta))  # shows `&amp;lt;class &amp;#39;type&amp;#39;&amp;gt;`.
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The above snippet shows &lt;code&gt;&amp;lt;class &#x27;__main__.Meta&#x27;&amp;gt;&lt;&#x2F;code&gt; and &lt;code&gt;&amp;lt;class &#x27;type&#x27;&amp;gt;&lt;&#x2F;code&gt;.
+I leave it to a future post for covering customisation of class creation via metaclasses.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;init-subclass-hook&quot;&gt;&lt;code&gt;__init_subclass__&lt;&#x2F;code&gt; hook&lt;&#x2F;h3&gt;
+&lt;p&gt;The &lt;code&gt;__init_subclass__&lt;&#x2F;code&gt; hook when defined in the parent class of a class can modify attributes in the subclass, thus changing the subclass&#x27;s behavior.
+For more details, I refer the reader to &lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;reference&#x2F;datamodel.html#object.__init_subclass__&quot;&gt;python documentation&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;mail.python.org&#x2F;pipermail&#x2F;tutor&#x2F;2008-April&#x2F;061426.html&quot;&gt;&lt;code&gt;__new__&lt;&#x2F;code&gt; vs &lt;code&gt;__init__&lt;&#x2F;code&gt; from python mailing list&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;reference&#x2F;datamodel.html&quot;&gt;Data Model&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;acknowledgemnets&quot;&gt;Acknowledgemnets&lt;&#x2F;h2&gt;
+&lt;p&gt;A special thanks to &lt;a href=&quot;https:&#x2F;&#x2F;rahulporuri.github.io&#x2F;&quot;&gt;Rahul Sai Poruri&lt;&#x2F;a&gt; and &lt;a href=&quot;https:&#x2F;&#x2F;tonyd.co&#x2F;&quot;&gt;Tony Davis&lt;&#x2F;a&gt; for discussions and feedbacks on earlier versions of the draft.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>
