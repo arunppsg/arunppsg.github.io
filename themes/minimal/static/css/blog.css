@@ -43,10 +43,29 @@ li {
 	line-height: 22px; 
 }
 
-// Shameless copy from https://www.getzola.org/documentation/content/syntax-highlighting/ 
+code {
+  font-size: 1rem;
+  background-color: #efefef;
+  color: #1a1a1a;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+// Shameless copy from https://www.getzola.org/documentation/content/syntax-highlighting/
 pre {
+  font-size: 1rem;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
   padding: 1rem;
   overflow: auto;
+  border-radius: 4px;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
 }
 // The line numbers already provide some kind of left/right padding
 pre[data-linenos] {
