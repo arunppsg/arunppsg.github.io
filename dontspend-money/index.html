@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Don't spend money on that purchase</title>
+    <meta name="description" content="A simple, opinionated tool for helping decide whether to buy that one thing or not." />
+    <link rel="shortcut icon" href="/favicon.png" />
+    <meta property="og:image" content="/thumb.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --primary: #ffc200;
+            --secondary: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            color: var(--secondary);
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        datalist {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          writing-mode: vertical-lr;
+          width: 100%;
+        }
+
+        h1, h2, h3 {
+          line-height: 2rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        p {
+          color: #666;
+        }
+
+        fieldset {
+          padding: 0;
+          margin: 0;
+          border: 0;
+        }
+
+        input[type="range"] {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 4px;
+          background: var(--secondary);
+          border-radius: 3px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          background: var(--primary);
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          border: 4px solid var(--secondary);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+          background: var(--primary);
+          border-radius: 100%;
+          height: 20px;
+          width: 20px;
+          cursor: pointer;
+          border: 4px solid var(--secondary);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track  {
+          -webkit-appearance: none;
+          box-shadow: none;
+          border: none;
+          background: transparent;
+        }
+
+
+        button {
+            background: var(--primary);
+            cursor: pointer;
+            border-color: #000;
+            padding: 10px 30px;
+            font-size: 1.3rem;
+            border-width: 1px 3px 3px 1px;
+            border-style: solid;
+            border-radius: 3px;
+        }
+            button:hover {
+                background: #aaa;
+            }
+
+        .text-center {
+          text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 45px auto 30px auto;
+        }
+        .box {
+            padding: 30px 45px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            border: 2px solid var(--secondary);
+            box-shadow: 3px 3px 0px var(--secondary);
+            margin-bottom: 45px;
+        }
+
+        .container .title {
+          margin: 15px 0 0px 0;
+        }
+
+        .help {
+          margin-top: 5px;
+        }
+
+        .form {
+          clear: both;
+        }
+        .form fieldset {
+          font-size: 1.3rem;
+          margin-bottom: 45px;
+        }
+          .form label {
+            display: block;
+            margin-bottom: 15px;
+          }
+          .form .value, .help {
+            float: right;
+            color: #aaa;
+          }
+
+          .form .p-pur-relevance .value {
+            float: inherit;
+            color: #aaa;
+          }
+        .answer {
+          text-align: center;
+          display: none;
+        }
+        .answer h1 {
+          margin: 30px 0;
+          font-size: 3rem;
+          line-height: 3rem;
+        }
+          .answer span {
+            display: inline-block;
+            background: var(--primary);
+          }
+          .answer .summary {
+            font-family: monospace;
+            width: 100%;
+            padding: 10px;
+            min-height: 200px;
+          }
+
+        footer {
+          margin: 30px auto;
+          color: #999;
+          font-size: 0.975rem;
+        }
+
+        @media (max-width: 800px) {
+          .container {
+            max-width: none;
+            margin: 20px 30px 20px 20px;
+            padding: 0;
+          }
+          .box {
+            padding: 0;
+            border: 0;
+            box-shadow: none;
+          }
+          .help {
+            float: none;
+          }
+          .form label {
+            float: left;
+            max-width: 90%;
+          }
+        }
+
+
+        @media (max-width: 400px) {
+          .form label {
+            max-width: 70%;
+          }
+        }
+
+        .notice {
+          position: fixed;
+          top: 30px;
+          left: 0;
+          right: 0;
+          width: 250px;
+          margin: auto;
+          padding: 12px;
+          font-size: 14px;
+          font-weight: 700;
+          text-align: center;
+          background: var(--primary);
+          z-index: 100;
+          visibility: hidden;
+          border-radius: 3px;
+          border: 2px solid var(--secondary);
+          box-shadow: 3px 3px 0px var(--secondary);
+        }
+
+        .notice.visible {
+          visibility: visible;
+          -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+                  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          -webkit-animation-fill-mode: forwards;
+                  animation-fill-mode: forwards;
+        }
+
+        @-webkit-keyframes fadein {
+          from {
+            top: 0;
+            opacity: 0;
+          }
+          to {
+            top: 30px;
+            opacity: 1;
+          }
+        }
+
+        @keyframes fadein {
+          from {
+            top: 0;
+            opacity: 0;
+          }
+          to {
+            top: 30px;
+            opacity: 1;
+          }
+        }
+        @-webkit-keyframes fadeout {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+        @keyframes fadeout {
+          from {
+            opacity: 1;
+          }
+          to {
+            opacity: 0;
+          }
+        }
+        </style>
+</head>
+<body>
+
+<div class="container">
+    <section class="box">
+        <p class="help">1: Low, 10: High</p>
+        <h1 class="title">Don't spend money on that impulsive purchase</h1>
+        <p>A simple, opinionated tool for helping decide whether to buy that one thing or not.</p>
+        <br />
+        <form class="form">
+            <fieldset class="p-need">
+                <span class="value"></span>
+                <label>How inconvenient will life be without this product/service?</label>
+                <input type="range" min="0" max="10" step="0.5" value="5.5" />
+            </fieldset>
+            <fieldset class="p-harm">
+                <span class="value"></span>
+                <label>Will this purchase cause harm to me or others? (Think of options trading, junk food)</label>
+                <input type="range" min="0" max="10" step="2.5" value="5.5" />
+            </fieldset>
+            <fieldset class="p-finances">
+                <span class="value"></span>
+                <label>How much stress will this purchase add to my finances?</label>
+                <input type="range" min="1" max="10" step="0.5" value="5.5" />
+            </fieldset>
+            <fieldset class="p-usage-freq">
+                <span class="value"></span>
+                <label>How often will I use It?</label>
+                <input type="range" min="1" max="8" value="5" step="1" />
+            </fieldset>
+            <fieldset class="p-pur-relevance">
+                <label>The product will still be relevant and last after a
+                <span class="value"></span>.</label>
+                <input type="range" min="2" max="10" step="2" value="4" />
+            </fieldset>
+            <fieldset class="p-price-comparison">
+                <span class="value"></span>
+                <label>Have I compared prices and options?</label>
+                <input type="range" min="1" max="10" step="0.5" value="5.5" />
+            </fieldset>
+            <fieldset class="p-longterm-goals">
+                <span class="value"></span>
+                <label>How does this purchase align with my long-term goals?</label>
+                <input type="range" min="1" max="10" step="0.5" value="5.5" />
+            </fieldset>
+        </form>
+        <div class="text-center">
+          <button id="btn-toggle-answer">Show answer</button>
+        </div>
+        <div class="answer hide">
+            <h1><span><span class="bool"></span> (<span class="percent"></span>)</span></h1>
+            <textarea class="summary" readonly></textarea>
+            <textarea hidden class="md-summary" readonly></textarea>
+            <button class="copy">Copy</button>
+            <button class="copy-md">Copy as Markdown</button>
+        </div>
+    </section>
+
+    <noscript><h1>This page requires Javascript to function.</h1></noscript>
+
+    <section>
+        <p>
+            This is an opinionated tool to help decide on a purchase of product.
+            When considering an impulsive purchase, it's wise to ask yourself a series of
+            reflective questions to determine if the purchase is prudent. If it is bad,
+            then avoid it, so that the money can be put to a better use.</p>
+
+        <h4>Usage</h4>
+        <p>Impulsive purchases mostly happen in my mobile. To avoid it,
+            I removed quick-commerce, e-commerce apps from my mobile. Any time I want to make
+            a purchase, I come to my browser where I have bookmarked this tab. Then, before
+            making the purchase, I go through this filter to avoid impulsive purchases.
+        </p>
+    </section>
+
+    <footer>Inspired fork from 
+            <a href="https://dont.build">dont.build</a> and
+            <a href="https://dontspend.money/">dontspend.money</a> &mdash; <div id="year" style="display: inline-block"></div></footer>
+</div>
+
+
+<script>
+(function() {
+    const params = [
+    { weight: 0.2, value: 5.5, negative: false, name: 'p-need' },
+    { weight: 0.2, value: 5.5, negative: true, name: 'p-harm' },
+    { weight: 0.2, value: 5.5, negative: true, name: 'p-finances' },
+    { weight: 0.15, value: 5.5, negative: false, name: 'p-usage-freq' },
+    { weight: 0.15, value: 5.5, negative: false, name: 'p-pur-relevance' },
+    { weight: 0.05, value: 5.5, negative: false, name: 'p-price-comparison' },
+    { weight: 0.05, value: 5.5, negative: false, name: 'p-longterm-goals' },
+]
+    const usageFreqValueMap = {
+        1: "Only Once",
+        2: "Rarely",
+        3: "Less than once a year",
+        4: "Couple of times a year",
+        5: "Once in a month",
+        6: "Couple of times in a month",
+        7: "Weekly",
+        8: "Daily"
+    }
+    const purRelevanceValueMap = {
+        2: "Week",
+        4: "Month",
+        6: "Year",
+        8: "couple of years",
+        10: "decade",
+    }
+    params.forEach((p, n) => {
+        let net = 0;
+        const inp = document.querySelector(`.${p.name} input`);
+
+        inp.value = p.value;
+        inp.oninput = (e) => {
+            let val = parseFloat(e.target.value);
+            paramName = p.name;
+            if (paramName == 'p-usage-freq') {
+                document.querySelector(`.${p.name} .value`).innerText = usageFreqValueMap[val];
+                // normalize score to 10 - max value for this field is 8
+                val = val * 10 / 8;
+            } else if (paramName == 'p-pur-relevance') {
+                document.querySelector(`.${p.name} .value`).innerText = purRelevanceValueMap[val];
+            }
+            else {
+              document.querySelector(`.${p.name} .value`).innerText = val;
+            }
+            p.value = val;
+
+            // Sum all weighted params.
+            const sum = params.reduce((prev, pm) => {
+                let v = pm.value;
+                if (pm.negative) {
+                    v = 10 - v;
+                }
+
+                return prev + (v / 10 * pm.weight);
+            }, 0);
+
+            // Display the results.
+            const percent = `${(sum * 100).toFixed(0)}%`
+
+            let b = 'Yes';
+            if (sum < 0.5 && sum > 0.46) {
+                b = `No, but a close call.`;
+            } else if (sum < 0.48) {
+                b = `No.`;
+            } else if (sum > 0.5 && sum < 0.54) {
+                b = `Yes, but a close call.`;
+            } else if(sum === 0.5) {
+                b = '50-50. Go with the gut.';
+            }
+
+            document.querySelector(".answer .percent").innerText = percent;
+            document.querySelector(".answer .bool").innerText = b;
+
+            // Print the summary in the textbox.
+            let summary = '';
+            let mdSummary = '||Question|Answer|\n|---|---|---|\n';
+            document.querySelectorAll(".form fieldset").forEach((f, n) => {
+                summary += `${n + 1}. ${f.querySelector("label").innerText} = ${f.querySelector("input").value}\n`;
+                mdSummary += `|${n + 1}|${f.querySelector("label").innerText}|${f.querySelector("input").value}|\n`;
+            });
+            summary += `\n=> ${b} (${percent})`;
+            mdSummary += `||Result:|${b} (${percent})|`;
+            document.querySelector('.summary').value = summary;
+            document.querySelector('.md-summary').value = mdSummary;
+        };
+
+        inp.dispatchEvent(new Event('input'));
+    });
+})();
+
+(function () {
+    const ans = document.querySelector('.answer');
+    const btn = document.querySelector('#btn-toggle-answer');
+
+    btn.addEventListener('click', function() {
+        if(ans.style.display === 'block') {
+            ans.style.display = 'none';
+            btn.innerText = "Show answer";
+        } else {
+            ans.style.display = 'block';
+            btn.innerText = "Hide answer";
+        }
+    });
+})();
+
+(function () {
+    const copyBtn = document.querySelector('.copy');
+    const copyMdBtn = document.querySelector('.copy-md');
+
+    var copyToClipboard = function(val) {
+        var tempTxt=document.createElement("textarea");
+        tempTxt.value=val;
+        document.body.appendChild(tempTxt);
+        tempTxt.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTxt);
+
+        let notice = document.createElement("span");
+        notice.className = "notice visible";
+        notice.innerHTML = "Copied to clipboard.";
+        document.body.appendChild(notice);
+        setTimeout(() => {
+            document.body.removeChild(notice);
+        }, 3000);
+    }
+
+    copyBtn.addEventListener('click', function() {
+        copyToClipboard(document.querySelector('.summary').value);
+    });
+
+    copyMdBtn.addEventListener('click', function() {
+        copyToClipboard(document.querySelector('.md-summary').value);
+    });
+})();
+
+(function() {
+    const el = document.getElementById("year")
+    let year = new Date().getFullYear()
+    el.innerText = year;
+})();
+
+</script>
+
+</body>
+</html>

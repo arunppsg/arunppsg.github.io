@@ -1,0 +1,156 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Palaniappan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Understanding Context in Go
+</h1>
+<p class="subtitle"><strong>2026-05-01</strong></p>
+<p>The idea of using <code>context</code>, <code>cancel</code>, <code>&lt;- ctx.Done()</code> was new to me when I learned Go.
+I had a hard time wrapping my head around it and hence, writing this blog post for my future-self.</p>
+<p>The idea is to send a signal to a process (goroutine), for example, to shutdown when an event occurs.</p>
+<p>For understanding, we will take a toy program which does computation in two steps.
+The main goroutine will create multiple goroutines and only one of the goroutines should proceed to step 2 computation.</p>
+<p>One way to do it is by using channels - a non-context approach.
+In this approach, we will send signal by closing the channel, like below:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">computeBreakUsingSignal</span><span>(</span><span style="color:#bf616a;">id </span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">wg </span><span>*</span><span style="color:#bf616a;">sync</span><span>.</span><span style="color:#b48ead;">WaitGroup</span><span>, </span><span style="color:#bf616a;">responses </span><span style="color:#b48ead;">chan</span><span>&lt;- </span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">signal </span><span>&lt;-</span><span style="color:#b48ead;">chan struct</span><span>{}) {
+</span><span>	</span><span style="color:#b48ead;">defer </span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Done</span><span>()
+</span><span>
+</span><span>	</span><span style="color:#65737e;">// Long Compute part 1
+</span><span>	</span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#bf616a;">rand</span><span>.</span><span style="color:#bf616a;">Intn</span><span>(</span><span style="color:#d08770;">5</span><span>) + </span><span style="color:#d08770;">5
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> Sleeping for </span><span>&quot;, </span><span style="color:#bf616a;">i</span><span>, &quot;</span><span style="color:#a3be8c;"> seconds</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Sleep</span><span>(</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Duration</span><span>(</span><span style="color:#bf616a;">i</span><span>) * </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Second</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">select </span><span>{
+</span><span>	</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">responses </span><span>&lt;- </span><span style="color:#bf616a;">i</span><span>:
+</span><span>		</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> finished first computation</span><span>&quot;)
+</span><span>	</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">signal</span><span>:
+</span><span>		</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> returning</span><span>&quot;)
+</span><span>		</span><span style="color:#b48ead;">return
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#65737e;">// Long Compute Part 2
+</span><span>	</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Sleep</span><span>(</span><span style="color:#d08770;">10 </span><span>* </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Second</span><span>)
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> completed second computation.</span><span>&quot;)
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">sendSignalByChannel</span><span>() {
+</span><span>	</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">wg sync</span><span>.</span><span style="color:#b48ead;">WaitGroup
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">responses </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>	</span><span style="color:#bf616a;">signal </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan struct</span><span>{})
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#d08770;">5 </span><span>{
+</span><span>		</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>		</span><span style="color:#b48ead;">go </span><span style="color:#bf616a;">computeBreakUsingSignal</span><span>(</span><span style="color:#bf616a;">i</span><span>, &amp;</span><span style="color:#bf616a;">wg</span><span>, </span><span style="color:#bf616a;">responses</span><span>, </span><span style="color:#bf616a;">signal</span><span>)
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">resp </span><span>:= &lt;-</span><span style="color:#bf616a;">responses
+</span><span>	</span><span style="color:#96b5b4;">close</span><span>(</span><span style="color:#bf616a;">signal</span><span>)
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Received </span><span>&quot;, </span><span style="color:#bf616a;">resp</span><span>)
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Wait</span><span>()
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>    </span><span style="color:#bf616a;">sendSignalByChannel</span><span>()
+</span><span>}
+</span></code></pre>
+<p>When a go routine returns, it sends a value in <code>responses</code> channel.
+Upon receiving a value in <code>responses</code> channel, <code>sendSignalByChannel</code> closes <code>signal</code> channel, thereby preventing rest of the goroutines to proceed to step 2 of the computation.</p>
+<p>Here is another way of doing the same, but with contexts which is the idiomatic Go approach.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">sendSignalByContext</span><span>() {
+</span><span>	</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">wg sync</span><span>.</span><span style="color:#b48ead;">WaitGroup
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">responses </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>	</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">cancel </span><span>:= </span><span style="color:#bf616a;">context</span><span>.</span><span style="color:#bf616a;">WithCancel</span><span>(</span><span style="color:#bf616a;">context</span><span>.</span><span style="color:#bf616a;">Background</span><span>())
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#d08770;">5 </span><span>{
+</span><span>		</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>		</span><span style="color:#b48ead;">go </span><span style="color:#bf616a;">computeBreakUsingContext</span><span>(</span><span style="color:#bf616a;">i</span><span>, &amp;</span><span style="color:#bf616a;">wg</span><span>, </span><span style="color:#bf616a;">responses</span><span>, </span><span style="color:#bf616a;">ctx</span><span>)
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">resp </span><span>:= &lt;-</span><span style="color:#bf616a;">responses
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Received </span><span>&quot;, </span><span style="color:#bf616a;">resp</span><span>)
+</span><span>	</span><span style="color:#65737e;">// cancel closes ctx.Done channel
+</span><span>	</span><span style="color:#bf616a;">cancel</span><span>()
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Wait</span><span>()
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">computeBreakUsingContext</span><span>(</span><span style="color:#bf616a;">id </span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">wg </span><span>*</span><span style="color:#bf616a;">sync</span><span>.</span><span style="color:#b48ead;">WaitGroup</span><span>, </span><span style="color:#bf616a;">responses </span><span style="color:#b48ead;">chan</span><span>&lt;- </span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">ctx context</span><span>.</span><span style="color:#b48ead;">Context</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">defer </span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Done</span><span>()
+</span><span>	</span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#bf616a;">rand</span><span>.</span><span style="color:#bf616a;">Intn</span><span>(</span><span style="color:#d08770;">10</span><span>) + </span><span style="color:#d08770;">1
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> Sleeping for </span><span>&quot;, </span><span style="color:#bf616a;">i</span><span>, &quot;</span><span style="color:#a3be8c;"> seconds</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Sleep</span><span>(</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Duration</span><span>(</span><span style="color:#bf616a;">i</span><span>) * </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Second</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">select </span><span>{
+</span><span>	</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">responses </span><span>&lt;- </span><span style="color:#bf616a;">i</span><span>:
+</span><span>		</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> finished</span><span>&quot;)
+</span><span>	</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">ctx</span><span>.</span><span style="color:#bf616a;">Done</span><span>():
+</span><span>		</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> returning</span><span>&quot;)
+</span><span>		</span><span style="color:#b48ead;">return
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Sleep</span><span>(</span><span style="color:#d08770;">10 </span><span>* </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Second</span><span>)
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">id</span><span>, &quot;</span><span style="color:#a3be8c;"> completed second computation.</span><span>&quot;)
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">sendSignalByContext</span><span>()
+</span><span>}
+</span></code></pre>
+<p>When the first Go routine returns, we call the <code>cancel</code> method returned by <code>context.WithCancel</code> function.
+The <code>cancel</code> method provides a way to close the <code>Done</code> channel of the context by calling it, thereby allowing us to send a signal to other Go routines.
+In this example as well, only one of the goroutines will proceed to second computation.</p>
+<p>A limitation here is when we send a signal or call <code>cancel</code>, the cancellation happens only after stage 1 of the long computation is completed - this is an inherent limitation and the long running function should check periodically for signals.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Palaniappan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Channel Closing In Go
+</h1>
+<p class="subtitle"><strong>2026-01-07</strong></p>
+<p>I had a go snippet like below:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">var </span><span style="color:#bf616a;">cancel </span><span>= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan struct</span><span>{})
+</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">wg sync</span><span>.</span><span style="color:#b48ead;">WaitGroup
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">isCancelled</span><span>() </span><span style="color:#b48ead;">bool </span><span>{
+</span><span>	</span><span style="color:#b48ead;">select </span><span>{
+</span><span>	</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">cancel</span><span>:
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true
+</span><span>	</span><span style="color:#b48ead;">default</span><span>:
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false
+</span><span>	}
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">send</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">cancel </span><span>&lt;- </span><span style="color:#b48ead;">struct</span><span>{}{}
+</span><span>	</span><span style="color:#96b5b4;">close</span><span>(</span><span style="color:#bf616a;">cancel</span><span>)
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Done</span><span>()
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">result1 </span><span>:= </span><span style="color:#bf616a;">isCancelled</span><span>()
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">result1=</span><span style="color:#d08770;">%t</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">result1</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">go func</span><span>() {
+</span><span>		</span><span style="color:#bf616a;">result2 </span><span>:= </span><span style="color:#bf616a;">isCancelled</span><span>()
+</span><span>		</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">result2=</span><span style="color:#d08770;">%t</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">result2</span><span>)
+</span><span>	}()
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>	</span><span style="color:#b48ead;">go </span><span style="color:#bf616a;">send</span><span>()
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Wait</span><span>()
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">result3 </span><span>:= </span><span style="color:#bf616a;">isCancelled</span><span>()
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">result3=</span><span style="color:#d08770;">%t</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">result3</span><span>)
+</span><span>}
+</span></code></pre>
+<p>The above printed:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>result1=false
+</span><span>result2=true
+</span><span>result3=true
+</span></code></pre>
+<p>I expected that <code>result3=false</code>  because the channel is closed <code>close(cancel)</code> after sending to the channel.
+But it is the other case. Why?</p>
+<p>When a channel is closed, it indicates that no more values will be sent on it. 
+When <code>result3 := isCancelled()</code> is called, receiving from a closed channel yields zero value of the
+channel (in this case <code>struct{}{}</code>) and thus <code>result3=true</code> was printed.</p>
+<p>Suppose I modify the <code>send</code> method to not close the channel, what will be the output?</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">send</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">cancel </span><span>&lt;- </span><span style="color:#b48ead;">struct</span><span>{}{}
+</span><span>	</span><span style="color:#bf616a;">wg</span><span>.</span><span style="color:#bf616a;">Done</span><span>()
+</span><span>}
+</span></code></pre>
+<p>When the modified <code>send</code> is run, it printed:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>result1=false
+</span><span>result2=true
+</span><span>result3=false
+</span></code></pre>
+<p>In this case, since the channel is not closed, the select could not receive any value from the channel and thus, <code>result3</code> is false.</p>
+<p>This is a nice idea because the closing of channel and a <code>select</code> statement can be used to broadcast a signal to other go routines that an event has occurred. </p>
+<p>Other references on the same:</p>
+<ul>
+<li><a href="https://gobyexample.com/closing-channels">https://gobyexample.com/closing-channels</a></li>
+<li><a href="https://go.dev/blog/pipelines">https://go.dev/blog/pipelines</a></li>
+</ul>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>
