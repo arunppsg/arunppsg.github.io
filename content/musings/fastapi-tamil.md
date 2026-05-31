@@ -1,9 +1,9 @@
 +++
-title = "An abandoned experiment - Translating FastAPI documentation to tamil"
+title = "An Abandoned Experiment - Translating FastAPI Documentation to Tamil"
 date = 2023-03-07
 +++
 
-It started with an ambitious idea - translate Python documentation to tamil.
+It started with an ambitious idea - translate Python documentation to Tamil.
 
 The reason I wanted to do this project was:
 
@@ -11,21 +11,21 @@ The reason I wanted to do this project was:
 I grew up speaking Tamil and one book which accompanied me since I was 8 years old was Oxford English Mini Dictionary.
 I had a hard copy of it and still continue to have it in my desk.
 
-- There were technical terms, like `ephemeral port`, `heuristic` and without knowing the meaning of these words, I was not able to understand the core concept or what ephemeral ports do.
+- There were technical terms, like `ephemeral port`, `heuristic`, `rendezvous` and without knowing the meaning of these words, I was not able to understand the core concept or what ephemeral ports do.
 - There are tech tutorials in YouTube in native languages but they lack the depth which is required to develop good software.
 
-I thought let's experiment with a smaller project - converting FastAPI documentation to Tamil and so I took on the project in October 2022. I gave myself an agenda of converting first 3 pages of fastapi documentation to tamil by Oct 31, 2022.
+I thought let's experiment with a smaller project - converting FastAPI documentation to Tamil and so I took on the project in October 2022. I gave myself an agenda of converting first 3 pages of FastAPI documentation to Tamil by Oct 31, 2022.
 
-The first weekend of October, I went to the district library where I got a dicitonary of english-tamil translations of technical terms and made a copy of important terms, like framework etc. Then, I started docs translation.
+The first weekend of October, I went to the district library where I got a dictionary of English-Tamil translations of technical terms and made a copy of important terms, like framework etc. Then, I started docs translation.
 
 Some of the challenges which I faced were:
 
 - Translation required high bandwidth than I expected.
-- Some of the technical terms did not have a good tamil translation.
-- The process of typing tamil words in english keypad was very slow. For example, completing a single sentence often took about 5 mins for me.
+- Some of the technical terms did not have a good Tamil translation.
+- The process of typing Tamil words in English keypad was very slow. For example, completing a single sentence often took about 5 mins for me.
 
 I realised that I will not able to allocate the required bandwidth for translating the docs due to other commitments and I moved the project to my todo list. Meanwhile, if you are interested in translation, here are some helpers:
 
 - Some of the translation words for which I made a digital copy are available [here](../../assets/files/en-ta.txt).
-- Checkout the discussion [here](https://github.com/tiangolo/fastapi/discussions/9198) in fastapi forums.
-- A pull request of docs translation requires two reviewers. If you make a contribution, feel free to tag me and I could review it. My Github handle is [arunppsg](https://github.com/arunppsg).
+- Checkout the discussion [here](https://github.com/tiangolo/fastapi/discussions/9198) in FastAPI forums.
+- A pull request of docs translation requires two reviewers. If you make a contribution, feel free to tag me and I could review it. My GitHub handle is [arunppsg](https://github.com/arunppsg).
