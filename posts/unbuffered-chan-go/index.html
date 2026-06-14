@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Palaniappan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Unbuffered Channels in Go
+</h1>
+<p class="subtitle"><strong>2026-05-28</strong></p>
+<p>I had a Go snippet like this:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">var </span><span>(
+</span><span>	</span><span style="color:#bf616a;">deposits </span><span>= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>) </span><span style="color:#65737e;">// send amount to deposit
+</span><span>	</span><span style="color:#bf616a;">balances </span><span>= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>) </span><span style="color:#65737e;">// receive balance
+</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">Deposit</span><span>(</span><span style="color:#bf616a;">amount </span><span style="color:#b48ead;">int</span><span>) { </span><span style="color:#bf616a;">deposits </span><span>&lt;- </span><span style="color:#bf616a;">amount </span><span>}
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">Balance</span><span>() </span><span style="color:#b48ead;">int       </span><span>{ </span><span style="color:#b48ead;">return </span><span>&lt;-</span><span style="color:#bf616a;">balances </span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">teller</span><span>() {
+</span><span>	</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">balance </span><span style="color:#b48ead;">int </span><span style="color:#65737e;">// balance is confined to teller goroutine
+</span><span>	</span><span style="color:#b48ead;">for </span><span>{
+</span><span>		</span><span style="color:#b48ead;">select </span><span>{
+</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">amount </span><span>:= &lt;-</span><span style="color:#bf616a;">deposits</span><span>:
+</span><span>			</span><span style="color:#bf616a;">balance </span><span>+= </span><span style="color:#bf616a;">amount
+</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">balances </span><span>&lt;- </span><span style="color:#bf616a;">balance</span><span>:
+</span><span>			</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Sending in channel balances</span><span>&quot;)
+</span><span>		}
+</span><span>	}
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#b48ead;">go </span><span style="color:#bf616a;">teller</span><span>() 
+</span><span>	</span><span style="color:#bf616a;">Deposit</span><span>(</span><span style="color:#d08770;">100</span><span>)
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Balance=</span><span>&quot;, </span><span style="color:#bf616a;">Balance</span><span>())
+</span><span>	</span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#bf616a;">b </span><span>:= </span><span style="color:#bf616a;">Balance</span><span>(), </span><span style="color:#bf616a;">Balance</span><span>()
+</span><span>	</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">Balance = </span><span style="color:#d08770;">%d</span><span style="color:#a3be8c;">, Balance = </span><span style="color:#d08770;">%d</span><span>&quot;, </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#bf616a;">b</span><span>)
+</span><span>}
+</span></code></pre>
+<p>The issue:
+<code>Balance</code> receives balance from <code>balances</code> channel.
+When <code>Balance()</code> is called, how is it ensured that there is value in the channel for it to receive and that the call is non-blocking?</p>
+<p>Here, <code>balances</code> is an unbuffered channel - it can never be full nor empty. An unbuffered channel expects a rendezvous i.e a simultaneous send and receive for communication to happen via that channel.</p>
+<p>A receive on Balance() will happen when there is a send in the <code>balance</code> channel at the same time.
+When a receiver is ready, the <code>select</code> statement proceeds to send a value in the <code>balances</code> channel. Otherwise, the <code>select</code> statement blocks until either one of the two actions happen - when a value is ready to be received in <code>balances</code> channel, so that it can send into it or when it receives a value from <code>deposits</code> channel.</p>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>

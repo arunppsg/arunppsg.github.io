@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - til</title>
+    <link href="https://www.arunppsg.in/tag/til/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://www.arunppsg.in"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-02-08T00:00:00+00:00</updated>
+    <id>https://www.arunppsg.in/tag/til/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Installing Python Package When Offline</title>
+        <published>2026-02-08T00:00:00+00:00</published>
+        <updated>2026-02-08T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://www.arunppsg.in/posts/uv-offline/" type="text/html"/>
+        <id>https://www.arunppsg.in/posts/uv-offline/</id>
+        <content type="html">&lt;p&gt;Power went down when I was working and I wanted to install a package, which I had installed before but uninstalled recently for testing.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;uv&lt;&#x2F;code&gt; had a &lt;code&gt;offline&lt;&#x2F;code&gt; flag which when set, looks for package in the local instead of searching for the index.&lt;&#x2F;p&gt;
+&lt;p&gt;Example: &lt;code&gt;uv pip install --upgrade textual --offline&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>

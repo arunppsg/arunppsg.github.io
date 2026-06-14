@@ -1,0 +1,173 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://www.arunppsg.in/css/base.css">
+		<title>Arun Palaniappan</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-links">
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/">Home
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/posts/">Posts
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/projects/">Projects
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/now/">Now
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/musings/">Musings
+                </a>
+                
+                
+                <a class="menu-links" 
+                    href="https://www.arunppsg.in/book-notes/">Book Notes
+                </a>
+                
+            </div>
+        </nav>
+    </header>
+    <article>
+<h1 class="title">
+  Go Routine Pipelines
+</h1>
+<p class="subtitle"><strong>2026-06-11</strong></p>
+<p>The idea is to build a pipeline that connects an arbitrary number of Go routines with channels.</p>
+<h3 id="approach-1">Approach 1</h3>
+<p>The below was my first approach.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">try1</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">n </span><span>:= </span><span style="color:#bf616a;">int</span><span>(</span><span style="color:#bf616a;">N</span><span>)
+</span><span>	</span><span style="color:#bf616a;">allChans </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">int</span><span>](</span><span style="color:#b48ead;">chan int</span><span>))
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">n </span><span>{
+</span><span>		</span><span style="color:#bf616a;">allChans</span><span>[</span><span style="color:#bf616a;">i</span><span>] = </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>		</span><span style="color:#b48ead;">go func</span><span>(</span><span style="color:#bf616a;">i </span><span style="color:#b48ead;">int</span><span>) {
+</span><span>			&lt;-</span><span style="color:#bf616a;">allChans</span><span>[</span><span style="color:#bf616a;">i</span><span>]
+</span><span>		}(</span><span style="color:#bf616a;">i</span><span>)
+</span><span>		</span><span style="color:#bf616a;">allChans</span><span>[</span><span style="color:#bf616a;">i</span><span>] &lt;- </span><span style="color:#bf616a;">i
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>Why I thought it will work? On Go routine <code>i</code>, we send into channel <code>i</code> and receive from channel <code>i</code>.
+But the issues with this approach are:</p>
+<ol>
+<li>There is no channel pipeline here, each Go routine is independent of the other.</li>
+<li>After a Go routine finishes, the channel created for it ( <code>allChan[i]</code>) still exists in the map.
+The map retains references of a channel even after a Go routine has been finished, resulting in a memory leak.</li>
+</ol>
+<h3 id="approach-2">Approach 2</h3>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">try2</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">n </span><span>:= </span><span style="color:#bf616a;">int</span><span>(</span><span style="color:#bf616a;">N</span><span>)
+</span><span>	</span><span style="color:#bf616a;">inChan </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">n </span><span>{
+</span><span>		</span><span style="color:#b48ead;">go func</span><span>(</span><span style="color:#bf616a;">i </span><span style="color:#b48ead;">int</span><span>) {
+</span><span>			</span><span style="color:#bf616a;">val </span><span>:= &lt;-</span><span style="color:#bf616a;">inChan
+</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>&lt; </span><span style="color:#bf616a;">n</span><span>-</span><span style="color:#d08770;">1 </span><span>{
+</span><span>				</span><span style="color:#bf616a;">inChan </span><span>&lt;- </span><span style="color:#bf616a;">val
+</span><span>			}
+</span><span>		}(</span><span style="color:#bf616a;">i</span><span>)
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">inChan </span><span>&lt;- </span><span style="color:#d08770;">5
+</span><span>}
+</span></code></pre>
+<p>Issue with this approach:</p>
+<ul>
+<li>this is a fan-out because one Go routine sends into <code>inChan</code> while the remaining Go routines are waiting on the same <code>inChan</code> channel.</li>
+</ul>
+<h3 id="approach-3">Approach 3</h3>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">var </span><span style="color:#bf616a;">N </span><span>= </span><span style="color:#d08770;">1e4
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">n </span><span>:= </span><span style="color:#bf616a;">int</span><span>(</span><span style="color:#bf616a;">N</span><span>)
+</span><span>	</span><span style="color:#bf616a;">in </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">n </span><span>{
+</span><span>		</span><span style="color:#bf616a;">out </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>		</span><span style="color:#b48ead;">go func</span><span>(</span><span style="color:#bf616a;">inChan </span><span>&lt;-</span><span style="color:#b48ead;">chan int</span><span>) {
+</span><span>			</span><span style="color:#bf616a;">a </span><span>:= &lt;-</span><span style="color:#bf616a;">inChan
+</span><span>			</span><span style="color:#bf616a;">out </span><span>&lt;- </span><span style="color:#bf616a;">a
+</span><span>		}(</span><span style="color:#bf616a;">in</span><span>)
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#d08770;">0 </span><span>{
+</span><span>			</span><span style="color:#bf616a;">in </span><span>&lt;- </span><span style="color:#d08770;">1
+</span><span>		}
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#bf616a;">n</span><span>-</span><span style="color:#d08770;">1 </span><span>{
+</span><span>			</span><span style="color:#bf616a;">j </span><span>:= &lt;-</span><span style="color:#bf616a;">out
+</span><span>			</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">Received final out value: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">j</span><span>)
+</span><span>		}
+</span><span>		</span><span style="color:#bf616a;">in </span><span>= </span><span style="color:#bf616a;">out
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>For a channel <code>out</code>, it is held as reference only by two Go routines: 1) the immediate Go routine created after it's creation where it is used as a channel to send to 2) the next consecutive Go routine, where it is used as the <code>in</code> channel.
+Since each Go routine hold on to only two-endpoints - one endpoint to receive, another to send, once a Go routine completes, it no longer holds reference to the channel <code>out</code>, which allows it to be garbage collected, thereby preventing memory leaks.</p>
+<p>Consider same as above, except that <code>in</code> channel is not passed as parameter.
+The Go routine will act as a closure in this case and the loop will look like this:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#bf616a;">in </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range</span><span>(</span><span style="color:#bf616a;">n</span><span>) {
+</span><span>    </span><span style="color:#bf616a;">out </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>    </span><span style="color:#b48ead;">go func</span><span>() {
+</span><span>        </span><span style="color:#bf616a;">a </span><span>:= &lt;- </span><span style="color:#bf616a;">in
+</span><span>        </span><span style="color:#bf616a;">out </span><span>&lt;- </span><span style="color:#bf616a;">a
+</span><span>    }()
+</span><span>    </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#d08770;">0 </span><span>{
+</span><span>        </span><span style="color:#bf616a;">in </span><span>&lt;- </span><span style="color:#d08770;">1
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#bf616a;">n</span><span>-</span><span style="color:#d08770;">1 </span><span>{
+</span><span>        </span><span style="color:#bf616a;">j </span><span>:= &lt;-</span><span style="color:#bf616a;">out
+</span><span>    }
+</span><span>    </span><span style="color:#bf616a;">in </span><span>= </span><span style="color:#bf616a;">out
+</span><span>}
+</span></code></pre>
+<p>In the above case, the Go routine will attempt to read <code>in</code> from the outer scope.
+But when <code>in</code> gets reassigned to <code>out</code> in iteration <code>k</code>, the new Go routine from iteration <code>k+1</code> will attempt a receive from the new <code>out</code>. 
+Here, the Go routine in iteration <code>k+1</code> is reading from the wrong channel, a channel it was never supposed to read from.
+But when we create a parameter, a copy of the <code>in</code> channel will be made at the time when the next Go routine is launched.</p>
+<p>Now, what will happen if N is very large?
+In such a scenario, the creation of Go routine will outpace completion, creating more Go routine stacks.
+A stack size will be ~2 KB and it might result in out of memory error.</p>
+<p>This can be prevented by limiting the number of Go routines using a semaphore, which can limit the number of concurrent Go routines. Here is an example of it:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">n </span><span>:= </span><span style="color:#bf616a;">int</span><span>(</span><span style="color:#bf616a;">N</span><span>)
+</span><span>	</span><span style="color:#bf616a;">in </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>	</span><span style="color:#bf616a;">counts </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan struct</span><span>{}, </span><span style="color:#d08770;">100</span><span>)
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">n </span><span>{
+</span><span>		</span><span style="color:#bf616a;">counts </span><span>&lt;- </span><span style="color:#b48ead;">struct</span><span>{}{}
+</span><span>		</span><span style="color:#bf616a;">out </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan int</span><span>)
+</span><span>		</span><span style="color:#b48ead;">go func</span><span>(</span><span style="color:#bf616a;">inChan </span><span>&lt;-</span><span style="color:#b48ead;">chan int</span><span>) {
+</span><span>			</span><span style="color:#bf616a;">a </span><span>:= &lt;-</span><span style="color:#bf616a;">inChan
+</span><span>			</span><span style="color:#bf616a;">out </span><span>&lt;- </span><span style="color:#bf616a;">a
+</span><span>			&lt;-</span><span style="color:#bf616a;">counts
+</span><span>		}(</span><span style="color:#bf616a;">in</span><span>)
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#d08770;">0 </span><span>{
+</span><span>			</span><span style="color:#bf616a;">in </span><span>&lt;- </span><span style="color:#d08770;">1
+</span><span>		}
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">i </span><span>== </span><span style="color:#bf616a;">n</span><span>-</span><span style="color:#d08770;">1 </span><span>{
+</span><span>			</span><span style="color:#bf616a;">j </span><span>:= &lt;-</span><span style="color:#bf616a;">out
+</span><span>			</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">Received final out value: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">j</span><span>)
+</span><span>		}
+</span><span>		</span><span style="color:#bf616a;">in </span><span>= </span><span style="color:#bf616a;">out
+</span><span>	}
+</span><span>}
+</span></code></pre>
+
+</article> 
+
+    <footer>
+        <!-- Copyright &copy; 2023 Arun Thiagarajan -->
+    </footer>
+</body>
+</html>
